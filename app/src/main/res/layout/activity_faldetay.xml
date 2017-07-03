@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:id="@+id/faldetayAppBar"
+        android:fitsSystemWindows="true"
+        android:background="#fff"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/faldetayColToolbar"
+            tool:layout_scrollFlags="scroll|exitUntilCollapsed"
+            tool:contentScrim="@color/colorPrimaryDark">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/faldetayFalFoto"
+                android:src="@drawable/falcifotogbir"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                tool:layout_collapseMode="parallax" />
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                android:id="@+id/faldetayToolbar"
+                tool:layout_collapseMode="pin"
+                android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            </android.support.v7.widget.Toolbar>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/contain_faldetay"></include>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:src="@drawable/ic_action_share"
+        tool:layout_anchor="@id/faldetayAppBar"
+        tool:layout_anchorGravity="bottom|right"
+        android:layout_marginRight="10dp"
+        tool:fabSize="mini"
+        android:scaleType="center"
+        tool:elevation="10dp"
+        tool:borderWidth="0dp" />
+
+    <TextView
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_action_date"
+        android:drawableStart="@drawable/ic_action_date"
+        tool:layout_anchor="@id/faldetayAppBar"
+        tool:layout_anchorGravity="top|right"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="12sp"
+        android:text="Tarih: GG/AA/YYYY\nSaat: SS/DD"
+        android:background="@drawable/text_tarih_corners"
+        android:id="@+id/textView2" />
+
+
+
+    <include layout="@layout/activity_toolbar"></include>
+
+
+</android.support.design.widget.CoordinatorLayout>
+

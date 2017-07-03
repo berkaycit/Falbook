@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
+
+        <GridLayout
+            android:id="@+id/pnlTelveler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:columnCount="5"
+            android:rowCount="4">
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="30dp"
+                android:layout_column="0"
+                android:layout_row="0" />
+
+            <RelativeLayout
+                android:layout_width="140dp"
+                android:layout_height="130dp"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:background="@drawable/satinal_background">
+
+                <TextView
+                    android:id="@+id/txtTelveSayisi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="3dp"
+                    android:text="200 Telve"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/txtTelveParasi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtTelveSayisi"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="3dp"
+                    android:text="20TL"
+                    android:textColor="#CCFFFFFF"
+
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/imgBean1"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:layout_above="@+id/txtTelveSayisi"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/telvebuton" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="30dp"
+                android:layout_column="2"
+                android:layout_row="0" />
+
+            <RelativeLayout
+                android:layout_width="140dp"
+                android:layout_height="130dp"
+                android:layout_column="3"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:background="@drawable/satinal_background">
+
+                <TextView
+                    android:id="@+id/txtTelveSayisi300"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="3dp"
+                    android:text="300 Telve"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/txtTelveParasi25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtTelveSayisi300"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="3dp"
+                    android:text="25TL"
+                    android:textColor="#CCFFFFFF"
+
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/imgBean2"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:layout_above="@+id/txtTelveSayisi300"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/telvebuton" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="30dp"
+                android:layout_column="4"
+                android:layout_row="0" />
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="15dp"
+                android:layout_column="0"
+                android:layout_row="2" />
+
+            <RelativeLayout
+                android:layout_width="140dp"
+                android:layout_height="130dp"
+                android:layout_column="1"
+                android:layout_row="3"
+                android:layout_rowWeight="1"
+                android:background="@drawable/satinal_background">
+
+                <TextView
+                    android:id="@+id/txtTelveSayisi500"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="3dp"
+                    android:text="500 Telve"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/txtTelveParasi30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtTelveSayisi500"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="3dp"
+                    android:text="30TL"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/imgBean3"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:layout_above="@+id/txtTelveSayisi500"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/telvebuton" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="15dp"
+                android:layout_column="2"
+                android:layout_row="2" />
+
+            <RelativeLayout
+                android:layout_width="140dp"
+                android:layout_height="130dp"
+                android:layout_column="3"
+                android:layout_row="3"
+                android:layout_rowWeight="1"
+                android:background="@drawable/satinal_background">
+
+                <TextView
+                    android:id="@+id/txtTelveSayisi1000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="3dp"
+                    android:text="1000 Telve"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/txtTelveParasi50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtTelveSayisi1000"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="3dp"
+                    android:text="50TL"
+                    android:textColor="#CCFFFFFF"
+
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/imgBean4"
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:layout_above="@+id/txtTelveSayisi1000"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/telvebuton" />
+
+            </RelativeLayout>
+
+        </GridLayout>
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/pnlTelveler"
+            android:layout_centerInParent="true"
+            android:paddingTop="16dp"
+            android:columnCount="4"
+            android:rowCount="3">
+
+
+            <RelativeLayout
+                android:id="@+id/sonKutu"
+                android:layout_width="250dp"
+                android:layout_height="110dp"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:background="@drawable/satinal_background">
+
+                <TextView
+                    android:id="@+id/txtIzleyerekKazan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginBottom="14dp"
+                    android:text="Video İzleyerek Kazan"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="17sp" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/imgTv"
+                    app:backgroundTint="@color/colorAccent"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_above="@+id/txtIzleyerekKazan"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/tv_icon" />
+
+            </RelativeLayout>
+
+
+        </GridLayout>
+
+    </RelativeLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

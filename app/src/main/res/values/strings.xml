@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Falbook</string>
+    <string name="title_activity_toolbar">ToolbarActivity</string>
+    <string name="title_activity_kafe">KafeActivity</string>
+    <string name="profilini_duzenle">Profilini Düzenle</string>
+    <string name="sifreni_degistir">Şifreni Değiştir</string>
+    <string name="hesap_ayarlari">HESAP AYARLARI</string>
+    <string name="geri_bildirim_ve_destek">GERİ BİLDİRİM VE DESTEK</string>
+    <string name="begendin_mi">Uygulamamızı beğendin mi?</string>
+    <string name="uygulamamizi_paylas">Uygulamamızı paylaş</string>
+    <string name="sorun_mu_yasiyorsun">Sorun mu yaşıyorsun?</string>
+    <string name="hakkimizda">HAKKIMIZDA</string>
+    <string name="falbook_hakkinda">Falbook Hakkında</string>
+    <string name="cikis">Çıkış</string>
+    <string name="drawer_acilis">Acilis</string>
+    <string name="drawer_kapanis">Kapanış</string>
+    <string name="bos_yazi">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eget nibh risus. Fusce porttitor lectus est, vel luctus sapien accumsan ac. Donec malesuada magna et pretium laoreet. Vestibulum tristique purus non laoreet euismod. Etiam sed lobortis dolor. Duis accumsan nisi at fringilla tristique. Duis eget elit ipsum. Phasellus accumsan, tellus quis dignissim semper, quam sapien pulvinar dolor, nec sodales est ante ut turpis. Morbi auctor urna sit amet odio tempor auctor. Cras quis euismod lacus. Curabitur luctus vestibulum diam et mattis. Morbi ullamcorper malesuada est, a efficitur neque tempor non. Vivamus congue enim ut massa posuere aliquet.  Cras sapien lorem, fermentum sit amet ipsum non, dictum cursus tellus. Nunc dignissim erat purus, ac vulputate mi tincidunt at. Sed eros urna, molestie non dignissim id, malesuada a mi. Nunc a sollicitudin justo. Maecenas at odio rhoncus, ultrices libero et, pretium augue. In non pulvinar nisi. Phasellus in diam eget massa fringilla elementum.</string>
+    <string name="profilim">PROFİLİM</string>
+    <string name="kaydet">KAYDET</string>
+    <string name="sifre_degistir">Şifre Değiştir</string>
+    <string name="gonder">Gönder</string>
+    <string name="gonder_butonuna_bastiktan_sonra_lutfen_onay">Gönder butonuna bastıktan sonra lütfen onay için mailinizi kontol ediniz.</string>
+    <string name="sik_sorulan_sorular">Sık Sorulan Sorular</string>
+    <string name="iletisim">iletişim</string>
+    <string name="iletisim_bilgilendirme">Mail adresinize dönüş yapılacaktır. Profiliniz den hangi mail adresinize dönüş yapılacağını görebilirsiniz.</string>
+    <string name="iletisim_hint">Görüşünüzü/Sorununuzu veya Önerilerinizi bize iletebilirsiniz. </string>
+    <string name="telve_satin_al">Telve Satın Al</string>
+    <string name="soru_hergunbedava">Evet. Her gün tamamen bedavaya kazandığınız telveler sayesinde, uygulamamızda hiç para harcamadan bedavaya fal baktırabilirsiniz. Bedava telveleri anasayfadaki telve kazan sayfasından her gün kazanabilirsiniz.</string>
+</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/falciCard"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="20dp"
+        app:cardPreventCornerOverlap="false"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="110dp">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/FalciCardRadius"
+                android:layout_below="@+id/imgFalci">
+
+            </LinearLayout>
+
+            <com.joooonho.SelectableRoundedImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/imgFalci"
+                android:src="@drawable/falcifotogbir"
+                android:scaleType="centerCrop"
+                app:sriv_left_top_corner_radius="20dp"
+                app:sriv_right_top_corner_radius="20dp"
+                app:sriv_oval="false"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:id="@+id/txtFalciIsim"
+                android:text="Falcı İsmi"
+                android:textStyle="bold"
+                android:textSize="23dp"
+                android:textColor="@color/colorFalciIsmi"
+                android:layout_below="@id/imgFalci"
+                android:layout_centerInParent="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtFalciTanitim"
+                android:layout_below="@+id/txtFalciIsim"
+                android:layout_centerInParent="true"
+                android:textColor="@color/colorFalciAciklama"
+                android:layout_marginTop="10dp"
+                android:text="Falcı açıklaması"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginBottom="48dp"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnFalciGonder"
+                android:background="@drawable/falcigonderbuton_border"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:text="Gönder"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

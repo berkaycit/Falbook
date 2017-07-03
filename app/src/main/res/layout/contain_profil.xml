@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.falbookv4.helloteam.falbook.ProfilActivity">
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/profilImageFotograf"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/falcifotogbir"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:sriv_border_color="@color/colorGonderButonBorder"
+            app:sriv_border_width="2dip"
+            app:sriv_left_bottom_corner_radius="48dip"
+            app:sriv_left_top_corner_radius="16dip"
+            app:sriv_oval="true"
+            app:sriv_right_bottom_corner_radius="16dip"
+            app:sriv_right_top_corner_radius="0dip" />
+
+
+        <EditText
+            android:id="@+id/profilTxtAd"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/profiltext_soltaraf_border"
+            android:ems="8"
+            android:drawableLeft="@drawable/ic_action_person"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_action_person"
+            android:hint="Adınız"
+            android:inputType="textPersonName"
+            android:padding="5dp"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"
+            android:textCursorDrawable="@null"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/profilTxtSoyad"
+            app:layout_constraintTop_toBottomOf="@+id/profilImageFotograf" />
+
+
+        <EditText
+            android:id="@+id/profilTxtSoyad"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="@drawable/profiltext_sagtaraf_border"
+            android:ems="8"
+            android:hint="Soyadınız"
+            android:inputType="textPersonName"
+            android:padding="5dp"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"
+            android:textCursorDrawable="@null"
+            app:layout_constraintBottom_toBottomOf="@+id/profilTxtAd"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/profilTxtAd"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/profilTxtMail"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/profiltext_border"
+            android:drawableLeft="@drawable/ic_action_mail"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_action_mail"
+            android:hint="E-Mailiniz"
+            android:inputType="textEmailAddress"
+            android:padding="5dp"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"
+            android:textCursorDrawable="@null"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilTxtAd" />
+
+        <EditText
+            android:id="@+id/profilTxtCinsiyet"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/profiltext_border"
+            android:drawableLeft="@drawable/ic_action_gender"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_action_gender"
+            android:hint="Cinsiyetiniz"
+            android:inputType="textShortMessage"
+            android:padding="5dp"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"
+            android:textCursorDrawable="@null"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilTxtMail" />
+
+        <EditText
+            android:id="@+id/profilTxtDogum"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/profiltext_border"
+            android:drawableLeft="@drawable/ic_action_date"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_action_date"
+            android:hint="Doğum Tarihiniz"
+            android:inputType="date"
+            android:padding="5dp"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"
+            android:textCursorDrawable="@null"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilTxtCinsiyet" />
+
+        <EditText
+            android:id="@+id/profilTxtIliski"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/profiltext_border"
+            android:drawableLeft="@drawable/ic_action_iliski"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/ic_action_iliski"
+            android:hint="İlişki Durumunuz"
+            android:inputType="text"
+            android:padding="5dp"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"
+            android:textCursorDrawable="@null"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilTxtDogum" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sağ üst deki KAYDET butonuna basmayı unutmayınız."
+            android:textAlignment="center"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/profilTxtIliski"
+            android:layout_marginRight="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.NestedScrollView>

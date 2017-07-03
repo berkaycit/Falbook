@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#352E2C</color>
+    <color name="colorPrimaryDark">#241C1A</color>
+    <color name="colorAccent">#FFF</color>
+    <color name="colorGonderButon">#5b342a</color>
+    <color name="colorGonderButonBorder">#644733</color>
+    <color name="colorFalciIsmi">#7A2929</color>
+    <color name="colorFalciAciklama">#302522</color>
+    <color name="colorTrash">#4a4a4a</color>
+    <color name="colorProfilText">#CCA1887F</color>
+</resources>

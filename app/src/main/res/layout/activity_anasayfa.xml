@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/anaDrawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/activity_anasayfa"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        tools:context="com.falbookv4.helloteam.falbook.AnasayfaActivity">
+
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@drawable/dikcizgi"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"
+                tools:layout_editor_absoluteX="192dp"
+                tools:layout_editor_absoluteY="25dp" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.36507937"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="232dp" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.6313933"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="383dp" />
+
+            <ImageButton
+                android:id="@+id/falbaktirButon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/falbaktir"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/guideline7"
+                app:layout_constraintVertical_bias="0.39" />
+
+            <TextView
+                android:id="@+id/falbaktirText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:text="FAL BAKTIR"
+                android:textStyle="normal|bold"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintLeft_toLeftOf="@+id/falbaktirButon"
+                app:layout_constraintRight_toRightOf="@+id/falbaktirButon"
+                app:layout_constraintTop_toBottomOf="@+id/falbaktirButon"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline7"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.09876543"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="81dp" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline8"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.8994709"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="535dp" />
+
+            <ImageButton
+                android:id="@+id/iletisimButon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/iletisimbuton"
+                app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                app:layout_constraintLeft_toLeftOf="@+id/falbaktirButon"
+                app:layout_constraintRight_toRightOf="@+id/falbaktirButon"
+                app:layout_constraintTop_toTopOf="@+id/guideline3"
+                app:layout_constraintVertical_bias="0.39" />
+
+            <TextView
+                android:id="@+id/iletisimText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="İLETİŞİM"
+                android:textStyle="normal|bold"
+                app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                app:layout_constraintLeft_toLeftOf="@+id/iletisimButon"
+                app:layout_constraintRight_toRightOf="@+id/iletisimButon"
+                app:layout_constraintTop_toBottomOf="@+id/iletisimButon"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageButton
+                android:id="@+id/telvekazanButon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/telvekazanbuton"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                app:layout_constraintLeft_toLeftOf="@+id/falbaktirButon"
+                app:layout_constraintRight_toRightOf="@+id/falbaktirButon"
+                app:layout_constraintTop_toTopOf="@+id/guideline2"
+                app:layout_constraintVertical_bias="0.39" />
+
+            <TextView
+                android:id="@+id/telvekazanText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="TELVE KAZAN"
+                android:textStyle="normal|bold"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                app:layout_constraintLeft_toLeftOf="@+id/telvekazanButon"
+                app:layout_constraintRight_toRightOf="@+id/telvekazanButon"
+                app:layout_constraintTop_toBottomOf="@+id/telvekazanButon"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageButton
+                android:id="@+id/telveSayisiImage"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/telvebuton"
+                app:layout_constraintBottom_toBottomOf="@+id/falbaktirButon"
+                app:layout_constraintLeft_toLeftOf="@+id/guideline"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/falbaktirButon"
+                app:layout_constraintVertical_bias="0.39" />
+
+            <TextView
+                android:id="@+id/telveSayisiTexts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="13 TELVENİZ\nVAR"
+                android:textAlignment="center"
+                android:textStyle="normal|bold"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintLeft_toLeftOf="@+id/telveSayisiImage"
+                app:layout_constraintRight_toRightOf="@+id/telveSayisiImage"
+                app:layout_constraintTop_toBottomOf="@+id/telveSayisiImage"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageButton
+                android:id="@+id/sssImage"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/sssbuton"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                app:layout_constraintLeft_toLeftOf="@+id/telveSayisiImage"
+                app:layout_constraintRight_toRightOf="@+id/telveSayisiImage"
+                app:layout_constraintTop_toTopOf="@+id/guideline2"
+                app:layout_constraintVertical_bias="0.39" />
+
+            <TextView
+                android:id="@+id/sssText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="SIK SORULAN\nSORULAR"
+                android:textAlignment="center"
+                android:textStyle="normal|bold"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                app:layout_constraintLeft_toLeftOf="@+id/sssImage"
+                app:layout_constraintRight_toRightOf="@+id/sssImage"
+                app:layout_constraintTop_toBottomOf="@+id/sssImage"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageButton
+                android:id="@+id/kullanimButon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/kullanimbuton"
+                app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                app:layout_constraintLeft_toLeftOf="@+id/telveSayisiImage"
+                app:layout_constraintRight_toRightOf="@+id/telveSayisiImage"
+                app:layout_constraintTop_toTopOf="@+id/guideline3"
+                app:layout_constraintVertical_bias="0.39" />
+
+            <TextView
+                android:id="@+id/kullanimText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="KULLANIM"
+                android:textStyle="normal|bold"
+                app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintLeft_toLeftOf="@+id/kullanimButon"
+                app:layout_constraintRight_toRightOf="@+id/kullanimButon"
+                app:layout_constraintTop_toBottomOf="@+id/kullanimButon"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="449dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="474dp" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/yataycizgi" />
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline3"
+                app:srcCompat="@drawable/yataycizgi" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dikcizgi"
+                app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                app:layout_constraintRight_toLeftOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/guideline7" />
+
+            <ImageView
+                android:id="@+id/anaBtnFalBaktir"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="64dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/anaBtnTelveSatinal"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="64dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toRightOf="@+id/imageView"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/anaBtnTelveKazan"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/guideline2"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/anaBtnSSS"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                app:layout_constraintLeft_toRightOf="@+id/imageView"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+            <ImageView
+                android:id="@+id/anaBtnIletisim"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/anaBtnTelveKazan" />
+
+            <ImageView
+                android:id="@+id/anaBtnKullanim"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                app:layout_constraintLeft_toRightOf="@+id/anaBtnIletisim"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/anaBtnSSS" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <include layout="@layout/activity_toolbar"></include>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarAnasayfa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimaryDark"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <TextView
+                android:id="@+id/anasayfa_toolbar_baslik"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="FALBOOK"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </RelativeLayout>
+
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/anaNavView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/colorPrimary"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/menu_nav_bar">
+
+    </android.support.design.widget.NavigationView>
+
+
+</android.support.v4.widget.DrawerLayout>

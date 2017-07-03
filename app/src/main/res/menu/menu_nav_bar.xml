@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navHesapAyarlari"
+        android:title="@string/hesap_ayarlari">
+        <menu>
+            <item
+                android:id ="@+id/navProfiliniDuzenle"
+                android:checkable = "true"
+                android:icon = "@drawable/nav_profile_icon"
+                android:title = "@string/profilini_duzenle" />
+
+            <item
+                android:id ="@+id/navSifreDegistir"
+                android:checkable = "true"
+                android:icon = "@drawable/nav_pass_icon"
+                android:title = "@string/sifreni_degistir" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/navGeriBildirim"
+        android:title="@string/geri_bildirim_ve_destek">
+        <menu>
+            <item
+                android:id ="@+id/navPuanVer"
+                android:checkable ="true"
+                android:title ="@string/begendin_mi" />
+
+            <item
+                android:id ="@+id/navPaylas"
+                android:checkable ="true"
+                android:title ="@string/uygulamamizi_paylas" />
+
+            <item
+                android:id ="@+id/navTeknik"
+                android:checkable ="true"
+                android:title ="@string/sorun_mu_yasiyorsun" />
+
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/navHakkimizda"
+        android:title="@string/hakkimizda">
+        <menu>
+            <item
+                android:id="@+id/navFalbookHk"
+                android:checkable ="true"
+                android:title ="@string/falbook_hakkinda" />
+
+            <item
+                android:id ="@+id/navCikis"
+                android:checkable ="true"
+                android:title ="@string/cikis" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp">
+
+        <TextView
+            android:id="@+id/faldetayContainBakilanIsmi"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:text="Bakılanın İsmi - Hanım/Bey"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/faldetayContainFalYorumu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/bos_yazi"
+            android:textColor="@color/colorTrash"
+            android:paddingBottom="130dp"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

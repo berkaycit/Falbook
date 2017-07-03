@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/menuAnasafaButon"
+        android:enabled="true"
+        android:title="Anasayfa"
+        android:icon="@drawable/ic_action_home"
+        app:showAsAction="ifRoom">
+
+    </item>
+
+    <item android:id="@+id/bosButon"
+        android:enabled="true"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/menuGelenfalButon"
+        android:enabled="true"
+        android:title="Fallarım"
+        android:icon="@drawable/ic_action_coffe"
+        app:showAsAction="ifRoom">
+
+    </item>
+
+</menu>
