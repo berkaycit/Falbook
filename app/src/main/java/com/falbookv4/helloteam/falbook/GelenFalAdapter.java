@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.falbookv4.helloteam.falbook.Activities.FaldetayActivity;
+
 class GelenFalAdapter extends RecyclerView.Adapter<GelenFalAdapter.ViewHolder> {
 
     private String[] titles = {

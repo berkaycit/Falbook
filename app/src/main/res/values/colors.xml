@@ -9,4 +9,6 @@
     <color name="colorFalciAciklama">#302522</color>
     <color name="colorTrash">#4a4a4a</color>
     <color name="colorProfilText">#CCA1887F</color>
+    <color name="mdtp_accent_color_dark">#352E2C</color>
+    <color name="mdtp_accent_color">#352E2C</color>
 </resources>

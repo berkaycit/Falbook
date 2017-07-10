@@ -1,4 +1,4 @@
-package com.falbookv4.helloteam.falbook;
+package com.falbookv4.helloteam.falbook.Activities;
 
 import android.content.Context;
 import android.content.Intent;

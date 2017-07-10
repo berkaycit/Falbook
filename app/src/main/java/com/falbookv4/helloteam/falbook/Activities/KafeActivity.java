@@ -1,14 +1,10 @@
-package com.falbookv4.helloteam.falbook;
+package com.falbookv4.helloteam.falbook.Activities;
 
 import android.content.Intent;
-import android.media.Image;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,11 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.falbookv4.helloteam.falbook.FalciSec.FalcilarActivity;
+import com.falbookv4.helloteam.falbook.GelenfallarActivity;
+import com.falbookv4.helloteam.falbook.R;
 
 public class KafeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +29,8 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle drawerToggle;
     private BottomNavigationView botToolbar;
+    private EditText gondereninAdi;
+    private String strAd;
 
     public void init(){
 
@@ -42,10 +42,14 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.genelToolbar);
         //imgAnasayfa = (ImageButton) toolbar.findViewById(R.id.anasafaButon);
         btnFalGonder = (Button) findViewById(R.id.btnGonderFal);
+
+        gondereninAdi = (EditText) findViewById(R.id.gondereninAdi);
     }
 
 
     private void menuleriHazirla(){
+
+        strAd = gondereninAdi.getText().toString();
 
         btnFalGonder.setOnClickListener(new View.OnClickListener() {
             @Override

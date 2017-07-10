@@ -1,7 +1,9 @@
-package com.falbookv4.helloteam.falbook;
+package com.falbookv4.helloteam.falbook.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.falbookv4.helloteam.falbook.R;
 
 public class KayitActivity extends AppCompatActivity {
 

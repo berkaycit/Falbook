@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -11,7 +11,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.falbookv4.helloteam.falbook.ProfilActivity">
+        tools:context="com.falbookv4.helloteam.falbook.Activities.ProfilActivity">
 
         <com.joooonho.SelectableRoundedImageView
             android:id="@+id/profilImageFotograf"
@@ -23,7 +23,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/falcifotogbir"
+            android:src="@drawable/cat_profile"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,10 +43,10 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/profiltext_soltaraf_border"
-            android:ems="8"
             android:drawableLeft="@drawable/ic_action_person"
             android:drawablePadding="15dp"
             android:drawableStart="@drawable/ic_action_person"
+            android:ems="8"
             android:hint="Adınız"
             android:inputType="textPersonName"
             android:padding="5dp"
@@ -165,14 +165,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
             android:text="Sağ üst deki KAYDET butonuna basmayı unutmayınız."
             android:textAlignment="center"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/profilTxtIliski"
-            android:layout_marginRight="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="16dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/profilTxtIliski" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -5,7 +5,7 @@
     android:id="@+id/activity_toolbar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.falbookv4.helloteam.falbook.ToolbarActivity">
+    tools:context="com.falbookv4.helloteam.falbook.Activities.ToolbarActivity">
 
     <include layout="@layout/contain_toolbar"></include>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.falbookv4.helloteam.falbook.FalcilarActivity">
+    tools:context="com.falbookv4.helloteam.falbook.FalciSec.FalcilarActivity">
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"

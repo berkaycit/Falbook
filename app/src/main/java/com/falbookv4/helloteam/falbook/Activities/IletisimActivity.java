@@ -1,8 +1,10 @@
-package com.falbookv4.helloteam.falbook;
+package com.falbookv4.helloteam.falbook.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+
+import com.falbookv4.helloteam.falbook.R;
 
 public class IletisimActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.falbookv4.helloteam.falbook;
+package com.falbookv4.helloteam.falbook.Adapters;
 
 
 import android.content.Context;
@@ -10,7 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.falbookv4.helloteam.falbook.FalciSec.FalciData;
+import com.falbookv4.helloteam.falbook.R;
 
 import java.util.List;
 
@@ -20,10 +21,12 @@ public class FalcilarPagerAdapter extends PagerAdapter {
     private Context context; //inflater ın inflate işlemini yapabilmek için bu nesneye ihtiyaç duyuyoruz.
     private LayoutInflater inflater;
 
+
     public FalcilarPagerAdapter(Context context, List<FalciData> itemList){
         this.context = context;
         this.itemList = itemList;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
     @Override
@@ -52,7 +55,7 @@ public class FalcilarPagerAdapter extends PagerAdapter {
         txtFalciIsim.setText(temp.getAd());
         txtFalciAciklama.setText(temp.getAciklama());
 
-        //container(viewpager) ‘ a pager_layout.xml ı ekliyoruz
+        //container(viewpager) ‘ a pager_falcilar.xml ı ekliyoruz
         container.addView(view);
 
         return view;

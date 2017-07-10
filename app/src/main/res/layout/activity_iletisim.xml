@@ -9,7 +9,7 @@
     android:fitsSystemWindows="false"
     android:focusableInTouchMode="true"
     android:overScrollMode="never"
-    tools:context="com.falbookv4.helloteam.falbook.KafeActivity">
+    tools:context="com.falbookv4.helloteam.falbook.Activities.KafeActivity">
 
     <include layout="@layout/contain_iletisim"></include>
 

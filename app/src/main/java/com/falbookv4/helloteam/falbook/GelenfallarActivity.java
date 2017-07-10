@@ -17,6 +17,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.falbookv4.helloteam.falbook.Activities.AnasayfaActivity;
+import com.falbookv4.helloteam.falbook.Activities.FalbookhakkindaActivity;
+import com.falbookv4.helloteam.falbook.Activities.KafeActivity;
+import com.falbookv4.helloteam.falbook.Activities.ProfilActivity;
+import com.falbookv4.helloteam.falbook.Activities.SifredegistirActivity;
+
 public class GelenfallarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView gelenFalRecyclerView;
