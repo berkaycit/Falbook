@@ -8,19 +8,20 @@
     android:fitsSystemWindows="false"
     android:focusableInTouchMode="true"
     android:overScrollMode="never"
-    tools:context="com.falbookv4.helloteam.falbook.activities.KafeActivity">
+    android:id="@+id/dilek_layout"
+    tools:context="com.falbookv4.helloteam.falbook.activities.DilekActivity">
 
-    <include layout="@layout/contain_iletisim"></include>
+    <include layout="@layout/contain_dilek"></include>
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarIletisim"
+        android:id="@+id/appBarDilek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbarIletisim"
+            android:id="@+id/toolbarDilek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -30,11 +31,11 @@
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <TextView
-                android:id="@+id/iletisim_toolbar_baslik"
+                android:id="@+id/dilek_toolbar_baslik"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/iletisim"
+                android:text="@string/fal_baktir"
                 android:textAllCaps="true"
                 android:textSize="18sp"
                 android:textStyle="bold" />

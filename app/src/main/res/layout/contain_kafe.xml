@@ -34,16 +34,21 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <com.joooonho.SelectableRoundedImageView
             android:id="@+id/kamera1"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/fotogonder"
             app:layout_constraintLeft_toLeftOf="@+id/fotografsecText"
-            app:layout_constraintTop_toBottomOf="@+id/fotografsecText" />
+            app:layout_constraintTop_toBottomOf="@+id/fotografsecText"
+            app:sriv_left_bottom_corner_radius="48dip"
+            app:sriv_left_top_corner_radius="16dip"
+            app:sriv_oval="true"
+            app:sriv_right_bottom_corner_radius="16dip"
+            app:sriv_right_top_corner_radius="0dip" />
 
-        <ImageButton
+        <com.joooonho.SelectableRoundedImageView
             android:id="@+id/kamera2"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -55,9 +60,14 @@
             android:background="@drawable/fotogonder"
             app:layout_constraintLeft_toRightOf="@+id/kamera1"
             app:layout_constraintRight_toLeftOf="@+id/kamera3"
-            app:layout_constraintTop_toBottomOf="@+id/fotografsecText" />
+            app:layout_constraintTop_toBottomOf="@+id/fotografsecText"
+            app:sriv_left_bottom_corner_radius="48dip"
+            app:sriv_left_top_corner_radius="16dip"
+            app:sriv_oval="true"
+            app:sriv_right_bottom_corner_radius="16dip"
+            app:sriv_right_top_corner_radius="0dip" />
 
-        <ImageButton
+        <com.joooonho.SelectableRoundedImageView
             android:id="@+id/kamera3"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -65,7 +75,12 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/fotogonder"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/kamera2" />
+            app:layout_constraintTop_toTopOf="@+id/kamera2"
+            app:sriv_left_bottom_corner_radius="48dip"
+            app:sriv_left_top_corner_radius="16dip"
+            app:sriv_oval="true"
+            app:sriv_right_bottom_corner_radius="16dip"
+            app:sriv_right_top_corner_radius="0dip" />
 
         <TextView
             android:id="@+id/bilgilendirmefalText"
@@ -109,7 +124,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <EditText
-            android:id="@+id/txtCinsiyet"
+            android:id="@+id/txtKafeCinsiyet"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -128,7 +143,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputKullanici" />
 
         <EditText
-            android:id="@+id/txtDogum"
+            android:id="@+id/txtKafeDogum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -142,12 +157,12 @@
             android:textColor="#111"
             android:textColorHint="#111"
             android:textCursorDrawable="@null"
-            app:layout_constraintLeft_toLeftOf="@+id/txtCinsiyet"
-            app:layout_constraintRight_toRightOf="@+id/txtCinsiyet"
-            app:layout_constraintTop_toBottomOf="@+id/txtCinsiyet" />
+            app:layout_constraintLeft_toLeftOf="@+id/txtKafeCinsiyet"
+            app:layout_constraintRight_toRightOf="@+id/txtKafeCinsiyet"
+            app:layout_constraintTop_toBottomOf="@+id/txtKafeCinsiyet" />
 
         <EditText
-            android:id="@+id/txtiliski"
+            android:id="@+id/txtKafeiliski"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -161,9 +176,9 @@
             android:textColor="#111"
             android:textColorHint="#111"
             android:textCursorDrawable="@null"
-            app:layout_constraintLeft_toLeftOf="@+id/txtDogum"
-            app:layout_constraintRight_toRightOf="@+id/txtDogum"
-            app:layout_constraintTop_toBottomOf="@+id/txtDogum" />
+            app:layout_constraintLeft_toLeftOf="@+id/txtKafeDogum"
+            app:layout_constraintRight_toRightOf="@+id/txtKafeDogum"
+            app:layout_constraintTop_toBottomOf="@+id/txtKafeDogum" />
 
         <Button
             android:id="@+id/btnGonderFal"
@@ -173,9 +188,9 @@
             android:background="@drawable/gonderbuton_border"
             android:text="YORUMCU SEÇ"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintLeft_toLeftOf="@+id/txtiliski"
-            app:layout_constraintRight_toRightOf="@+id/txtiliski"
-            app:layout_constraintTop_toBottomOf="@+id/txtiliski" />
+            app:layout_constraintLeft_toLeftOf="@+id/txtKafeiliski"
+            app:layout_constraintRight_toRightOf="@+id/txtKafeiliski"
+            app:layout_constraintTop_toBottomOf="@+id/txtKafeiliski" />
 
         <ImageView
             android:id="@+id/btnGonder2"
@@ -187,7 +202,6 @@
             app:layout_constraintLeft_toLeftOf="@+id/btnGonderFal"
             app:layout_constraintRight_toRightOf="@+id/btnGonderFal"
             app:layout_constraintTop_toBottomOf="@+id/btnGonderFal" />
-
 
 
     </android.support.constraint.ConstraintLayout>

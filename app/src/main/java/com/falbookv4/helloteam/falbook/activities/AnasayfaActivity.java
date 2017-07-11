@@ -1,4 +1,4 @@
-package com.falbookv4.helloteam.falbook.Activities;
+package com.falbookv4.helloteam.falbook.activities;
 
 
 import android.content.Intent;
@@ -328,6 +328,8 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             }
         });
     }
+
+
 
 
 

@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".Classes.Falbook"
+        android:name=".classes.Falbook"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity
-            android:name=".Activities.AnasayfaActivity"
+            android:name=".activities.AnasayfaActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -26,53 +26,58 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.ToolbarActivity"
+            android:name=".activities.ToolbarActivity"
             android:label="@string/title_activity_toolbar"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.KafeActivity"
+            android:name=".activities.KafeActivity"
             android:label="@string/title_activity_kafe"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".FalciSec.FalcilarActivity"
+            android:name=".falcisec.FalcilarActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".GelenfallarActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FaldetayActivity"
+            android:name=".activities.FaldetayActivity"
             android:parentActivityName=".GelenfallarActivity" />
-        <activity android:name=".Activities.KayitActivity" />
-        <activity android:name=".Activities.GirisActivity" />
+        <activity android:name=".activities.KayitActivity" />
+        <activity android:name=".activities.GirisActivity" />
         <activity
-            android:name=".Activities.ProfilActivity"
-            android:parentActivityName=".Activities.AnasayfaActivity"
+            android:name=".activities.ProfilActivity"
+            android:parentActivityName=".activities.AnasayfaActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.SifredegistirActivity"
+            android:name=".activities.SifredegistirActivity"
             android:label="@string/sifre_degistir"
-            android:parentActivityName=".Activities.AnasayfaActivity"
+            android:parentActivityName=".activities.AnasayfaActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Activities.FalbookhakkindaActivity"
-            android:parentActivityName=".Activities.AnasayfaActivity"
+            android:name=".activities.FalbookhakkindaActivity"
+            android:parentActivityName=".activities.AnasayfaActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.SSSActivity"
-            android:parentActivityName=".Activities.AnasayfaActivity"
+            android:name=".activities.SSSActivity"
+            android:parentActivityName=".activities.AnasayfaActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.IletisimActivity"
-            android:parentActivityName=".Activities.AnasayfaActivity"
+            android:name=".activities.IletisimActivity"
+            android:parentActivityName=".activities.AnasayfaActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.SatinalActivity"
-            android:parentActivityName=".Activities.AnasayfaActivity"
+            android:name=".activities.SatinalActivity"
+            android:parentActivityName=".activities.AnasayfaActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.MisafiruyeActivity" />
-        <activity android:name=".FragmentFalciSec.PagerfalcilarActivity"></activity>
+        <activity android:name=".activities.MisafiruyeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.DilekActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".falcisec.FalcilarActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

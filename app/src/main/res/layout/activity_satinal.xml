@@ -10,7 +10,7 @@
     android:fitsSystemWindows="false"
     android:focusableInTouchMode="true"
     android:overScrollMode="never"
-    tools:context="com.falbookv4.helloteam.falbook.Activities.KafeActivity">
+    tools:context="com.falbookv4.helloteam.falbook.activities.KafeActivity">
 
     <include layout="@layout/contain_satinal"></include>
 

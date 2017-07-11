@@ -1,4 +1,4 @@
-package com.falbookv4.helloteam.falbook.Adapters;
+package com.falbookv4.helloteam.falbook.adapters;
 
 
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.falbookv4.helloteam.falbook.FalciSec.FalciData;
+import com.falbookv4.helloteam.falbook.falcisec.FalciData;
 import com.falbookv4.helloteam.falbook.R;
 
 import java.util.List;

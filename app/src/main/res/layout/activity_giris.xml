@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.falbookv4.helloteam.falbook.Activities.KayitActivity">
+    tools:context="com.falbookv4.helloteam.falbook.activities.KayitActivity">
 
     <ImageView
         android:id="@+id/girisFalbookLogo"

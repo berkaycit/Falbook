@@ -1,4 +1,4 @@
-package com.falbookv4.helloteam.falbook.Activities;
+package com.falbookv4.helloteam.falbook.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.falbookv4.helloteam.falbook.R;
-import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 public class SSSActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.falbookv4.helloteam.falbook.Classes;
+package com.falbookv4.helloteam.falbook.classes;
 
 public class Kullanicilar {
 

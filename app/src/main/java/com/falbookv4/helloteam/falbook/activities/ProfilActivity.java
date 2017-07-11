@@ -1,4 +1,4 @@
-package com.falbookv4.helloteam.falbook.Activities;
+package com.falbookv4.helloteam.falbook.activities;
 
 import com.falbookv4.helloteam.falbook.R;
 import com.google.firebase.storage.FirebaseStorage;
@@ -22,7 +22,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -502,9 +501,6 @@ public class ProfilActivity extends AppCompatActivity implements com.wdullaer.ma
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-
-                    Log.d("FOTOĞFAF", kucukProfilFoto.toString());
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     kucukProfilFoto.compress(Bitmap.CompressFormat.JPEG, 100, baos);

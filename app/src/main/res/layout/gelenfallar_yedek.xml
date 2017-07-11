@@ -10,7 +10,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:overScrollMode="never"
-    tools:context=".FalciSec.FalcilarActivity" >
+    tools:context=".falcisec.FalcilarActivity" >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gelenFalRecyclerView"

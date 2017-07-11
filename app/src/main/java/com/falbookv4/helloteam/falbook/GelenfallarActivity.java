@@ -17,11 +17,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.falbookv4.helloteam.falbook.Activities.AnasayfaActivity;
-import com.falbookv4.helloteam.falbook.Activities.FalbookhakkindaActivity;
-import com.falbookv4.helloteam.falbook.Activities.KafeActivity;
-import com.falbookv4.helloteam.falbook.Activities.ProfilActivity;
-import com.falbookv4.helloteam.falbook.Activities.SifredegistirActivity;
+import com.falbookv4.helloteam.falbook.activities.AnasayfaActivity;
+import com.falbookv4.helloteam.falbook.activities.FalbookhakkindaActivity;
+import com.falbookv4.helloteam.falbook.activities.KafeActivity;
+import com.falbookv4.helloteam.falbook.activities.ProfilActivity;
+import com.falbookv4.helloteam.falbook.activities.SifredegistirActivity;
 
 public class GelenfallarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -34,7 +34,6 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     private BottomNavigationView botToolbar;
     private Toolbar toolbarGelenfal;
     private FloatingActionButton fbFalGonder;
-
 
     private CollapsingToolbarLayout colToolbar;
 

@@ -1,12 +1,12 @@
-package com.falbookv4.helloteam.falbook.FalciSec;
+package com.falbookv4.helloteam.falbook.falcisec;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 
-import com.falbookv4.helloteam.falbook.Adapters.FalcilarPagerAdapter;
-import com.falbookv4.helloteam.falbook.Adapters.FalcisecAdapter;
+import com.falbookv4.helloteam.falbook.adapters.FalcilarPagerAdapter;
+import com.falbookv4.helloteam.falbook.adapters.FalcisecAdapter;
 import com.falbookv4.helloteam.falbook.R;
 
 import me.relex.circleindicator.CircleIndicator;
@@ -23,12 +23,8 @@ public class FalcilarActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         indicator = (CircleIndicator) findViewById(R.id.indicator);
 
-        /*
-        //->eski metot fragment değil adapter kullanıyordum.
-        //metodu daha önceden statik tanımladığım için direk çekiyorum
-        adapter = new FalcilarPagerAdapter(this, FalciData.getDataList());
-        viewPager.setAdapter(adapter);
-        */
+
+
 
     }
 
@@ -48,4 +44,28 @@ public class FalcilarActivity extends AppCompatActivity {
         init();
         handler();
     }
+
+    /*
+    @Subscribe
+    public void onGelenfalEvent(GelenfalEvent event){
+
+        String gonderenKisininIsmi = event.getIsim();
+        Log.d("Fragmentler", gonderenKisininIsmi);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+    */
+
+
 }

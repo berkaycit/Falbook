@@ -1,4 +1,4 @@
-package com.falbookv4.helloteam.falbook.Activities;
+package com.falbookv4.helloteam.falbook.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,20 +6,18 @@ import android.support.v7.widget.Toolbar;
 
 import com.falbookv4.helloteam.falbook.R;
 
-public class SatinalActivity extends AppCompatActivity {
+public class IletisimActivity extends AppCompatActivity {
 
-
-    private Toolbar toolbarSatinal;
+    private Toolbar toolbarIletisim;
 
     public void init(){
 
-        toolbarSatinal = (Toolbar) findViewById(R.id.toolbarSatinal);
-
+        toolbarIletisim = (Toolbar) findViewById(R.id.toolbarIletisim);
     }
 
     public void handler(){
 
-        setSupportActionBar(toolbarSatinal);
+        setSupportActionBar(toolbarIletisim);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(null);
     }
@@ -27,7 +25,7 @@ public class SatinalActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_satinal);
+        setContentView(R.layout.activity_iletisim);
         init();
         handler();
     }

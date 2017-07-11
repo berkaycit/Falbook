@@ -1,4 +1,4 @@
-package com.falbookv4.helloteam.falbook.Activities;
+package com.falbookv4.helloteam.falbook.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

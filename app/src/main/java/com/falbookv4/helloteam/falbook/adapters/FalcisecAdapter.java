@@ -1,12 +1,12 @@
-package com.falbookv4.helloteam.falbook.Adapters;
+package com.falbookv4.helloteam.falbook.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.falbookv4.helloteam.falbook.FalciSec.Falci1;
-import com.falbookv4.helloteam.falbook.FalciSec.Falci2;
-import com.falbookv4.helloteam.falbook.FalciSec.Falci3;
+import com.falbookv4.helloteam.falbook.falcisec.Falci1;
+import com.falbookv4.helloteam.falbook.falcisec.Falci2;
+import com.falbookv4.helloteam.falbook.falcisec.Falci3;
 
 public class FalcisecAdapter extends FragmentStatePagerAdapter {
 
