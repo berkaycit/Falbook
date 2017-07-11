@@ -38,11 +38,11 @@
             android:name=".falcisec.FalcilarActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GelenfallarActivity"
+            android:name=".activities.GelenfallarActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.FaldetayActivity"
-            android:parentActivityName=".GelenfallarActivity" />
+            android:parentActivityName=".activities.GelenfallarActivity" />
         <activity android:name=".activities.KayitActivity" />
         <activity android:name=".activities.GirisActivity" />
         <activity

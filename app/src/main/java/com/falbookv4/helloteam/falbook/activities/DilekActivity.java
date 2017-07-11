@@ -1,5 +1,6 @@
 package com.falbookv4.helloteam.falbook.activities;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -41,8 +42,10 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -62,7 +65,7 @@ public class DilekActivity extends AppCompatActivity {
     private Uri uriKuculmusFoto1, uriKuculmusFoto2, uriKuculmusFoto3;
     private SweetAlertDialog mProgress, mProgressBasariliGonderme;
     private String strDilek = "";
-    private boolean gonderCooldown = true;
+    private boolean gonderCooldown = true, asyncDonenSonuc = false;
 
 
     @Subscribe(sticky = true)
@@ -86,7 +89,7 @@ public class DilekActivity extends AppCompatActivity {
 
         //TODO: eğer kredisi yetiyorsa gönderebilsin.
         new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
-                dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
+                    dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
 
         /*
         else{
@@ -184,14 +187,13 @@ public class DilekActivity extends AppCompatActivity {
     }
 
 
-
     //parametre-progress-result
     private class  FalGonderAsync extends AsyncTask<String, String, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... strings) {
 
-            falGonderSonuc = true;
+            falGonderSonuc = false;
 
             final String isim_val = strings[0];
             final String dogum_val = strings[1];
@@ -256,69 +258,61 @@ public class DilekActivity extends AppCompatActivity {
 
                         final DatabaseReference yeniBakilmamisFalPost = mDatabaseBakilmamisFal.child(yeniPost.getKey());
 
-                        mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+
+                        //bakılmamış fal database
+                        yeniBakilmamisFalPost.child("uid").setValue(mBulunanKullanici.getUid());
+                        yeniBakilmamisFalPost.child("date").setValue(ServerValue.TIMESTAMP);
+                        yeniBakilmamisFalPost.child("fid").setValue(yeniPost.getKey());
+
+                        //tarih
+                        //Long timestamp = (Long) dataSnapshot.getValue();
+
+                        //SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        //falGonderilmeTarihi = sfd.format(new Date(timestamp));
+
+                        //yeniPost.child("gonderilme_tarihi").setValue(ServerValue.TIMESTAMP);
+
+                        String currentDate = DateFormat.getDateTimeInstance().format(new Date());
+                        yeniPost.child("gonderilme_tarihi").setValue(currentDate);
+
+                        //database e degerleri al
+                        yeniPost.child("isim").setValue(isim_val);
+                        yeniPost.child("dogum").setValue(dogum_val);
+                        yeniPost.child("cinsiyet").setValue(cinsiyet_val);
+                        yeniPost.child("iliski").setValue(iliski_val);
+                        yeniPost.child("uid").setValue(mBulunanKullanici.getUid());
+                        yeniPost.child("fal_yorumu").setValue(fal_aciklamasi);
+                        yeniPost.child("fal_dilek").setValue(dilek_val);
+
+
+                        mDatabaseFal.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                //bakılmamış fal database
-                                yeniBakilmamisFalPost.child("uid").setValue(mBulunanKullanici.getUid());
-                                yeniBakilmamisFalPost.child("date").setValue(ServerValue.TIMESTAMP);
-                                yeniBakilmamisFalPost.child("fid").setValue(yeniPost.getKey());
-
-                                //tarih
-                                //Long timestamp = (Long) dataSnapshot.getValue();
-
-                                //SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                                //falGonderilmeTarihi = sfd.format(new Date(timestamp));
-
-                                yeniPost.child("gonderilme_tarihi").setValue(ServerValue.TIMESTAMP);
-
-                                //database e degerleri al
-                                yeniPost.child("isim").setValue(isim_val);
-                                yeniPost.child("dogum").setValue(dogum_val);
-                                yeniPost.child("cinsiyet").setValue(cinsiyet_val);
-                                yeniPost.child("iliski").setValue(iliski_val);
-                                yeniPost.child("uid").setValue(mBulunanKullanici.getUid());
-                                yeniPost.child("fal_yorumu").setValue(fal_aciklamasi);
-                                yeniPost.child("fal_dilek").setValue(dilek_val);
-
-                                yeniPost.child("kullanici").setValue(dataSnapshot.child("isim").getValue())
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                                if(task.isSuccessful()){
-
-                                                    falGonderSonuc = true;
-
-                                                    mProgress.dismiss();
-                                                    mProgressBasariliGonderme.show();
-
-                                                }else {
-                                                    mProgress.hide();
-
-                                                    Snackbar snacGonderilemedi = Snackbar
-                                                            .make(dilekGenelLayout, "Falınız GÖNDERİLEMEDİ.", Snackbar.LENGTH_LONG);
-                                                    snacGonderilemedi.show();
-
-
-                                                }
-
-                                            }
-                                        });
-
+                                falGonderSonuc = true;
+                                mProgress.dismiss();
+                                mProgressBasariliGonderme.show();
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
-                                mProgress.hide();
-                                Toast.makeText(DilekActivity.this, "Gönderme başarısız oldu", Toast.LENGTH_LONG).show();
                             }
                         });
+
+                    }else{
+
+                        mProgress.hide();
+
+                        Snackbar snacGonderilemedi = Snackbar
+                                .make(dilekGenelLayout, "Falınız GÖNDERİLEMEDİ.", Snackbar.LENGTH_LONG);
+                        snacGonderilemedi.show();
+
+                        falGonderSonuc = false;
                     }
                 }
             });
+
 
             return falGonderSonuc;
         }
@@ -344,9 +338,6 @@ public class DilekActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
     }
-
-
-
 
 
 }

@@ -1,0 +1,296 @@
+package com.falbookv4.helloteam.falbook.activities;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.Fal;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class GelenfallarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private RecyclerView gelenFalRecyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+    private ActionBarDrawerToggle drawerToggle;
+    private BottomNavigationView botToolbar;
+    private Toolbar toolbarGelenfal;
+    private FloatingActionButton fbFalGonder;
+    private CollapsingToolbarLayout colToolbar;
+
+    private DatabaseReference mDatabase, mDatabaseKullaniciFal;
+    private DatabaseReference mDatabaseKullanicilar;
+    private FirebaseUser mBulunanKullanici;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    public void init(){
+
+        toolbarGelenfal = (Toolbar) findViewById(R.id.toolbarGelenFallar);
+
+        fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
+        botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayout);
+        mNavigationView = (NavigationView) findViewById(R.id.anaNavView);
+
+        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        gelenFalRecyclerView = (RecyclerView) findViewById(R.id.gelenFalRecyclerView);
+
+        //kullanıcı yönetmek için
+        mAuth = FirebaseAuth.getInstance();
+
+        //(current user)
+        mBulunanKullanici = mAuth.getCurrentUser();
+
+        //TODO: mDatabaseKullanıcılar ı keepsync yapmak tehlikeli olabilir. ->sürekli veri indirebilir.
+        //database açmak,
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Fal");
+        mDatabaseKullanicilar = FirebaseDatabase.getInstance().getReference().child("Kullanicilar");
+        Query queryRef = mDatabase.orderByChild("gonderilme_tarihi");
+
+        //offline olduğu durumlar için
+        mDatabaseKullanicilar.keepSynced(true);
+        mDatabase.keepSynced(true);
+
+        //layout manager oluşturuyoruz
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+
+        //recyclerview a istediğimiz kuralları uyguluyoruz
+        gelenFalRecyclerView.setLayoutManager(layoutManager);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //recycler view(falList) için adapter
+        FirebaseRecyclerAdapter<Fal, FalViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Fal, FalViewHolder>(
+
+                Fal.class,
+                R.layout.card_gelenfal,
+                FalViewHolder.class,
+                mDatabase.child(mBulunanKullanici.getUid())
+        ) {
+            @Override
+            protected void populateViewHolder(FalViewHolder viewHolder, Fal model, final int position) {
+
+                //postun id si ni string olarak alıyoruz (push ettiğimiz, bilmediğimiz id)
+                final String post_key = getRef(position).getKey();
+
+                //RW de ki bilgiler
+                viewHolder.setKullanici(model.getKullanici());
+                viewHolder.setGonderilmeTarihi(model.getGonderilme_tarihi());
+                viewHolder.setFoto(getApplicationContext(), model.getFoto1());
+
+                //View ın üzerine basılınca;
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Toast.makeText(GelenfalActivity.this, post_key, Toast.LENGTH_LONG).show();
+
+                        //Fal detay sayfasına gitsin
+                        Intent intentToFaldetay = new Intent(GelenfallarActivity.this, FaldetayActivity.class);
+                        //fal detay sayfasına giderken post_key bilgisini de yanında götürsün
+                        intentToFaldetay.putExtra("fal_id", post_key);
+                        startActivity(intentToFaldetay);
+
+                    }
+                });
+
+            }
+        };
+
+        //adepter ı bağlıyoruz
+        gelenFalRecyclerView.setAdapter(firebaseRecyclerAdapter);
+
+    }
+
+    public static class FalViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+
+        //yapılandırıcı -> class ın içinde kullanabilmek için view
+        public FalViewHolder(View itemView) {
+            super(itemView);
+
+            mView = itemView;
+        }
+
+        public void setKullanici(String kullanici){
+
+            TextView post_kullanici = (TextView) mView.findViewById(R.id.cardKullaniciIsmi);
+            post_kullanici.setText(kullanici);
+
+        }
+
+        public void setGonderilmeTarihi(String gonderilmeTarihi){
+
+            TextView post_gonderilmeTarihi = (TextView) mView.findViewById(R.id.cardTarihText);
+            post_gonderilmeTarihi.setText(gonderilmeTarihi);
+        }
+
+
+        //fotografi bastir
+        public void setFoto(final Context ctx, final String image) {
+
+            final ImageView post_image = (ImageView) mView.findViewById(R.id.cardKahveFotografi);
+
+            post_image.setFitsSystemWindows(true);
+            post_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+            Picasso.with(ctx).load(image).networkPolicy(NetworkPolicy.OFFLINE).into(post_image, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
+
+                    Picasso.with(ctx).load(image).into(post_image);
+
+                }
+            });
+        }
+    }
+
+
+
+    public void handler(){
+
+        menuleriHazirla();
+
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gelenfallar);
+        init();
+        handler();
+    }
+
+
+    private void menuleriHazirla(){
+
+        fbFalGonder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent anasayfaToKafe = new Intent(GelenfallarActivity.this, KafeActivity.class);
+                startActivity(anasayfaToKafe);
+            }
+        });
+
+        botToolbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+
+                    case R.id.menuAnasafaButon:
+                        Intent gelenfalToAnasayfa = new Intent(GelenfallarActivity.this, AnasayfaActivity.class);
+                        finish();
+                        startActivity(gelenfalToAnasayfa);
+                        break;
+                    case R.id.menuGelenfalButon:
+                        break;
+                }
+                return true;
+            }
+        });
+
+        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbarGelenfal, R.string.drawer_acilis, R.string.drawer_kapanis); //butonu oluşturuyoruz
+        mDrawerLayout.addDrawerListener(drawerToggle); //bu sayede artık ikon senkronize bir şekilde biz menüyü açtıkça kayacak(animasyonlu olarak)
+        drawerToggle.syncState(); //unutursan butonu ekranda göstermez
+
+        //tıklanma olayları için navigation view a listener veriyoruz
+        mNavigationView.setNavigationItemSelectedListener(this);
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.navProfiliniDuzenle:
+                Intent fallarToProfil = new Intent(GelenfallarActivity.this, ProfilActivity.class);
+                startActivity(fallarToProfil);
+                break;
+
+            case R.id.navSifreDegistir:
+                Intent fallarToSifredegistir = new Intent(GelenfallarActivity.this, SifredegistirActivity.class);
+                startActivity(fallarToSifredegistir);
+                break;
+
+            case R.id.navFalbookHk:
+                Intent fallarToFalbookhk = new Intent(GelenfallarActivity.this, FalbookhakkindaActivity.class);
+                startActivity(fallarToFalbookhk);
+                break;
+
+            default:
+                return true;
+        }
+
+        //itemlerin üzerine basınca otomatik olarak navigation view ın kapanmasını istiyoruz
+        navigationViewKapat();
+
+        return false;
+    }
+
+    private void navigationViewKapat(){
+        mDrawerLayout.closeDrawer(GravityCompat.START); // başlangıç yönene doğru kapat
+    }
+
+    private void navigationViewAc(){
+        mDrawerLayout.openDrawer(GravityCompat.START); //başlangıç yönünden itibaren aç
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        if(mDrawerLayout.isDrawerOpen(GravityCompat.START))
+            navigationViewKapat();
+            //açık değilse bildiği işlemi yapsın
+        else
+            super.onBackPressed();
+    }
+
+}

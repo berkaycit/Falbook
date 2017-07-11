@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:id="@+id/cardKahveFotografi"
-            android:background="@drawable/kahvefalifoto"
+            android:background="@color/colorWebdeOku"
             android:layout_below="@+id/cardKullaniciIsmi" />
 
         <ImageView

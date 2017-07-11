@@ -23,15 +23,6 @@ public class Falci1 extends Fragment{
     String gonderenKisininIsmi = "";
     private byte[] kucukFoto1;
 
-    @Subscribe (sticky = true)
-    public void onGelenfalEvent(GelenfalEvent event){
-
-        gonderenKisininIsmi = event.getIsim();
-        kucukFoto1 = event.getKucukFoto1();
-
-
-    }
-
     public void init(){
 
 
@@ -65,16 +56,5 @@ public class Falci1 extends Fragment{
     }
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        EventBus.getDefault().unregister(this);
-    }
 
 }

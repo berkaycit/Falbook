@@ -16,7 +16,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +24,6 @@ import android.widget.ImageButton;
 
 import com.falbookv4.helloteam.falbook.falcisec.FalcilarActivity;
 import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
-import com.falbookv4.helloteam.falbook.GelenfallarActivity;
 import com.falbookv4.helloteam.falbook.R;
 import com.joooonho.SelectableRoundedImageView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -37,7 +35,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import id.zelory.compressor.Compressor;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;

@@ -21,23 +21,5 @@ public class Falci2 extends Fragment{
     }
 
 
-    @Subscribe (sticky = true)
-    public void onGelenfalEvent(GelenfalEvent event){
 
-        String gonderenKisininIsmi = event.getIsim();
-        Log.d("Fragmentler", gonderenKisininIsmi);
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        EventBus.getDefault().unregister(this);
-    }
 }
