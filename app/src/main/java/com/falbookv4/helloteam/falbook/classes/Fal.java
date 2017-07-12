@@ -12,14 +12,16 @@ public class Fal {
     private String falAciklamasi;
     private String falBakiciID;
     private String falBakilmaTarihi;
+    private String isim;
+    private String fal_yorumu;
 
     public Fal(){
 
     }
 
-    public Fal(String ID, String kullanici, String foto1, String foto2, String foto3,
-               String gonderilmeTarihi, Boolean bakilmaDurumu, String falAciklamasi,
-               String falBakiciID, String falBakilmaTarihi) {
+    public Fal(String ID, String kullanici, String foto1, String foto2, String foto3, String gonderilme_tarihi,
+               Boolean bakilmaDurumu, String falAciklamasi, String falBakiciID, String falBakilmaTarihi, String isim,
+               String fal_yorumu) {
         this.ID = ID;
         this.kullanici = kullanici;
         this.foto1 = foto1;
@@ -30,6 +32,24 @@ public class Fal {
         this.falAciklamasi = falAciklamasi;
         this.falBakiciID = falBakiciID;
         this.falBakilmaTarihi = falBakilmaTarihi;
+        this.isim = isim;
+        this.fal_yorumu = fal_yorumu;
+    }
+
+    public String getFal_yorumu() {
+        return fal_yorumu;
+    }
+
+    public void setFal_yorumu(String fal_yorumu) {
+        this.fal_yorumu = fal_yorumu;
+    }
+
+    public String getIsim() {
+        return isim;
+    }
+
+    public void setIsim(String isim) {
+        this.isim = isim;
     }
 
     public String getGonderilme_tarihi() {

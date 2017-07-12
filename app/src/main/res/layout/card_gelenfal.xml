@@ -36,7 +36,21 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/trash_icon" />
+            android:background="@drawable/trash_icon"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"/>
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/cardBtnCop"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/float_transparent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"/>
+
 
         <ImageView
             android:layout_width="match_parent"
@@ -76,6 +90,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/cardFalYorumu"
             android:layout_below="@id/cardTarihIcon"
+            android:maxLines="2"
+            android:minLines="1"
             android:text="Falınız Yorumlanıyor"
             android:textSize="10sp"
             android:textColor="@android:color/black"

@@ -1,7 +1,9 @@
 package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,6 +12,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +42,8 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class GelenfallarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView gelenFalRecyclerView;
@@ -50,6 +56,8 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     private Toolbar toolbarGelenfal;
     private FloatingActionButton fbFalGonder;
     private CollapsingToolbarLayout colToolbar;
+    private boolean falYorumlandi;
+    private SweetAlertDialog progressFalSil;
 
     private DatabaseReference mDatabase, mDatabaseKullaniciFal;
     private DatabaseReference mDatabaseKullanicilar;
@@ -59,6 +67,8 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     public void init(){
+
+        progressFalSil = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
 
         toolbarGelenfal = (Toolbar) findViewById(R.id.toolbarGelenFallar);
 
@@ -96,6 +106,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -108,14 +119,22 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
                 FalViewHolder.class,
                 mDatabase.child(mBulunanKullanici.getUid())
         ) {
+
             @Override
-            protected void populateViewHolder(FalViewHolder viewHolder, Fal model, final int position) {
+            protected void populateViewHolder(final FalViewHolder viewHolder, Fal model, final int position) {
 
                 //postun id si ni string olarak alıyoruz (push ettiğimiz, bilmediğimiz id)
                 final String post_key = getRef(position).getKey();
 
                 //RW de ki bilgiler
-                viewHolder.setKullanici(model.getKullanici());
+                viewHolder.setKullanici(model.getIsim());
+                if(model.getFal_yorumu().isEmpty()){
+                    viewHolder.setCardYorum("Falınız Yorumlanıyor");
+                    falYorumlandi = false;
+                }else{
+                    viewHolder.setCardYorum(model.getFal_yorumu());
+                    falYorumlandi = true;
+                }
                 viewHolder.setGonderilmeTarihi(model.getGonderilme_tarihi());
                 viewHolder.setFoto(getApplicationContext(), model.getFoto1());
 
@@ -130,11 +149,46 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
                         //fal detay sayfasına giderken post_key bilgisini de yanında götürsün
                         intentToFaldetay.putExtra("fal_id", post_key);
                         startActivity(intentToFaldetay);
+                    }
+                });
+
+                viewHolder.cardBtnCop.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                        AlertDialog.Builder builder;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            builder = new AlertDialog.Builder(GelenfallarActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                        } else {
+                            builder = new AlertDialog.Builder(GelenfallarActivity.this);
+                        }
+                        builder.setTitle("Falı SİL!")
+                                .setMessage("Falı silmek istediğinize emin misiniz?")
+                                .setPositiveButton(R.string.evet_sil, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //fal yorumlandıysa sil
+                                        if(falYorumlandi){
+
+                                            DatabaseReference itemRef = getRef(position);
+                                            itemRef.removeValue();
+                                        }
+                                    }
+                                })
+                                .setNegativeButton("Hayır", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
 
                     }
                 });
 
+
             }
+
         };
 
         //adepter ı bağlıyoruz
@@ -142,15 +196,34 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
     }
 
+    private void deleteItem(int tiklananPozisyon) {
+
+        //mDataList.remove(tiklananPozisyon);
+        //notifiyItemRemoved(tiklananPozisyon); //listeyi güncellemek için
+        //biz sildikçe ya da ekledikçe aralık değeri değişiyor ve sonuç itibariyle index out of band oluşup crash yiyoruz. bu index değişimlerini bildirmemiz lazım
+        //örneğin listeyi 50 elemanlı sanıyor ancak biz silme işlemi yaptık beş tane normalde 45 olmalı. olmadığı için gidip son elemanı(index i 50) silmeye çalıştığımızda crash
+        //notifiyItemRangeChange(tiklananPozisyon, mDataList.size());
+
+    }
+
     public static class FalViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
+        private ImageButton cardBtnCop;
 
         //yapılandırıcı -> class ın içinde kullanabilmek için view
         public FalViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView;
+            cardBtnCop = (ImageButton) itemView.findViewById(R.id.cardBtnCop);
+
+        }
+
+        public void setCardYorum(String fal_yorumu){
+
+            TextView post_cardYorum = (TextView) mView.findViewById(R.id.cardFalYorumu);
+            post_cardYorum.setText(fal_yorumu);
         }
 
         public void setKullanici(String kullanici){

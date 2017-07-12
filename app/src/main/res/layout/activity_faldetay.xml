@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/faldetayFalFoto"
-                android:src="@drawable/falcifotogbir"
+                android:src="@color/colorWebdeOku"
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 tool:layout_collapseMode="parallax" />
@@ -61,19 +61,19 @@
         tool:borderWidth="0dp" />
 
     <TextView
-        android:layout_width="140dp"
+        android:id="@+id/txtFalDetayTarih"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/text_tarih_corners"
         android:drawableLeft="@drawable/ic_action_date"
         android:drawableStart="@drawable/ic_action_date"
-        tool:layout_anchor="@id/faldetayAppBar"
-        tool:layout_anchorGravity="top|right"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
+        android:text="GG/AA/YYYY\nSS/DD/SS"
         android:textSize="12sp"
-        android:text="Tarih: GG/AA/YYYY\nSaat: SS/DD"
-        android:background="@drawable/text_tarih_corners"
-        android:id="@+id/textView2" />
+        tool:layout_anchor="@id/faldetayAppBar"
+        tool:layout_anchorGravity="top|right" />
 
 
 
