@@ -20,7 +20,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.falcisec.Falci1telveEvent;
+import com.falbookv4.helloteam.falbook.falcisec.Falci2telveEvent;
+import com.falbookv4.helloteam.falbook.falcisec.Falci3telveEvent;
 import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
+import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -66,6 +70,7 @@ public class DilekActivity extends AppCompatActivity {
     private SweetAlertDialog mProgress, mProgressBasariliGonderme;
     private String strDilek = "";
     private boolean gonderCooldown = true, asyncDonenSonuc = false;
+    private int toplamTelveSayisi, farkTelveSayisi, telveBedeli;
 
 
     @Subscribe(sticky = true)
@@ -83,21 +88,49 @@ public class DilekActivity extends AppCompatActivity {
         uriKuculmusFoto3 = event.getUriKucukFoto3();
     }
 
+    @Subscribe(sticky = true)
+    public void onTelveEvent(TelveEvent event){
+        //kullanıcının telvesini alıyoruz
+        toplamTelveSayisi = event.getTelveEventSayisi();
+    }
+
+    @Subscribe(sticky = true)
+    public void onFalci1telveEvent(Falci1telveEvent event){
+        //kullanıcının telvesini alıyoruz
+        telveBedeli = event.getFalci1telveBedeli();
+    }
+
+    @Subscribe(sticky = true)
+    public void onFalci2telveEvent(Falci2telveEvent event){
+        //kullanıcının telvesini alıyoruz
+        telveBedeli = event.getFalci2telveBedeli();
+    }
+
+    @Subscribe(sticky = true)
+    public void onFalci3telveEvent(Falci3telveEvent event){
+        //kullanıcının telvesini alıyoruz
+        telveBedeli = event.getFalci3telveBedeli();
+    }
+
+
     public void falGonder(){
 
         strDilek = txtDilek.getText().toString();
+        farkTelveSayisi = toplamTelveSayisi - telveBedeli;
 
-        //TODO: eğer kredisi yetiyorsa gönderebilsin.
-        new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
+        if(farkTelveSayisi >= 0) {
+
+            new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
                     dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
+        }
 
-        /*
+
         else{
             Snackbar snacButunBilgi = Snackbar
-                    .make(svKafe, "Lütfen bütün bilgileri giriniz.", Snackbar.LENGTH_LONG);
+                    .make(dilekGenelLayout, "Telve sayınız YETERSİZ", Snackbar.LENGTH_LONG);
             snacButunBilgi.show();
         }
-         */
+
 
     }
 
@@ -291,7 +324,13 @@ public class DilekActivity extends AppCompatActivity {
 
                                 falGonderSonuc = true;
                                 mProgress.dismiss();
-                                mProgressBasariliGonderme.show();
+                                if(!isFinishing()){
+
+                                    mProgressBasariliGonderme.show();
+                                }
+
+
+
                             }
 
                             @Override

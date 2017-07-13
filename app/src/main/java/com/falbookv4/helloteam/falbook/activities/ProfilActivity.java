@@ -1,6 +1,8 @@
 package com.falbookv4.helloteam.falbook.activities;
 
+import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -50,8 +52,9 @@ import id.zelory.compressor.Compressor;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
-public class ProfilActivity extends AppCompatActivity implements com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
+public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
+    private static final int GALERIYE_ERISIM_REQUEST = 200;
     private CoordinatorLayout profilLayout;
     private DatabaseReference mDatabaseKullanici, mDatabaseKullaniciIc;
     private Toolbar profilToolbar;
@@ -219,7 +222,10 @@ public class ProfilActivity extends AppCompatActivity implements com.wdullaer.ma
         kullaniciProfilFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EasyImage.openChooserWithGallery(ProfilActivity.this, "Profil Fotoğrafı", 0);
+
+                String[] istenilenIzinler = {
+                        Manifest.permission.READ_EXTERNAL_STORAGE };
+                ProfilActivity.super.izinIste(istenilenIzinler, GALERIYE_ERISIM_REQUEST);
 
             }
         });
@@ -239,6 +245,16 @@ public class ProfilActivity extends AppCompatActivity implements com.wdullaer.ma
         setContentView(R.layout.activity_profil);
         init();
         handler();
+    }
+
+    @Override
+    public void izinVerildi(int requestCode) {
+
+        if(requestCode == GALERIYE_ERISIM_REQUEST){
+
+            EasyImage.openChooserWithGallery(ProfilActivity.this, "Profil Fotoğrafı", 0);
+        }
+
     }
 
     @Override

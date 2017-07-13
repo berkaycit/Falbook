@@ -1,6 +1,7 @@
 package com.falbookv4.helloteam.falbook.activities;
 
 
+import android.app.Application;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -20,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
+import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,9 +31,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.joooonho.SelectableRoundedImageView;
+import com.squareup.leakcanary.ActivityRefWatcher;
+import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -48,7 +55,10 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     private ImageView anaBtnFalBaktir, anaBtnTelveSatinal, anaBtnTelveKazan, anaBtnSSS, anaBtnIletisim, anaBtnKullanim;
     private FirebaseAuth mAuth;
     private TextView navKullaniciIsmi, navKullaniciMail;
+    private int telveSayisi;
     private DatabaseReference mDatabaseKullanici;
+    private TextView txtTelveSayisi;
+    private String strFalSayisi;
 
     public void init() {
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -66,6 +76,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         anaBtnSSS = (ImageView) findViewById(R.id.anaBtnSSS);
         anaBtnIletisim = (ImageView) findViewById(R.id.anaBtnIletisim);
         anaBtnKullanim = (ImageView) findViewById(R.id.anaBtnKullanim);
+        txtTelveSayisi = (TextView) findViewById(R.id.telveSayisiTexts);
 
 
         //->Firebase
@@ -142,6 +153,12 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
                 kullaniciIsmi = (String) dataSnapshot.child("isim").getValue();
                 kullaniciMail = (String) dataSnapshot.child("mail").getValue();
+                //Sadece ANASAYFADA
+                telveSayisi = ((Long) dataSnapshot.child("telve").getValue()).intValue();
+                strFalSayisi = "" + telveSayisi + " Telveniz\nVar" + "";
+                txtTelveSayisi.setText(strFalSayisi);
+
+                EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
 
                 image = dataSnapshot.child("profilfoto").getValue().toString();
 
@@ -327,9 +344,5 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             }
         });
     }
-
-
-
-
 
 }

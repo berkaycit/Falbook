@@ -21,10 +21,9 @@ public class Falci1 extends Fragment{
     private FrameLayout genelLayout;
     private Button btnGonder;
     String gonderenKisininIsmi = "";
-    private byte[] kucukFoto1;
+    private int falciBedel = 50;
 
     public void init(){
-
 
         btnGonder = (Button) genelLayout.findViewById(R.id.btnFalciGonder);
     }
@@ -34,16 +33,15 @@ public class Falci1 extends Fragment{
         btnGonder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                EventBus.getDefault().postSticky(new Falci1telveEvent(falciBedel));
                 Intent falci1ToDilek = new Intent(getContext(), DilekActivity.class);
                 startActivity(falci1ToDilek);
 
             }
         });
 
-
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
@@ -54,7 +52,4 @@ public class Falci1 extends Fragment{
 
         return genelLayout;
     }
-
-
-
 }

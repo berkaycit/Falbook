@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.Kullanicilar;
+import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -21,12 +24,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.security.Permission;
 import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class GirisActivity extends AppCompatActivity {
+public class GirisActivity extends RuntimeIzinler {
 
+    private static final int UYGULAMAYA_GIRIS_REQUEST_CODE = 100;
     private ConstraintLayout girisMainLayout;
     private Button btnMisafirGirisi, btnKullaniciGirisi, btnKayitOl;
     private SweetAlertDialog mProgressMisafir;
@@ -35,6 +40,7 @@ public class GirisActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseKullanicilar;
     private FirebaseUser mBulunanKullanici;
     private boolean misafirGirisDurumu = true;
+    private int girisTelve = 50;
 
     public void init(){
 
@@ -47,6 +53,9 @@ public class GirisActivity extends AppCompatActivity {
         mProgressMisafir = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
 
         mAuth = FirebaseAuth.getInstance();
+
+
+
     }
 
 
@@ -57,12 +66,10 @@ public class GirisActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                mProgressMisafir.getProgressHelper().setBarColor(Color.parseColor("#795548"));
-                mProgressMisafir.setTitleText("Misafir girişiniz oluşturuluyor");
-                mProgressMisafir.setCancelable(false);
-                mProgressMisafir.show();
+                String[] istenilenIzinler = {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE };
+                GirisActivity.super.izinIste(istenilenIzinler, UYGULAMAYA_GIRIS_REQUEST_CODE);
 
-                new MisafirKullaniciUyelik().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
 
@@ -77,6 +84,21 @@ public class GirisActivity extends AppCompatActivity {
         handler();
     }
 
+    @Override
+    public void izinVerildi(int requestCode) {
+
+        if(requestCode == UYGULAMAYA_GIRIS_REQUEST_CODE){
+
+            mProgressMisafir.getProgressHelper().setBarColor(Color.parseColor("#795548"));
+            mProgressMisafir.setTitleText("Misafir girişiniz oluşturuluyor");
+            mProgressMisafir.setCancelable(false);
+            mProgressMisafir.show();
+
+            new MisafirKullaniciUyelik().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        }
+
+    }
 
     //parametre-progress-result
     private class  MisafirKullaniciUyelik extends AsyncTask<String, String, Boolean> {
@@ -117,17 +139,9 @@ public class GirisActivity extends AppCompatActivity {
                         mDatabaseKullanicilar.keepSynced(true);
 
                         //kullanıcı bilgileri
-                        HashMap<String, String> userMap = new HashMap<>();
-                        userMap.put("isim", "");
-                        userMap.put("soyisim", "");
-                        userMap.put("mail", "");
-                        userMap.put("cinsiyet", "");
-                        userMap.put("dogum", "");
-                        userMap.put("iliski", "");
-                        userMap.put("telve", "50");
-                        userMap.put("profilfoto", "default");
+                        Kullanicilar girisKullanici = new Kullanicilar("", "", "", "", "", "", girisTelve, "default");
 
-                        mDatabaseKullanicilar.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        mDatabaseKullanicilar.setValue(girisKullanici).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 

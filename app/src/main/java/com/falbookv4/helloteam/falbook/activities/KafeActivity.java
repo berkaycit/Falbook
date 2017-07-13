@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,12 +17,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.falbookv4.helloteam.falbook.Manifest;
+import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
 import com.falbookv4.helloteam.falbook.falcisec.FalcilarActivity;
 import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
 import com.falbookv4.helloteam.falbook.R;
@@ -35,12 +40,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import id.zelory.compressor.Compressor;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
-public class KafeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
+public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNavigationItemSelectedListener, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
+    private static final String TAG = "KafeActivity";
+    private static final int KAFE_IZIN_REQUEST_CODE = 300;
+    private DrawerLayout genelLayout;
     private ImageButton imgAnasayfa;
     private Toolbar toolbar, toolbarKafe;
     private Button btnFalGonder;
@@ -60,11 +69,14 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
     private boolean iliskiCooldown = true, cinsiyetCoolDown = true;
     private Handler handlerIliski, handlerCinsiyet;
     private Runnable runnableIliski, runnableCinsiyet;
+    private SweetAlertDialog mProgressEksik;
 
     public void init(){
 
+        genelLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayoutKafe);
+
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayoutKafe);
         mNavigationView = (NavigationView) findViewById(R.id.anaNavView);
 
         toolbarKafe = (Toolbar) findViewById(R.id.toolbarKafe); //->actionbar
@@ -83,8 +95,17 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
 
         handlerIliski = new Handler();
         handlerCinsiyet = new Handler();
+
+        mProgressEksik = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
+
     }
 
+    public void kafeIzni(){
+
+        String[] istenilenIzinler = {
+                Manifest.permission.READ_EXTERNAL_STORAGE };
+        KafeActivity.super.izinIste(istenilenIzinler, KAFE_IZIN_REQUEST_CODE);
+    }
 
     private void menuleriHazirla(){
 
@@ -99,12 +120,22 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
 
                 //TODO: verilerin dolu olduğunu kontrol et
                 //fragment ın alabilmesi için yayın açıyorum
-                EventBus.getDefault().postSticky(new GelenfalEvent(strAd, strCinsiyet, strDogum,
-                        strIliski, kuculmusFoto1_byte, kuculmusFoto2_byte, kuculmusFoto3_byte,
-                        kuculmusFoto1_uri, kuculmusFoto2_uri, kuculmusFoto3_uri));
+                if(!TextUtils.isEmpty(strAd) && !TextUtils.isEmpty(strCinsiyet) && !TextUtils.isEmpty(strDogum)
+                        && !TextUtils.isEmpty(strIliski) && kuculmusFoto1_uri != null && kucukProfilFoto2 !=null
+                        && kuculmusFoto3_uri != null) {
 
-                Intent kafeToFalcilar = new Intent(KafeActivity.this, FalcilarActivity.class);
-                startActivity(kafeToFalcilar);
+                    EventBus.getDefault().postSticky(new GelenfalEvent(strAd, strCinsiyet, strDogum,
+                            strIliski, kuculmusFoto1_byte, kuculmusFoto2_byte, kuculmusFoto3_byte,
+                            kuculmusFoto1_uri, kuculmusFoto2_uri, kuculmusFoto3_uri));
+
+                    Intent kafeToFalcilar = new Intent(KafeActivity.this, FalcilarActivity.class);
+                    startActivity(kafeToFalcilar);
+                }else{
+
+                    Snackbar snacBilgiGuncellenemedi = Snackbar
+                            .make(genelLayout, "Bilgileriniz EKSİK", Snackbar.LENGTH_LONG);
+                    snacBilgiGuncellenemedi.show();
+                }
             }
         });
 
@@ -141,8 +172,8 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
 
+                kafeIzni();
                 kam1Durum = true;
-                EasyImage.openChooserWithGallery(KafeActivity.this, "Telve Fotoğrafınız", 0);
             }
         });
 
@@ -150,8 +181,8 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
 
+                kafeIzni();
                 kam2Durum = true;
-                EasyImage.openChooserWithGallery(KafeActivity.this, "Telve Fotoğrafınız", 0);
             }
         });
 
@@ -159,8 +190,8 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
 
+                kafeIzni();
                 kam3Durum = true;
-                EasyImage.openChooserWithGallery(KafeActivity.this, "Fincan Fotoğrafınız", 0);
             }
         });
     }
@@ -255,11 +286,10 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
     public void handler(){
 
-        menuleriHazirla();
         kameraHandler();
+        menuleriHazirla();
         textHandler();
 
     }
@@ -271,6 +301,16 @@ public class KafeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_kafe);
         init();
         handler();
+    }
+
+    @Override
+    public void izinVerildi(int requestCode) {
+
+        if(requestCode == KAFE_IZIN_REQUEST_CODE){
+
+                EasyImage.openChooserWithGallery(KafeActivity.this, "Telve Fotoğrafınız", 0);
+        }
+
     }
 
     @Override
