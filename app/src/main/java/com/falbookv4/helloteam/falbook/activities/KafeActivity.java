@@ -2,14 +2,17 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v13.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -49,6 +52,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
     private static final String TAG = "KafeActivity";
     private static final int KAFE_IZIN_REQUEST_CODE = 300;
+    private static final int REQUEST_CAMERA = 301;
     private DrawerLayout genelLayout;
     private ImageButton imgAnasayfa;
     private Toolbar toolbar, toolbarKafe;
@@ -69,7 +73,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
     private boolean iliskiCooldown = true, cinsiyetCoolDown = true;
     private Handler handlerIliski, handlerCinsiyet;
     private Runnable runnableIliski, runnableCinsiyet;
-    private SweetAlertDialog mProgressEksik;
+
 
     public void init(){
 
@@ -96,15 +100,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         handlerIliski = new Handler();
         handlerCinsiyet = new Handler();
 
-        mProgressEksik = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
-
-    }
-
-    public void kafeIzni(){
-
-        String[] istenilenIzinler = {
-                Manifest.permission.READ_EXTERNAL_STORAGE };
-        KafeActivity.super.izinIste(istenilenIzinler, KAFE_IZIN_REQUEST_CODE);
     }
 
     private void menuleriHazirla(){
@@ -164,6 +159,18 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         //tıklanma olayları için navigation view a listener veriyoruz
         mNavigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    private void kafeIzni(){
+
+        String[] istenilenIzinler = {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        KafeActivity.super.izinIste(istenilenIzinler, KAFE_IZIN_REQUEST_CODE);
+    }
+
+    @Override
+    public void izinVerildi(int requestCode) {
+        EasyImage.openChooserWithGallery(KafeActivity.this, "Telve Fotoğrafınız", 0);
     }
 
     private void kameraHandler(){
@@ -304,16 +311,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
     }
 
     @Override
-    public void izinVerildi(int requestCode) {
-
-        if(requestCode == KAFE_IZIN_REQUEST_CODE){
-
-                EasyImage.openChooserWithGallery(KafeActivity.this, "Telve Fotoğrafınız", 0);
-        }
-
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
@@ -357,8 +354,12 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         if(mDrawerLayout.isDrawerOpen(GravityCompat.START))
             navigationViewKapat();
             //açık değilse bildiği işlemi yapsın
-        else
+        else{
             super.onBackPressed();
+            Intent kafeToAnasayfaBack = new Intent(KafeActivity.this, AnasayfaActivity.class);
+            startActivity(kafeToAnasayfaBack);
+            finish();
+        }
     }
 
     //Fotoğraflarla sonuca göre işlem yapıyoruz
@@ -376,7 +377,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
             @Override
             public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
-
                 if(kam1Durum) {
 
                     kam1Durum = false;

@@ -3,6 +3,8 @@ package com.falbookv4.helloteam.falbook.activities;
 import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -14,12 +16,14 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.media.VolumeProviderCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,6 +75,9 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
     private boolean iliskiCooldown = true, cinsiyetCoolDown = true;
     private Handler handlerIliski, handlerCinsiyet;
     private Runnable runnableIliski, runnableCinsiyet;
+    StorageReference filepathProfilFoto;
+    AlertDialog.Builder fotoBeklemeDialog;
+    boolean fotoYuklenmeSonuc;
 
     public void init() {
 
@@ -94,6 +101,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         profilTxtIliski = (EditText) findViewById(R.id.profilTxtIliski);
 
         kullaniciProfilFoto = (SelectableRoundedImageView) findViewById(R.id.profilImageFotograf);
+        fotoBeklemeDialog = new AlertDialog.Builder(this);
 
         handlerIliski = new Handler();
         handlerCinsiyet = new Handler();
@@ -115,8 +123,6 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         } else {
             //içerisine bir şey yazmayı aç -> kullanıcı kayıtlı
             profilTxtMail.setFocusable(true);
-
-            //new TextleriSet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
         //eğer kullanıcı misafir girişi yapmışsa ve edittext e basıyorsa, geçiş yapıp kayıt olmasını sağlayacağız
@@ -230,6 +236,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
             }
         });
 
+
     }
 
     @Override
@@ -247,6 +254,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         handler();
     }
 
+
     @Override
     public void izinVerildi(int requestCode) {
 
@@ -254,8 +262,8 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
             EasyImage.openChooserWithGallery(ProfilActivity.this, "Profil Fotoğrafı", 0);
         }
-
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -299,6 +307,58 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         return true;
     }
 
+    //parametre-progress-result
+    private class ProfilfotoYukle extends AsyncTask<byte[], Void, Boolean>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            fotoBeklemeDialog.setTitle("Fotoğrafınız Yükleniyor");
+            fotoBeklemeDialog.setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            fotoBeklemeDialog.setCancelable(false);
+            fotoBeklemeDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBool) {
+            super.onPostExecute(aBool);
+        }
+
+        @Override
+        protected Boolean doInBackground(byte[]... params) {
+
+            filepathProfilFoto = mResimStorage.child("profil_fotograflari").child(mBulunanKullanici.getUid() + ".jpg");
+
+            byte[] kuculmusFoto_byte = params[0];
+
+            filepathProfilFoto.putBytes(kuculmusFoto_byte).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                    //firebase e yüklenen fotografin url sini almak için
+                    String kucukFotoDownloadUrl = task.getResult().getDownloadUrl().toString();
+                    mDatabaseKullaniciIc.child("profilfoto").setValue(kucukFotoDownloadUrl);
+
+                    if(task.isSuccessful()){
+
+                        fotoYuklenmeSonuc = true;
+                        //güncel bilgileri yerleştir
+                        new TextleriSet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        //başarıyla yüklendi.
+
+                    }else{
+                        fotoYuklenmeSonuc = false;
+                    }
+
+                }
+            });
+
+            return fotoYuklenmeSonuc;
+        }
+    }
 
     //parametre-progress-result
     private class BilgileriDegistir extends AsyncTask<String, Void, Boolean> {
@@ -379,7 +439,6 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
             return null;
         }
     }
-
 
     //parametre-progress-result
     private class TextleriSet extends AsyncTask<Void, Void, Boolean> {
@@ -504,9 +563,6 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
                 if (resultCode != RESULT_CANCELED) {
 
-                    //inal Uri resultUriProfil = data.getData();
-
-
                     Bitmap kucukProfilFoto = null;
                     try {
                         kucukProfilFoto = new Compressor(ProfilActivity.this)
@@ -522,9 +578,11 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
                     kucukProfilFoto.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     byte[] kuculmusFoto_byte = baos.toByteArray();
 
-                    StorageReference filepathProfilFoto = mResimStorage.child("profil_fotograflari").child(mBulunanKullanici.getUid() + ".jpg");
+                    new ProfilfotoYukle().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, kuculmusFoto_byte);
 
+                    //StorageReference filepathProfilFoto = mResimStorage.child("profil_fotograflari").child(mBulunanKullanici.getUid() + ".jpg");
 
+                    /*
                     filepathProfilFoto.putBytes(kuculmusFoto_byte).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -540,23 +598,6 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
                                 //başarıyla yüklendi.
                             }
 
-                        }
-                    });
-
-
-                    /*
-                    UploadTask uploadTask = filepathProfilFoto.putBytes(kuculmusFoto_byte);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Yükleme başarısız
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            mDatabaseKullaniciIc.child("profilfoto").setValue(downloadUrl.toString());
                         }
                     });
                     */

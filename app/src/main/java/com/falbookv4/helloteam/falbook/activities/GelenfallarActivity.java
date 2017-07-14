@@ -362,8 +362,12 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
         if(mDrawerLayout.isDrawerOpen(GravityCompat.START))
             navigationViewKapat();
             //açık değilse bildiği işlemi yapsın
-        else
+        else{
             super.onBackPressed();
+            Intent fallarToAnasayfaBack = new Intent(GelenfallarActivity.this, AnasayfaActivity.class);
+            startActivity(fallarToAnasayfaBack);
+            finish();
+        }
     }
 
 }

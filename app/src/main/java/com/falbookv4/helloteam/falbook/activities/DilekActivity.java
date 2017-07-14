@@ -70,9 +70,10 @@ public class DilekActivity extends AppCompatActivity {
     private SweetAlertDialog mProgress, mProgressBasariliGonderme;
     private String strDilek = "";
     private boolean gonderCooldown = true, asyncDonenSonuc = false;
-    private int toplamTelveSayisi, farkTelveSayisi, telveBedeli;
+    private int toplamTelveSayisi, farkTelveSayisi, telveBedeli, yeniTelveSayiniz;
 
 
+    //TODO: telve eksiltmeyi ekle.
     @Subscribe(sticky = true)
     public void onGelenfalEvent(GelenfalEvent event){
         //kullanıcı gönderilerini alıyoruz
@@ -120,6 +121,7 @@ public class DilekActivity extends AppCompatActivity {
 
         if(farkTelveSayisi >= 0) {
 
+            yeniTelveSayiniz = farkTelveSayisi;
             new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
                     dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
         }
@@ -317,7 +319,30 @@ public class DilekActivity extends AppCompatActivity {
                         yeniPost.child("fal_yorumu").setValue(fal_aciklamasi);
                         yeniPost.child("fal_dilek").setValue(dilek_val);
 
+/*
+                        mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                                mDatabaseKullanici.child("telve").setValue(yeniTelveSayiniz);
+                                falGonderSonuc = true;
+                                mProgress.dismiss();
+                                if(!isFinishing()){
+
+                                    mProgressBasariliGonderme.show();
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        */
+
+
+/*
                         mDatabaseFal.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -328,9 +353,6 @@ public class DilekActivity extends AppCompatActivity {
 
                                     mProgressBasariliGonderme.show();
                                 }
-
-
-
                             }
 
                             @Override
@@ -338,6 +360,8 @@ public class DilekActivity extends AppCompatActivity {
 
                             }
                         });
+
+                        */
 
                     }else{
 

@@ -24,20 +24,10 @@
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_marginBottom="56dp"
-            />
+            android:clipToPadding="false"
+            android:paddingBottom="60dp"/>
 
 
-        <TextView
-            android:id="@+id/imgInternetdenOku"
-            android:layout_width="match_parent"
-            android:layout_height="128dp"
-            android:layout_gravity="bottom"
-            android:background="@color/colorWebdeOku"
-            android:text="@string/web_de_oku"
-            android:gravity="center|top"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textSize="32sp" />
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"

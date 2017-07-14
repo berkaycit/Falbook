@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class GirisActivity extends RuntimeIzinler {
+public class GirisActivity extends AppCompatActivity {
 
     private static final int UYGULAMAYA_GIRIS_REQUEST_CODE = 100;
     private ConstraintLayout girisMainLayout;
@@ -66,9 +66,18 @@ public class GirisActivity extends RuntimeIzinler {
             @Override
             public void onClick(View view) {
 
+                mProgressMisafir.getProgressHelper().setBarColor(Color.parseColor("#795548"));
+                mProgressMisafir.setTitleText("Misafir girişiniz oluşturuluyor");
+                mProgressMisafir.setCancelable(false);
+                mProgressMisafir.show();
+
+                new MisafirKullaniciUyelik().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+                /*
                 String[] istenilenIzinler = {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE };
                 GirisActivity.super.izinIste(istenilenIzinler, UYGULAMAYA_GIRIS_REQUEST_CODE);
+                */
 
             }
         });
@@ -83,7 +92,7 @@ public class GirisActivity extends RuntimeIzinler {
         init();
         handler();
     }
-
+/*
     @Override
     public void izinVerildi(int requestCode) {
 
@@ -97,8 +106,8 @@ public class GirisActivity extends RuntimeIzinler {
             new MisafirKullaniciUyelik().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         }
-
     }
+    */
 
     //parametre-progress-result
     private class  MisafirKullaniciUyelik extends AsyncTask<String, String, Boolean> {

@@ -203,6 +203,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //kullanıcının giriş yapıp yapmadığını kontrol et
+        //TODO: kullanıcının db de kayıtlı olup olmadığını da kontrol e ekle
         if (currentUser == null) {
             giriseGonder();
         }

@@ -27,13 +27,14 @@ public abstract class RuntimeIzinler extends AppCompatActivity{
         int izinKontrol = PackageManager.PERMISSION_GRANTED;
         boolean mazeretGoster = false;
 
-        for(String izin : istenilenIzinler){
+        for(String izin : istenilenIzinler) {
             //belirtilen izinler için ->izin verilip verilmediği kontrol ediliyor
             //izinkontol = 0 ise izin verilmiş -1 ise izin verilmemiştir
             izinKontrol = izinKontrol + ContextCompat.checkSelfPermission(this, izin);
             //mazereti eğer kullanıcı bir defa izini reddederse göstereceğiz bu yüzde aşağıdaki gibi bir boolean yaptık
             //ilk başta mazeretGoster = false, diğer taraf da ilk başta false-> reddederse 1 dönecek.
             mazeretGoster = mazeretGoster || ActivityCompat.shouldShowRequestPermissionRationale(this, izin);
+        }
 
             if(izinKontrol != PackageManager.PERMISSION_GRANTED){
 
@@ -43,12 +44,13 @@ public abstract class RuntimeIzinler extends AppCompatActivity{
                     new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("İzin istememizin nedeni!")
                             .setContentText("İşlemlere başka türlü devam edemiyoruz")
-                            .setCancelText("Hayır, İzin VERMİYORUM")
-                            .setConfirmText("Tamam, İzin VERİYORUM")
+                            .setCancelText("Onay Vermiyorum")
+                            .setConfirmText("Tamam")
                             .showCancelButton(true)
                             .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
                                     ActivityCompat.requestPermissions(RuntimeIzinler.this, istenilenIzinler, requestCode);
                                 }
                             })
@@ -75,22 +77,19 @@ public abstract class RuntimeIzinler extends AppCompatActivity{
             }
 
 
-        }
-
-
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         int izinKontrol = PackageManager.PERMISSION_GRANTED;
+
 
         for(int izinDurumu : grantResults){
 
             //tek bir izin bile verilmemiş olursa uygulama çalışmayacak. -1 + 0 + 0 ---> -1 verilmeyen izin
             izinKontrol = izinKontrol + izinDurumu;
-
         }
 
         //tüm izinlerin verildiği durum
@@ -104,12 +103,14 @@ public abstract class RuntimeIzinler extends AppCompatActivity{
             new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("İzin Gerekiyor!")
                     .setContentText("Ayarlardan izinleri vermen gerekiyor")
-                    .setCancelText("İzin VERMEYECEĞİM")
-                    .setConfirmText("İzin VERECEĞİM")
+                    .setCancelText("Onay Vermiyorum")
+                    .setConfirmText("Tamam")
                     .showCancelButton(true)
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                            sweetAlertDialog.dismissWithAnimation();
 
                             Intent intent = new Intent();
                             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);

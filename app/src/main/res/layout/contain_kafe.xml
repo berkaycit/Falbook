@@ -190,7 +190,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="@+id/txtKafeiliski"
             app:layout_constraintRight_toRightOf="@+id/txtKafeiliski"
-            app:layout_constraintTop_toBottomOf="@+id/txtKafeiliski" />
+            app:layout_constraintTop_toBottomOf="@+id/txtKafeiliski"/>
 
         <ImageView
             android:id="@+id/btnGonder2"
@@ -202,6 +202,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/btnGonderFal"
             app:layout_constraintRight_toRightOf="@+id/btnGonderFal"
             app:layout_constraintTop_toBottomOf="@+id/btnGonderFal" />
+
 
 
     </android.support.constraint.ConstraintLayout>
