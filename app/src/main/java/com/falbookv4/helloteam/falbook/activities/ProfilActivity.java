@@ -20,7 +20,9 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.VolumeProviderCompat;
@@ -78,6 +80,8 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
     StorageReference filepathProfilFoto;
     AlertDialog.Builder fotoBeklemeDialog;
     boolean fotoYuklenmeSonuc;
+    private FloatingActionButton fbFalGonder;
+    private BottomNavigationView botToolbar;
 
     public void init() {
 
@@ -106,9 +110,48 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         handlerIliski = new Handler();
         handlerCinsiyet = new Handler();
 
+        fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
+        botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+
     }
 
+    private void menuleriHazirla() {
+
+        fbFalGonder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent anasayfaToKafe = new Intent(ProfilActivity.this, KafeActivity.class);
+                startActivity(anasayfaToKafe);
+                finish();
+            }
+        });
+
+        botToolbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.menuAnasafaButon:
+                        Intent intentToAnasayfa = new Intent(ProfilActivity.this, AnasayfaActivity.class);
+                        startActivity(intentToAnasayfa);
+                        finish();
+                        break;
+                    case R.id.menuGelenfalButon:
+                        Intent intentToFallarim = new Intent(ProfilActivity.this, GelenfallarActivity.class);
+                        startActivity(intentToFallarim);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+
     public void handler() {
+
+        menuleriHazirla();
 
         setSupportActionBar(profilToolbar);
         getSupportActionBar().setTitle(null); //actionbarda falbook yazıyor, yazıyı silmek için

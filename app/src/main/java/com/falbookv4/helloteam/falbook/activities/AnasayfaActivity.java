@@ -2,6 +2,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -131,7 +132,6 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
     }
 
-    //TODO: async task yapacağım
     private void navBarDataYerlestir() {
 
         View header=mNavigationView.getHeaderView(0);
@@ -140,57 +140,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         navKullaniciMail = (TextView)header.findViewById(R.id.navKullaniciMail);
         navKullaniciProfilFoto = (SelectableRoundedImageView) header.findViewById(R.id.navProfilePhoto);
 
-        mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                final String image;
-                String kullaniciIsmi, kullaniciMail;
-
-                kullaniciIsmi = (String) dataSnapshot.child("isim").getValue();
-                kullaniciMail = (String) dataSnapshot.child("mail").getValue();
-                //Sadece ANASAYFADA
-                telveSayisi = ((Long) dataSnapshot.child("telve").getValue()).intValue();
-                strFalSayisi = "" + telveSayisi + " Telveniz\nVar" + "";
-                txtTelveSayisi.setText(strFalSayisi);
-
-                EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
-
-                image = dataSnapshot.child("profilfoto").getValue().toString();
-
-                if (!kullaniciIsmi.isEmpty())
-                    navKullaniciIsmi.setText(kullaniciIsmi);
-                if (!kullaniciMail.isEmpty())
-                navKullaniciMail.setText(kullaniciMail);
-
-                if(!image.equals("default")){
-                    Picasso.with(AnasayfaActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE)
-                            .placeholder(R.drawable.cat_profile)
-                            .into(navKullaniciProfilFoto, new Callback() {
-                                @Override
-                                public void onSuccess() {
-
-                                }
-
-                                @Override
-                                public void onError() {
-
-                                    //tekrardan indir
-                                    Picasso.with(AnasayfaActivity.this).load(image).placeholder(R.drawable.cat_profile)
-                                            .into(navKullaniciProfilFoto);
-                                }
-                            });
-                }
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        new NavDataYerlestir().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -203,7 +153,6 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         if (currentUser == null) {
             giriseGonder();
         }
-
     }
 
     private void giriseGonder() {
@@ -342,5 +291,67 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             }
         });
     }
+
+    private class NavDataYerlestir extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    final String image;
+                    String kullaniciIsmi, kullaniciMail;
+
+                    kullaniciIsmi = (String) dataSnapshot.child("isim").getValue();
+                    kullaniciMail = (String) dataSnapshot.child("mail").getValue();
+                    //Sadece ANASAYFADA
+                    telveSayisi = ((Long) dataSnapshot.child("telve").getValue()).intValue();
+                    strFalSayisi = "" + telveSayisi + " Telveniz\nVar" + "";
+                    txtTelveSayisi.setText(strFalSayisi);
+
+                    EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
+
+                    image = dataSnapshot.child("profilfoto").getValue().toString();
+
+                    if (!kullaniciIsmi.isEmpty())
+                        navKullaniciIsmi.setText(kullaniciIsmi);
+                    if (!kullaniciMail.isEmpty())
+                        navKullaniciMail.setText(kullaniciMail);
+
+                    if(!image.equals("default")){
+                        Picasso.with(AnasayfaActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                                .placeholder(R.drawable.cat_profile)
+                                .into(navKullaniciProfilFoto, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+
+                                        //tekrardan indir
+                                        Picasso.with(AnasayfaActivity.this).load(image).placeholder(R.drawable.cat_profile)
+                                                .into(navKullaniciProfilFoto);
+                                    }
+                                });
+                    }
+
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            return null;
+        }
+    }
+
 
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,13 +28,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
 import com.falbookv4.helloteam.falbook.falcisec.FalcilarActivity;
 import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.joooonho.SelectableRoundedImageView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -73,7 +86,27 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
     private boolean iliskiCooldown = true, cinsiyetCoolDown = true;
     private Handler handlerIliski, handlerCinsiyet;
     private Runnable runnableIliski, runnableCinsiyet;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabaseKullanici;
+    private TextView navKullaniciIsmi, navKullaniciMail;
+    private SelectableRoundedImageView navKullaniciProfilFoto;
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //kullanıcının giriş yapıp yapmadığını kontrol et
+        if (currentUser == null) {
+            giriseGonder();
+        }
+    }
+
+    private void giriseGonder() {
+        Intent anasayfaToGiris = new Intent(KafeActivity.this, GirisActivity.class);
+        startActivity(anasayfaToGiris);
+        finish();
+    }
 
     public void init(){
 
@@ -99,6 +132,15 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
         handlerIliski = new Handler();
         handlerCinsiyet = new Handler();
+
+
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser()!=null){
+
+            String uid = mAuth.getCurrentUser().getUid();
+            mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
+            mDatabaseKullanici.keepSynced(true);
+        }
 
     }
 
@@ -313,22 +355,41 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.navProfiliniDuzenle:
-                Intent kafeToProfil = new Intent(KafeActivity.this, ProfilActivity.class);
-                startActivity(kafeToProfil);
+                Intent anasayfaToProfil = new Intent(KafeActivity.this, ProfilActivity.class);
+                startActivity(anasayfaToProfil);
                 break;
 
             case R.id.navSifreDegistir:
-                Intent kafeToSifredegistir = new Intent(KafeActivity.this, SifredegistirActivity.class);
-                startActivity(kafeToSifredegistir);
+                Intent anasayfaToSifredegistir = new Intent(KafeActivity.this, SifredegistirActivity.class);
+                startActivity(anasayfaToSifredegistir);
                 break;
 
             case R.id.navFalbookHk:
-                Intent kafeToFalbookhk = new Intent(KafeActivity.this, FalbookhakkindaActivity.class);
-                startActivity(kafeToFalbookhk);
+                Intent anasayfaToFalbookhk = new Intent(KafeActivity.this, FalbookhakkindaActivity.class);
+                startActivity(anasayfaToFalbookhk);
                 break;
+
+            case R.id.navCikis:
+
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Çıkış yapmak istiyor musunuz?")
+                        .setContentText("Üye olmadıysanız bütün bilgilerinizi kaybedebilirsiniz!")
+                        .setConfirmText("Evet, Çıkış Yap")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                mAuth.signOut();
+                                giriseGonder();
+                            }
+                        })
+                        .show();
+
+                break;
+
 
             default:
                 return true;
@@ -492,4 +553,72 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         String tarihDogum = "" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
         kafeTxtDogum.setText(tarihDogum);
     }
+
+    private void navBarDataYerlestir() {
+
+        View header=mNavigationView.getHeaderView(0);
+        /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+        navKullaniciIsmi = (TextView)header.findViewById(R.id.navKullaniciIsim);
+        navKullaniciMail = (TextView)header.findViewById(R.id.navKullaniciMail);
+        navKullaniciProfilFoto = (SelectableRoundedImageView) header.findViewById(R.id.navProfilePhoto);
+
+        new NavDataYerlestir().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private class NavDataYerlestir extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    final String image;
+                    String kullaniciIsmi, kullaniciMail;
+
+                    kullaniciIsmi = (String) dataSnapshot.child("isim").getValue();
+                    kullaniciMail = (String) dataSnapshot.child("mail").getValue();
+
+                    image = dataSnapshot.child("profilfoto").getValue().toString();
+
+                    if (!kullaniciIsmi.isEmpty())
+                        navKullaniciIsmi.setText(kullaniciIsmi);
+                    if (!kullaniciMail.isEmpty())
+                        navKullaniciMail.setText(kullaniciMail);
+
+                    if(!image.equals("default")){
+                        Picasso.with(KafeActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                                .placeholder(R.drawable.cat_profile)
+                                .into(navKullaniciProfilFoto, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+
+                                        //tekrardan indir
+                                        Picasso.with(KafeActivity.this).load(image).placeholder(R.drawable.cat_profile)
+                                                .into(navKullaniciProfilFoto);
+                                    }
+                                });
+                    }
+
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            return null;
+        }
+    }
+
+
 }

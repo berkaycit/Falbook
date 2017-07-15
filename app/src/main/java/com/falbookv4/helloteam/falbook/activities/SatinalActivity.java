@@ -1,11 +1,15 @@
 package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -36,6 +40,8 @@ public class SatinalActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseKullanici;
     private int bulunanTelve, uzerineEklenenTelve;
     private AlertDialog.Builder alertSatinal;
+    private FloatingActionButton fbFalGonder;
+    private BottomNavigationView botToolbar;
 
     public void init(){
 
@@ -48,7 +54,44 @@ public class SatinalActivity extends AppCompatActivity {
 
         alertSatinal = new AlertDialog.Builder(this);
 
+        fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
+        botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
     }
+
+    private void menuleriHazirla() {
+
+        fbFalGonder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent anasayfaToKafe = new Intent(SatinalActivity.this, KafeActivity.class);
+                startActivity(anasayfaToKafe);
+                finish();
+            }
+        });
+
+        botToolbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.menuAnasafaButon:
+                        Intent intentToAnasayfa = new Intent(SatinalActivity.this, AnasayfaActivity.class);
+                        startActivity(intentToAnasayfa);
+                        finish();
+                        break;
+                    case R.id.menuGelenfalButon:
+                        Intent intentToFallarim = new Intent(SatinalActivity.this, GelenfallarActivity.class);
+                        startActivity(intentToFallarim);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+
 
     private int telveSayisiniBul(){
 
@@ -129,6 +172,8 @@ public class SatinalActivity extends AppCompatActivity {
 
 
     public void handler(){
+
+        menuleriHazirla();
 
         setSupportActionBar(toolbarSatinal);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -3,6 +3,7 @@ package com.falbookv4.helloteam.falbook.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -35,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.joooonho.SelectableRoundedImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -58,11 +60,11 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     private CollapsingToolbarLayout colToolbar;
     private boolean falYorumlandi;
     private SweetAlertDialog progressFalSil;
-
     private DatabaseReference mDatabase, mDatabaseKullaniciFal;
     private DatabaseReference mDatabaseKullanicilar;
     private FirebaseUser mBulunanKullanici;
-
+    private TextView navKullaniciIsmi, navKullaniciMail;
+    private SelectableRoundedImageView navKullaniciProfilFoto;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -106,10 +108,14 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
+
+        //kullanıcının giriş yapıp yapmadığını kontrol et
+        if (mBulunanKullanici == null) {
+            giriseGonder();
+        }
 
         //recycler view(falList) için adapter
         FirebaseRecyclerAdapter<Fal, FalViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Fal, FalViewHolder>(
@@ -196,14 +202,10 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
     }
 
-    private void deleteItem(int tiklananPozisyon) {
-
-        //mDataList.remove(tiklananPozisyon);
-        //notifiyItemRemoved(tiklananPozisyon); //listeyi güncellemek için
-        //biz sildikçe ya da ekledikçe aralık değeri değişiyor ve sonuç itibariyle index out of band oluşup crash yiyoruz. bu index değişimlerini bildirmemiz lazım
-        //örneğin listeyi 50 elemanlı sanıyor ancak biz silme işlemi yaptık beş tane normalde 45 olmalı. olmadığı için gidip son elemanı(index i 50) silmeye çalıştığımızda crash
-        //notifiyItemRangeChange(tiklananPozisyon, mDataList.size());
-
+    private void giriseGonder() {
+        Intent anasayfaToGiris = new Intent(GelenfallarActivity.this, GirisActivity.class);
+        startActivity(anasayfaToGiris);
+        finish();
     }
 
     public static class FalViewHolder extends RecyclerView.ViewHolder {
@@ -321,22 +323,41 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.navProfiliniDuzenle:
-                Intent fallarToProfil = new Intent(GelenfallarActivity.this, ProfilActivity.class);
-                startActivity(fallarToProfil);
+                Intent anasayfaToProfil = new Intent(GelenfallarActivity.this, ProfilActivity.class);
+                startActivity(anasayfaToProfil);
                 break;
 
             case R.id.navSifreDegistir:
-                Intent fallarToSifredegistir = new Intent(GelenfallarActivity.this, SifredegistirActivity.class);
-                startActivity(fallarToSifredegistir);
+                Intent anasayfaToSifredegistir = new Intent(GelenfallarActivity.this, SifredegistirActivity.class);
+                startActivity(anasayfaToSifredegistir);
                 break;
 
             case R.id.navFalbookHk:
-                Intent fallarToFalbookhk = new Intent(GelenfallarActivity.this, FalbookhakkindaActivity.class);
-                startActivity(fallarToFalbookhk);
+                Intent anasayfaToFalbookhk = new Intent(GelenfallarActivity.this, FalbookhakkindaActivity.class);
+                startActivity(anasayfaToFalbookhk);
                 break;
+
+            case R.id.navCikis:
+
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Çıkış yapmak istiyor musunuz?")
+                        .setContentText("Üye olmadıysanız bütün bilgilerinizi kaybedebilirsiniz!")
+                        .setConfirmText("Evet, Çıkış Yap")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                mAuth.signOut();
+                                giriseGonder();
+                            }
+                        })
+                        .show();
+
+                break;
+
 
             default:
                 return true;
@@ -367,6 +388,72 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
             Intent fallarToAnasayfaBack = new Intent(GelenfallarActivity.this, AnasayfaActivity.class);
             startActivity(fallarToAnasayfaBack);
             finish();
+        }
+    }
+
+    private void navBarDataYerlestir() {
+
+        View header=mNavigationView.getHeaderView(0);
+        /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+        navKullaniciIsmi = (TextView)header.findViewById(R.id.navKullaniciIsim);
+        navKullaniciMail = (TextView)header.findViewById(R.id.navKullaniciMail);
+        navKullaniciProfilFoto = (SelectableRoundedImageView) header.findViewById(R.id.navProfilePhoto);
+
+        new NavDataYerlestir().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private class NavDataYerlestir extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            mDatabaseKullanicilar.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    final String image;
+                    String kullaniciIsmi, kullaniciMail;
+
+                    kullaniciIsmi = (String) dataSnapshot.child("isim").getValue();
+                    kullaniciMail = (String) dataSnapshot.child("mail").getValue();
+
+                    image = dataSnapshot.child("profilfoto").getValue().toString();
+
+                    if (!kullaniciIsmi.isEmpty())
+                        navKullaniciIsmi.setText(kullaniciIsmi);
+                    if (!kullaniciMail.isEmpty())
+                        navKullaniciMail.setText(kullaniciMail);
+
+                    if(!image.equals("default")){
+                        Picasso.with(GelenfallarActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                                .placeholder(R.drawable.cat_profile)
+                                .into(navKullaniciProfilFoto, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+
+                                        //tekrardan indir
+                                        Picasso.with(GelenfallarActivity.this).load(image).placeholder(R.drawable.cat_profile)
+                                                .into(navKullaniciProfilFoto);
+                                    }
+                                });
+                    }
+
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            return null;
         }
     }
 
