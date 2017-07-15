@@ -28,6 +28,7 @@
                 android:layout_row="0" />
 
             <RelativeLayout
+                android:id="@+id/dusukTelveSatinAl"
                 android:layout_width="140dp"
                 android:layout_height="130dp"
                 android:layout_column="1"

@@ -1,7 +1,6 @@
 package com.falbookv4.helloteam.falbook.activities;
 
 
-import android.app.Application;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -21,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
-import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
 import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,8 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.joooonho.SelectableRoundedImageView;
-import com.squareup.leakcanary.ActivityRefWatcher;
-import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -318,6 +314,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         anaBtnSSS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent anasayfaToSSS = new Intent(AnasayfaActivity.this, SSSActivity.class);
                 startActivity(anasayfaToSSS);
             }

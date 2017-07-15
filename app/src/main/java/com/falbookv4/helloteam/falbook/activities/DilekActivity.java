@@ -49,6 +49,8 @@ import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -324,14 +326,23 @@ public class DilekActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                mDatabaseKullanici.child("telve").setValue(yeniTelveSayiniz);
-                                falGonderSonuc = true;
-                                mProgress.dismiss();
-                                if(!isFinishing()){
+                                Map<String, Object> updateTelveMap = new HashMap<>();
+                                updateTelveMap.put("telve", yeniTelveSayiniz);
 
-                                    mProgressBasariliGonderme.show();
-                                }
+                                mDatabaseKullanici.updateChildren(updateTelveMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
 
+                                            falGonderSonuc = true;
+                                            mProgress.dismiss();
+                                            if(!isFinishing()){
+
+                                                mProgressBasariliGonderme.show();
+                                            }
+                                        }
+                                    }
+                                });
                             }
 
                             @Override
@@ -342,7 +353,6 @@ public class DilekActivity extends AppCompatActivity {
                         */
 
 
-/*
                         mDatabaseFal.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -361,7 +371,7 @@ public class DilekActivity extends AppCompatActivity {
                             }
                         });
 
-                        */
+
 
                     }else{
 
