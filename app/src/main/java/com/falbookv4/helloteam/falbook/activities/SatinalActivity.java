@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -91,15 +92,14 @@ public class SatinalActivity extends AppCompatActivity {
         });
     }
 
-
-
-    private int telveSayisiniBul(){
+    public void telveSatinAl(final int eklenecekTelveSayisi){
 
         mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 bulunanTelve = ((Long) dataSnapshot.child("telve").getValue()).intValue();
+                uzerineEklenenTelve = bulunanTelve + eklenecekTelveSayisi;
             }
 
             @Override
@@ -108,22 +108,26 @@ public class SatinalActivity extends AppCompatActivity {
             }
         });
 
-        return bulunanTelve;
-    }
-
-
-    public void telveSatinAl(int eklenecekTelveSayisi){
-
-        bulunanTelve = telveSayisiniBul();
-
-        uzerineEklenenTelve = bulunanTelve + eklenecekTelveSayisi;
-
         alertSatinal.setTitle("" + eklenecekTelveSayisi + " Telve Satın Al");
         alertSatinal.setMessage("Satın al sayfasına yönlendirileceksin");
         alertSatinal.setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                Map<String, Object> telveSatinAlMap = new HashMap<>();
+                telveSatinAlMap.put("telve",uzerineEklenenTelve);
+
+                mDatabaseKullanici.updateChildren(telveSatinAlMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+
+                            //satın alım başarılı
+                        }
+                    }
+                });
+
+                /*
                 mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -149,11 +153,12 @@ public class SatinalActivity extends AppCompatActivity {
                     }
 
                 });
+                */
+
             }
         });
 
         alertSatinal.show();
-
 
     }
 

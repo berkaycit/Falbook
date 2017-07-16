@@ -134,13 +134,14 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
     private void navBarDataYerlestir() {
 
-        View header=mNavigationView.getHeaderView(0);
-        /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
-        navKullaniciIsmi = (TextView)header.findViewById(R.id.navKullaniciIsim);
-        navKullaniciMail = (TextView)header.findViewById(R.id.navKullaniciMail);
-        navKullaniciProfilFoto = (SelectableRoundedImageView) header.findViewById(R.id.navProfilePhoto);
+            View header=mNavigationView.getHeaderView(0);
+            /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+            navKullaniciIsmi = (TextView)header.findViewById(R.id.navKullaniciIsim);
+            navKullaniciMail = (TextView)header.findViewById(R.id.navKullaniciMail);
+            navKullaniciProfilFoto = (SelectableRoundedImageView) header.findViewById(R.id.navProfilePhoto);
 
-        new NavDataYerlestir().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            new NavDataYerlestir().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
     }
 
     @Override
@@ -150,7 +151,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //kullanıcının giriş yapıp yapmadığını kontrol et
         //TODO: kullanıcının db de kayıtlı olup olmadığını da kontrol e ekle
-        if (currentUser == null) {
+        if (currentUser == null && mDatabaseKullanici != null) {
             giriseGonder();
         }
     }
@@ -307,8 +308,14 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
                     kullaniciIsmi = (String) dataSnapshot.child("isim").getValue();
                     kullaniciMail = (String) dataSnapshot.child("mail").getValue();
                     //Sadece ANASAYFADA
+                    if(dataSnapshot.child("telve").getValue() == null){
+
+                        giriseGonder();
+                        return;
+                    }
+
                     telveSayisi = ((Long) dataSnapshot.child("telve").getValue()).intValue();
-                    strFalSayisi = "" + telveSayisi + " Telveniz\nVar" + "";
+                    strFalSayisi = "" + telveSayisi + " TELVENİZ\nVAR" + "";
                     txtTelveSayisi.setText(strFalSayisi);
 
                     EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));

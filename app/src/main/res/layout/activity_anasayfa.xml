@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="13 TELVENİZ\nVAR"
+                android:text="TELVENİZ\nVAR"
                 android:textAlignment="center"
                 android:gravity="center"
                 android:textStyle="normal|bold"

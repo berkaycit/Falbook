@@ -30,7 +30,7 @@
             android:id="@+id/faldetayContainFalYorumu"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/bos_yazi"
+            android:text="@string/fal_yorumunuz"
             android:textColor="@color/colorTrash"
             android:paddingBottom="130dp"
             android:textSize="18sp" />

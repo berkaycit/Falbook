@@ -51,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -71,8 +72,8 @@ public class DilekActivity extends AppCompatActivity {
     private Uri uriKuculmusFoto1, uriKuculmusFoto2, uriKuculmusFoto3;
     private SweetAlertDialog mProgress, mProgressBasariliGonderme;
     private String strDilek = "";
-    private boolean gonderCooldown = true, asyncDonenSonuc = false;
-    private int toplamTelveSayisi, farkTelveSayisi, telveBedeli, yeniTelveSayiniz;
+    private boolean gonderCooldown = true, asyncDonenSonuc = false, falGonderebilir = true;
+    private int farkTelveSayisi, telveBedeli, yeniTelveSayiniz, bulunanTelve;
 
 
     //TODO: telve eksiltmeyi ekle.
@@ -89,12 +90,6 @@ public class DilekActivity extends AppCompatActivity {
         uriKuculmusFoto1 = event.getUriKucukFoto1();
         uriKuculmusFoto2 = event.getUriKucukFoto2();
         uriKuculmusFoto3 = event.getUriKucukFoto3();
-    }
-
-    @Subscribe(sticky = true)
-    public void onTelveEvent(TelveEvent event){
-        //kullanıcının telvesini alıyoruz
-        toplamTelveSayisi = event.getTelveEventSayisi();
     }
 
     @Subscribe(sticky = true)
@@ -119,21 +114,34 @@ public class DilekActivity extends AppCompatActivity {
     public void falGonder(){
 
         strDilek = txtDilek.getText().toString();
-        farkTelveSayisi = toplamTelveSayisi - telveBedeli;
 
-        if(farkTelveSayisi >= 0) {
+        mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-            yeniTelveSayiniz = farkTelveSayisi;
-            new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
-                    dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
-        }
+                bulunanTelve = ((Long) dataSnapshot.child("telve").getValue()).intValue();
 
+                if(farkTelveSayisi>=0 && falGonderebilir && bulunanTelve>0){
+                    falGonderebilir = false;
+                    farkTelveSayisi = bulunanTelve - telveBedeli;
+                    yeniTelveSayiniz = farkTelveSayisi;
+                    new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
+                            dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
+                }
+                else if(bulunanTelve<=0){
+                    Snackbar snacButunBilgi = Snackbar
+                            .make(dilekGenelLayout, "Telve sayınız AZ", Snackbar.LENGTH_LONG);
+                    snacButunBilgi.show();
+                }
 
-        else{
-            Snackbar snacButunBilgi = Snackbar
-                    .make(dilekGenelLayout, "Telve sayınız YETERSİZ", Snackbar.LENGTH_LONG);
-            snacButunBilgi.show();
-        }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
 
     }
@@ -240,10 +248,13 @@ public class DilekActivity extends AppCompatActivity {
             final String dilek_val = strings[5];
 
             //storage da 'fotograflarin' altına cekilen fotograflarin id
+            String kullaniciID = mAuth.getCurrentUser().getUid();
+            Random random = new Random();
+            int randomSayi = random.nextInt(30);
 
-            StorageReference filepath1 = mStorageKahve.child("Fal_Fotolari1").child(uriKuculmusFoto1.getLastPathSegment());
-            StorageReference filepath2 = mStorageKahve.child("Fal_Fotolari2").child(uriKuculmusFoto2.getLastPathSegment());
-            StorageReference filepath3 = mStorageKahve.child("Fal_Fotolari3").child(uriKuculmusFoto3.getLastPathSegment());
+            StorageReference filepath1 = mStorageKahve.child("Fal_Fotolari1").child(uriKuculmusFoto1.getLastPathSegment() + kullaniciID + "" + randomSayi);
+            StorageReference filepath2 = mStorageKahve.child("Fal_Fotolari2").child(uriKuculmusFoto2.getLastPathSegment() + kullaniciID + "" + randomSayi);
+            StorageReference filepath3 = mStorageKahve.child("Fal_Fotolari3").child(uriKuculmusFoto3.getLastPathSegment() + kullaniciID + "" + randomSayi);
 
             //database de fal ın altında->uid-> push yaparak(random id) oluştur
             final DatabaseReference yeniPost = mDatabaseFal.child(mBulunanKullanici.getUid()).push();
@@ -321,36 +332,19 @@ public class DilekActivity extends AppCompatActivity {
                         yeniPost.child("fal_yorumu").setValue(fal_aciklamasi);
                         yeniPost.child("fal_dilek").setValue(dilek_val);
 
-/*
-                        mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+
+                        Map<String, Object> updateTelveMap = new HashMap<>();
+                        updateTelveMap.put("telve", yeniTelveSayiniz);
+
+                        mDatabaseKullanici.updateChildren(updateTelveMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
 
-                                Map<String, Object> updateTelveMap = new HashMap<>();
-                                updateTelveMap.put("telve", yeniTelveSayiniz);
-
-                                mDatabaseKullanici.updateChildren(updateTelveMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-
-                                            falGonderSonuc = true;
-                                            mProgress.dismiss();
-                                            if(!isFinishing()){
-
-                                                mProgressBasariliGonderme.show();
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
+                                }
                             }
                         });
-                        */
+
 
 
                         mDatabaseFal.addValueEventListener(new ValueEventListener() {
@@ -359,6 +353,7 @@ public class DilekActivity extends AppCompatActivity {
 
                                 falGonderSonuc = true;
                                 mProgress.dismiss();
+
                                 if(!isFinishing()){
 
                                     mProgressBasariliGonderme.show();
@@ -370,6 +365,7 @@ public class DilekActivity extends AppCompatActivity {
 
                             }
                         });
+
 
 
 

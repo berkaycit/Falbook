@@ -60,8 +60,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     private CollapsingToolbarLayout colToolbar;
     private boolean falYorumlandi;
     private SweetAlertDialog progressFalSil;
-    private DatabaseReference mDatabase, mDatabaseKullaniciFal;
-    private DatabaseReference mDatabaseKullanicilar;
+    private DatabaseReference mDatabase, mDatabaseKullanici;
     private FirebaseUser mBulunanKullanici;
     private TextView navKullaniciIsmi, navKullaniciMail;
     private SelectableRoundedImageView navKullaniciProfilFoto;
@@ -88,15 +87,19 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
         //(current user)
         mBulunanKullanici = mAuth.getCurrentUser();
 
-        //TODO: mDatabaseKullanıcılar ı keepsync yapmak tehlikeli olabilir. ->sürekli veri indirebilir.
         //database açmak,
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Fal");
-        mDatabaseKullanicilar = FirebaseDatabase.getInstance().getReference().child("Kullanicilar");
-        Query queryRef = mDatabase.orderByChild("gonderilme_tarihi");
+        if(mAuth.getCurrentUser()!=null){
 
-        //offline olduğu durumlar için
-        mDatabaseKullanicilar.keepSynced(true);
-        mDatabase.keepSynced(true);
+            String uid = mAuth.getCurrentUser().getUid();
+            mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
+            mDatabase = FirebaseDatabase.getInstance().getReference().child("Fal");
+
+            mDatabaseKullanici.keepSynced(true);
+
+            //offline olduğu durumlar için
+            mDatabaseKullanici.keepSynced(true);
+            mDatabase.keepSynced(true);
+        }
 
         //layout manager oluşturuyoruz
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -271,6 +274,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     public void handler(){
 
         menuleriHazirla();
+        navBarDataYerlestir();
 
     }
 
@@ -407,7 +411,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
         @Override
         protected Void doInBackground(Void... params) {
 
-            mDatabaseKullanicilar.addValueEventListener(new ValueEventListener() {
+            mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -416,6 +420,12 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
                     kullaniciIsmi = (String) dataSnapshot.child("isim").getValue();
                     kullaniciMail = (String) dataSnapshot.child("mail").getValue();
+
+                    if(dataSnapshot.child("telve").getValue() == null){
+
+                        giriseGonder();
+                        return;
+                    }
 
                     image = dataSnapshot.child("profilfoto").getValue().toString();
 

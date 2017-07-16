@@ -340,6 +340,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         kameraHandler();
         menuleriHazirla();
         textHandler();
+        navBarDataYerlestir();
 
     }
 
@@ -579,6 +580,12 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
                     kullaniciIsmi = (String) dataSnapshot.child("isim").getValue();
                     kullaniciMail = (String) dataSnapshot.child("mail").getValue();
+
+                    if(dataSnapshot.child("telve").getValue() == null){
+
+                        giriseGonder();
+                        return;
+                    }
 
                     image = dataSnapshot.child("profilfoto").getValue().toString();
 
