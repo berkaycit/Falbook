@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.security.Permission;
 import java.util.HashMap;
@@ -147,8 +148,10 @@ public class GirisActivity extends AppCompatActivity {
                         //offline olduğu durumlar için
                         mDatabaseKullanicilar.keepSynced(true);
 
+                        String kullaniciToken = FirebaseInstanceId.getInstance().getToken();
+
                         //kullanıcı bilgileri
-                        Kullanicilar girisKullanici = new Kullanicilar("", "", "", "", "", "", girisTelve, "default");
+                        Kullanicilar girisKullanici = new Kullanicilar("", "", "", "", "", "", girisTelve, "default", kullaniciToken);
 
                         mDatabaseKullanicilar.setValue(girisKullanici).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -188,10 +191,4 @@ public class GirisActivity extends AppCompatActivity {
         }
     }
 
-
-
-
 }
-
-
-

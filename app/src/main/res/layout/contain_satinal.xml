@@ -228,7 +228,7 @@
 
 
             <RelativeLayout
-                android:id="@+id/sonKutu"
+                android:id="@+id/satinalIzleKazan"
                 android:layout_width="250dp"
                 android:layout_height="110dp"
                 android:layout_column="1"
@@ -248,13 +248,13 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/imgTv"
-                    app:backgroundTint="@color/colorAccent"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_above="@+id/txtIzleyerekKazan"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/tv_icon" />
+                    android:background="@drawable/tv_icon"
+                    app:backgroundTint="@color/colorAccent" />
 
             </RelativeLayout>
 

@@ -9,12 +9,13 @@ public class Kullanicilar {
     private String dogum;
     private Integer telve;
     private String profilfoto;
+    private String cihazID;
 
     public Kullanicilar(){
 
     }
 
-    public Kullanicilar(String isim, String soyisim, String mail, String cinsiyet, String iliski, String dogum, Integer telve, String profilfoto) {
+    public Kullanicilar(String isim, String soyisim, String mail, String cinsiyet, String iliski, String dogum, Integer telve, String profilfoto, String cihazID) {
         this.isim = isim;
         this.soyisim = soyisim;
         this.mail = mail;
@@ -23,6 +24,7 @@ public class Kullanicilar {
         this.dogum = dogum;
         this.telve = telve;
         this.profilfoto = profilfoto;
+        this.cihazID = cihazID;
     }
 
     public Kullanicilar(String isim, String soyisim, String mail, String cinsiyet, String iliski, String dogum) {
