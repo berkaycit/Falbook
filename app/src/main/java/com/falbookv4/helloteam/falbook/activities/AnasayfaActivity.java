@@ -200,13 +200,20 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
                 new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Çıkış yapmak istiyor musunuz?")
                         .setContentText("Üye olmadıysanız bütün bilgilerinizi kaybedebilirsiniz!")
-                        .setConfirmText("Evet, Çıkış Yap")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        .setCancelText("Evet, Çıkış Yap")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
                                 mAuth.signOut();
                                 giriseGonder();
+                            }
+                        })
+                        .setConfirmText("Hayır")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
                             }
                         })
                         .show();

@@ -3,16 +3,22 @@ package com.falbookv4.helloteam.falbook.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.adcolony.sdk.AdColony;
 import com.anjlab.android.iab.v3.BillingProcessor;
@@ -60,32 +66,29 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     private InterstitialAd interstitialAd;
     private String base64EncodedPublicKey;
     private BillingProcessor billingProcessor;
+    static final String kucukTelve_id = "com.falbookv4.telve200";
+    private boolean telveSatinalmaAktif = false;
+    private AppCompatImageView tvIcon;
 
     public void init(){
 
-        //base64EncodedPublicKey = getString(R.string.base64encodedpublickey);
+        base64EncodedPublicKey = getString(R.string.base64encodedpublickey);
 
-        //MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        MobileAds.initialize(this, "ca-app-pub-9010511052067778/9309985844");
         //AdColony.configure()
 
         //ikinci parametreye key girilecek.
-        billingProcessor = new BillingProcessor(this, null, this);
+        billingProcessor = new BillingProcessor(this, base64EncodedPublicKey, this);
+        billingProcessor.initialize();
 
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId("ca-app-pub-9010511052067778/9309985844");
-
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                telveSatinAl(35);
-            }
-        });
 
         mAd = MobileAds.getRewardedVideoAdInstance(this);
         mAd.setRewardedVideoAdListener(this);
 
         izleKazan = (RelativeLayout) findViewById(R.id.satinalIzleKazan);
+        tvIcon = (AppCompatImageView) findViewById(R.id.imgTv);
 
         toolbarSatinal = (Toolbar) findViewById(R.id.toolbarSatinal);
         dusukTelve = (RelativeLayout) findViewById(R.id.dusukTelveSatinAl);
@@ -141,6 +144,25 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
                 bulunanTelve = ((Long) dataSnapshot.child("telve").getValue()).intValue();
                 uzerineEklenenTelve = bulunanTelve + eklenecekTelveSayisi;
+
+                if(telveSatinalmaAktif){
+                    telveSatinalmaAktif = false;
+
+                    Map<String, Object> telveSatinAlMap = new HashMap<>();
+                    telveSatinAlMap.put("telve",uzerineEklenenTelve);
+
+                    mDatabaseKullanici.updateChildren(telveSatinAlMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+
+                                //satın alım başarılı
+                            }
+                        }
+                    });
+
+                }
+
             }
 
             @Override
@@ -148,58 +170,6 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
             }
         });
-
-        alertSatinal.setTitle("" + eklenecekTelveSayisi + " Telve Satın Al");
-        alertSatinal.setMessage("Satın al sayfasına yönlendirileceksin");
-        alertSatinal.setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                Map<String, Object> telveSatinAlMap = new HashMap<>();
-                telveSatinAlMap.put("telve",uzerineEklenenTelve);
-
-                mDatabaseKullanici.updateChildren(telveSatinAlMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-
-                            //satın alım başarılı
-                        }
-                    }
-                });
-
-                /*
-                mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                        Map<String, Object> telveSatinAlMap = new HashMap<>();
-                        telveSatinAlMap.put("telve",uzerineEklenenTelve);
-
-                        mDatabaseKullanici.updateChildren(telveSatinAlMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-
-                                    //satın alım başarılı
-                                }
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-
-                });
-                */
-
-            }
-        });
-
-        alertSatinal.show();
 
     }
 
@@ -209,7 +179,8 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
             @Override
             public void onClick(View v) {
 
-                billingProcessor.purchase(SatinalActivity.this, "android.test.purchased");
+                billingProcessor.consumePurchase(kucukTelve_id);
+                billingProcessor.purchase(SatinalActivity.this, kucukTelve_id);
 
             }
         });
@@ -220,21 +191,22 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
         izleKazan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*
+
+                /*
                 if(interstitialAd.isLoaded()){
 
                     interstitialAd.show();
                 }
                 */
+
                 if(mAd.isLoaded()){
                     mAd.show();
                 }
+
             }
         });
 
     }
-
-
 
     public void handler(){
 
@@ -265,18 +237,22 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
                 .addNetworkExtrasBundle(AdColonyAdapter.class, AdColonyBundleBuilder.build())
                 .build();
         interstitialAd.loadAd(request);
-        */
+*/
+
+        mAd.loadAd("ca-app-pub-9010511052067778/9309985844", new AdRequest.Builder().addTestDevice("8B171216A18A2C889ADF71BBCC97E39A").build());
 
         if(!mAd.isLoaded()){
 
-            mAd.loadAd("ca-app-pub-9010511052067778/9309985844", new AdRequest.Builder().build());
+            //"8B171216A18A2C889ADF71BBCC97E39A"
+            mAd.loadAd("ca-app-pub-9010511052067778/9309985844", new AdRequest.Builder().addTestDevice("8B171216A18A2C889ADF71BBCC97E39A").build());
         }
+
     }
 
     @Override
     public void onRewardedVideoAdLoaded() {
         izleKazan.setEnabled(true);
-        izleKazan.setBackgroundColor(Color.BLUE);
+        izleKazan.setBackground(ContextCompat.getDrawable(getApplication(), R.drawable.satinalaktif_background));
     }
 
     @Override
@@ -297,7 +273,8 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
-        telveSatinAl(55);
+        telveSatinalmaAktif = true;
+        telveSatinAl(25);
     }
 
     @Override
@@ -337,6 +314,7 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     @Override
     public void onProductPurchased(String productId, TransactionDetails details) {
 
+        telveSatinalmaAktif = true;
         telveSatinAl(200);
     }
 

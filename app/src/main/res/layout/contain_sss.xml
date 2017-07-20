@@ -50,7 +50,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton2"
             android:paddingRight="10dp"
-            android:text="Soru 2"
+            android:text="İzle-Kazan çalışmıyor, neden?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -68,7 +68,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bos_yazi"
+                android:text="@string/izle_kazan"
                 android:textColor="#FFFFFF" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 

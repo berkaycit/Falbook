@@ -8,50 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:927116358916:android:1e1e8b0e8347881a",
-        "android_client_info": {
-          "package_name": "com.example.berka.falbookv3"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "927116358916-h7b0mbu6rfeuq2srue9gh46gh2gh3f8a.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.berka.falbookv3",
-            "certificate_hash": "9cd9074060f9befa9ee40aeb2eef449b94a42d10"
-          }
-        },
-        {
-          "client_id": "927116358916-4ib8fmm0hhkrd7ilejoa1r65joern9su.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBlncllMhzXiB2965FqRa6VxcjaRTfG_vw"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "927116358916-4ib8fmm0hhkrd7ilejoa1r65joern9su.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:927116358916:android:0b3dbe3cf3959b50",
         "android_client_info": {
           "package_name": "com.falbookv4.helloteam.falbook"

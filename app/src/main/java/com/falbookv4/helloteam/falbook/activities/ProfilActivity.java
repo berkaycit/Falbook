@@ -273,7 +273,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
             public void onClick(View view) {
 
                 String[] istenilenIzinler = {
-                        Manifest.permission.READ_EXTERNAL_STORAGE };
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
                 ProfilActivity.super.izinIste(istenilenIzinler, GALERIYE_ERISIM_REQUEST);
 
             }

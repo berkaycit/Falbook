@@ -110,8 +110,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
     public void init(){
 
-        genelLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayoutKafe);
-
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayoutKafe);
         mNavigationView = (NavigationView) findViewById(R.id.anaNavView);
@@ -155,7 +153,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                 strDogum = kafeTxtDogum.getText().toString();
                 strIliski = kafeTxtIliski.getText().toString();
 
-                //TODO: verilerin dolu olduğunu kontrol et
                 //fragment ın alabilmesi için yayın açıyorum
                 if(!TextUtils.isEmpty(strAd) && !TextUtils.isEmpty(strCinsiyet) && !TextUtils.isEmpty(strDogum)
                         && !TextUtils.isEmpty(strIliski) && kuculmusFoto1_uri != null && kucukProfilFoto2 !=null
@@ -170,7 +167,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                 }else{
 
                     Snackbar snacBilgiGuncellenemedi = Snackbar
-                            .make(genelLayout, "Bilgileriniz EKSİK", Snackbar.LENGTH_LONG);
+                            .make(mDrawerLayout, "Bilgileriniz EKSİK", Snackbar.LENGTH_LONG);
                     snacBilgiGuncellenemedi.show();
                 }
             }
@@ -378,13 +375,20 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                 new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Çıkış yapmak istiyor musunuz?")
                         .setContentText("Üye olmadıysanız bütün bilgilerinizi kaybedebilirsiniz!")
-                        .setConfirmText("Evet, Çıkış Yap")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        .setCancelText("Evet, Çıkış Yap")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
                                 mAuth.signOut();
                                 giriseGonder();
+                            }
+                        })
+                        .setConfirmText("Hayır")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
                             }
                         })
                         .show();
@@ -435,7 +439,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
                 //fotoğrafı alırken hata
             }
-
 
             @Override
             public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {

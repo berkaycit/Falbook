@@ -128,7 +128,7 @@ public class DilekActivity extends AppCompatActivity {
                     new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
                             dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
                 }
-                else if(bulunanTelve<=0){
+                else if(bulunanTelve<=0 && farkTelveSayisi<0){
                     Snackbar snacButunBilgi = Snackbar
                             .make(dilekGenelLayout, "Telve sayınız AZ", Snackbar.LENGTH_LONG);
                     snacButunBilgi.show();
