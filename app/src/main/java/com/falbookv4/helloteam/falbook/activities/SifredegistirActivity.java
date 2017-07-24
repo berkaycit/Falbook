@@ -60,6 +60,7 @@ public class SifredegistirActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent anasayfaToKafe = new Intent(SifredegistirActivity.this, KafeActivity.class);
+                anasayfaToKafe.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToKafe);
                 finish();
             }
@@ -72,11 +73,13 @@ public class SifredegistirActivity extends AppCompatActivity {
 
                     case R.id.menuAnasafaButon:
                         Intent intentToAnasayfa = new Intent(SifredegistirActivity.this, AnasayfaActivity.class);
+                        intentToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentToAnasayfa);
                         finish();
                         break;
                     case R.id.menuGelenfalButon:
                         Intent intentToFallarim = new Intent(SifredegistirActivity.this, GelenfallarActivity.class);
+                        intentToFallarim.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentToFallarim);
                         finish();
                         break;
@@ -153,12 +156,4 @@ public class SifredegistirActivity extends AppCompatActivity {
 
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sifredegistir);
-        init();
-        handler();
-    }
 }

@@ -122,6 +122,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
             @Override
             public void onClick(View view) {
                 Intent anasayfaToKafe = new Intent(ProfilActivity.this, KafeActivity.class);
+                anasayfaToKafe.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToKafe);
                 finish();
             }
@@ -134,11 +135,13 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
                     case R.id.menuAnasafaButon:
                         Intent intentToAnasayfa = new Intent(ProfilActivity.this, AnasayfaActivity.class);
+                        intentToAnasayfa.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentToAnasayfa);
                         finish();
                         break;
                     case R.id.menuGelenfalButon:
                         Intent intentToFallarim = new Intent(ProfilActivity.this, GelenfallarActivity.class);
+                        intentToFallarim.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentToFallarim);
                         finish();
                         break;
@@ -555,10 +558,8 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
     @Override
     public void onBackPressed() {
 
-        handlerIliski.removeCallbacksAndMessages(runnableIliski);
-        handlerCinsiyet.removeCallbacksAndMessages(runnableCinsiyet);
-
-        finish();
+        //handlerIliski.removeCallbacksAndMessages(runnableIliski);
+        //handlerCinsiyet.removeCallbacksAndMessages(runnableCinsiyet);
 
         super.onBackPressed();
     }

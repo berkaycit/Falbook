@@ -97,7 +97,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //kullanıcının giriş yapıp yapmadığını kontrol et
-        if (currentUser == null) {
+        if (currentUser == null && mDatabaseKullanici == null) {
             giriseGonder();
         }
     }
@@ -180,10 +180,12 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
                     case R.id.menuAnasafaButon:
                         Intent kafeToAnasayfa = new Intent(KafeActivity.this, AnasayfaActivity.class);
+                        kafeToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(kafeToAnasayfa);
                         break;
                     case R.id.menuGelenfalButon:
                         Intent anasayfaToFallarim = new Intent(KafeActivity.this, GelenfallarActivity.class);
+                        anasayfaToFallarim.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(anasayfaToFallarim);
                         break;
                 }
@@ -423,6 +425,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         else{
             super.onBackPressed();
             Intent kafeToAnasayfaBack = new Intent(KafeActivity.this, AnasayfaActivity.class);
+            kafeToAnasayfaBack.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(kafeToAnasayfaBack);
             finish();
         }

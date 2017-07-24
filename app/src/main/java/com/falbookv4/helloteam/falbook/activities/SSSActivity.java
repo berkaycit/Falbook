@@ -38,6 +38,7 @@ public class SSSActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent anasayfaToKafe = new Intent(SSSActivity.this, KafeActivity.class);
+                anasayfaToKafe.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToKafe);
                 finish();
             }
@@ -50,11 +51,13 @@ public class SSSActivity extends AppCompatActivity {
 
                     case R.id.menuAnasafaButon:
                         Intent intentToAnasayfa = new Intent(SSSActivity.this, AnasayfaActivity.class);
+                        intentToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentToAnasayfa);
                         finish();
                         break;
                     case R.id.menuGelenfalButon:
                         Intent intentToFallarim = new Intent(SSSActivity.this, GelenfallarActivity.class);
+                        intentToFallarim.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentToFallarim);
                         finish();
                         break;

@@ -46,11 +46,13 @@ public class FalbookhakkindaActivity extends AppCompatActivity {
 
                     case R.id.menuAnasafaButon:
                         Intent intentToAnasayfa = new Intent(FalbookhakkindaActivity.this, AnasayfaActivity.class);
+                        intentToAnasayfa.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentToAnasayfa);
                         finish();
                         break;
                     case R.id.menuGelenfalButon:
                         Intent intentToFallarim = new Intent(FalbookhakkindaActivity.this, GelenfallarActivity.class);
+                        intentToFallarim.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intentToFallarim);
                         finish();
                         break;
@@ -78,4 +80,5 @@ public class FalbookhakkindaActivity extends AppCompatActivity {
         init();
         handler();
     }
+
 }

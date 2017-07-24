@@ -100,6 +100,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(View view) {
                 Intent anasayfaToKafe = new Intent(AnasayfaActivity.this, KafeActivity.class);
+                anasayfaToKafe.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToKafe);
                 finish();
             }
@@ -115,6 +116,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
                         break;
                     case R.id.menuGelenfalButon:
                         Intent anasayfaToFallarim = new Intent(AnasayfaActivity.this, GelenfallarActivity.class);
+                        anasayfaToFallarim.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(anasayfaToFallarim);
                         finish();
                         break;
@@ -150,8 +152,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //kullanıcının giriş yapıp yapmadığını kontrol et
-        //TODO: kullanıcının db de kayıtlı olup olmadığını da kontrol e ekle
-        if (currentUser == null && mDatabaseKullanici != null) {
+        if (currentUser == null && mDatabaseKullanici == null) {
             giriseGonder();
         }
     }
@@ -182,16 +183,19 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
             case R.id.navProfiliniDuzenle:
                 Intent anasayfaToProfil = new Intent(AnasayfaActivity.this, ProfilActivity.class);
+                anasayfaToProfil.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToProfil);
                 break;
 
             case R.id.navSifreDegistir:
                 Intent anasayfaToSifredegistir = new Intent(AnasayfaActivity.this, SifredegistirActivity.class);
+                anasayfaToSifredegistir.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToSifredegistir);
                 break;
 
             case R.id.navFalbookHk:
                 Intent anasayfaToFalbookhk = new Intent(AnasayfaActivity.this, FalbookhakkindaActivity.class);
+                anasayfaToFalbookhk.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToFalbookhk);
                 break;
 
@@ -245,8 +249,11 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
             navigationViewKapat();
             //açık değilse bildiği işlemi yapsın
-        else
+        else{
             super.onBackPressed();
+            //bütün stackları sil ve programdan çık
+            finishAffinity();
+        }
     }
 
     public void anaBtnFonk() {

@@ -116,7 +116,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
         super.onStart();
 
         //kullanıcının giriş yapıp yapmadığını kontrol et
-        if (mBulunanKullanici == null) {
+        if (mBulunanKullanici == null && mDatabaseKullanici == null) {
             giriseGonder();
         }
 
@@ -137,7 +137,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
                 //RW de ki bilgiler
                 viewHolder.setKullanici(model.getIsim());
-                if(model.getFal_yorumu().isEmpty()){
+                if(model.getFal_yorumu() != null && model.getFal_yorumu().isEmpty() ){
                     viewHolder.setCardYorum("Falınız Yorumlanıyor");
                     falYorumlandi = false;
                 }else{
@@ -294,6 +294,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
             @Override
             public void onClick(View view) {
                 Intent anasayfaToKafe = new Intent(GelenfallarActivity.this, KafeActivity.class);
+                anasayfaToKafe.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToKafe);
             }
         });
@@ -305,8 +306,9 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
                     case R.id.menuAnasafaButon:
                         Intent gelenfalToAnasayfa = new Intent(GelenfallarActivity.this, AnasayfaActivity.class);
-                        finish();
+                        gelenfalToAnasayfa.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(gelenfalToAnasayfa);
+                        finish();
                         break;
                     case R.id.menuGelenfalButon:
                         break;
@@ -397,6 +399,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
         else{
             super.onBackPressed();
             Intent fallarToAnasayfaBack = new Intent(GelenfallarActivity.this, AnasayfaActivity.class);
+            fallarToAnasayfaBack.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(fallarToAnasayfaBack);
             finish();
         }
