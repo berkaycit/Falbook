@@ -150,7 +150,7 @@ public class MisafiruyeActivity extends AppCompatActivity {
                             } catch (FirebaseAuthUserCollisionException e) {
                                 errorMisafirKayit = "Hata, Böyle bir kullanıcı BULUNMAKTA!";
                             } catch (Exception e) {
-                                errorMisafirKayit = "BİLİNMEYEN hata!";
+                                errorMisafirKayit = "İnternetinizi kontrol edin!";
                                 e.printStackTrace();
                             }
 

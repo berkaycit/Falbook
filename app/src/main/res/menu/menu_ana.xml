@@ -10,7 +10,7 @@
 
     </item>
 
-    <item android:id="@+id/bosButon"
+    <item android:id="@+id/menuBosButon"
         android:enabled="true"
         app:showAsAction="never" />
 

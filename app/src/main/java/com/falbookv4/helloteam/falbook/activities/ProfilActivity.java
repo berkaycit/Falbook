@@ -13,6 +13,8 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -33,6 +35,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -151,6 +154,14 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         });
     }
 
+    public static void hideKeyboard(@NonNull Activity activity) {
+        // focuslanıp-focuslanmadığını kontrol et
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
 
     public void handler() {
 
@@ -189,12 +200,14 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
             @Override
             public void onClick(View view) {
 
+                hideKeyboard(ProfilActivity.this);
+
                 //hızlıca iki kere basarsa 2-3 tane açılmaması için
                 if (iliskiCooldown) {
 
                     iliskiCooldown = false;
 
-                    new AlertDialog.Builder(ProfilActivity.this)
+                    new AlertDialog.Builder(ProfilActivity.this, R.style.DialogThemeBg)
                             .setSingleChoiceItems(iliskiDurumlari, 0, null)
                             .setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -224,6 +237,8 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
             @Override
             public void onClick(View view) {
 
+                hideKeyboard(ProfilActivity.this);
+
                 Calendar now = Calendar.getInstance();
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         ProfilActivity.this,
@@ -242,12 +257,14 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
             @Override
             public void onClick(View v) {
 
+                hideKeyboard(ProfilActivity.this);
+
                 //hızlıca iki kere basarsa 2-3 tane açılmaması için
                 if (cinsiyetCoolDown) {
 
                     cinsiyetCoolDown = false;
 
-                    new AlertDialog.Builder(ProfilActivity.this)
+                    new AlertDialog.Builder(ProfilActivity.this, R.style.DialogThemeBg)
                             .setSingleChoiceItems(arrCinsiyet, 0, null)
                             .setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -274,6 +291,8 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         kullaniciProfilFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                hideKeyboard(ProfilActivity.this);
 
                 String[] istenilenIzinler = {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};

@@ -191,4 +191,7 @@ public class GirisActivity extends AppCompatActivity {
         }
     }
 
+
+
+
 }

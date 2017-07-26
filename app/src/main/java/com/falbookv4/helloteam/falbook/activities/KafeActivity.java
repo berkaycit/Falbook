@@ -1,5 +1,7 @@
 package com.falbookv4.helloteam.falbook.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,6 +27,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -154,13 +157,12 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                 strIliski = kafeTxtIliski.getText().toString();
 
                 //fragment ın alabilmesi için yayın açıyorum
+                //&& kuculmusFoto1_uri != null && kucukProfilFoto2 !=null && kuculmusFoto3_uri != null
                 if(!TextUtils.isEmpty(strAd) && !TextUtils.isEmpty(strCinsiyet) && !TextUtils.isEmpty(strDogum)
-                        && !TextUtils.isEmpty(strIliski) && kuculmusFoto1_uri != null && kucukProfilFoto2 !=null
-                        && kuculmusFoto3_uri != null) {
+                        && !TextUtils.isEmpty(strIliski)) {
 
                     EventBus.getDefault().postSticky(new GelenfalEvent(strAd, strCinsiyet, strDogum,
-                            strIliski, kuculmusFoto1_byte, kuculmusFoto2_byte, kuculmusFoto3_byte,
-                            kuculmusFoto1_uri, kuculmusFoto2_uri, kuculmusFoto3_uri));
+                            strIliski, kuculmusFoto1_byte, kuculmusFoto2_byte, kuculmusFoto3_byte));
 
                     Intent kafeToFalcilar = new Intent(KafeActivity.this, FalcilarActivity.class);
                     startActivity(kafeToFalcilar);
@@ -172,6 +174,8 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                 }
             }
         });
+
+        botToolbar.setSelectedItemId(R.id.menuBosButon);
 
         botToolbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -220,6 +224,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             @Override
             public void onClick(View view) {
 
+                hideKeyboard(KafeActivity.this);
                 kafeIzni();
                 kam1Durum = true;
             }
@@ -229,6 +234,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             @Override
             public void onClick(View view) {
 
+                hideKeyboard(KafeActivity.this);
                 kafeIzni();
                 kam2Durum = true;
             }
@@ -238,10 +244,20 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             @Override
             public void onClick(View view) {
 
+                hideKeyboard(KafeActivity.this);
                 kafeIzni();
                 kam3Durum = true;
             }
         });
+    }
+
+    public static void hideKeyboard(@NonNull Activity activity) {
+        // focuslanıp-focuslanmadığını kontrol et
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     private void textHandler(){
@@ -251,12 +267,14 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             @Override
             public void onClick(View view) {
 
+                hideKeyboard(KafeActivity.this);
+
                 //hızlıca iki kere basarsa 2-3 tane açılmaması için
                 if (iliskiCooldown) {
 
                     iliskiCooldown = false;
 
-                    new AlertDialog.Builder(KafeActivity.this)
+                    new AlertDialog.Builder(KafeActivity.this, R.style.DialogThemeBg)
                             .setSingleChoiceItems(iliskiDurumlari, 0, null)
                             .setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -285,6 +303,8 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             @Override
             public void onClick(View view) {
 
+                hideKeyboard(KafeActivity.this);
+
                 Calendar now = Calendar.getInstance();
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         KafeActivity.this,
@@ -303,12 +323,14 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             @Override
             public void onClick(View v) {
 
+                hideKeyboard(KafeActivity.this);
+
                 //hızlıca iki kere basarsa 2-3 tane açılmaması için
                 if (cinsiyetCoolDown) {
 
                     cinsiyetCoolDown = false;
 
-                    new AlertDialog.Builder(KafeActivity.this)
+                    new AlertDialog.Builder(KafeActivity.this, R.style.DialogThemeBg)
                             .setSingleChoiceItems(arrCinsiyet, 0, null)
                             .setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -452,6 +474,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                     if (resultCode != RESULT_CANCELED) {
 
                         kucukProfilFoto1 = null;
+
                         try {
                             kucukProfilFoto1 = new Compressor(KafeActivity.this)
                                     .setMaxWidth(128)
@@ -461,9 +484,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
-                        //kuculmusFoto1_file = imageFile;
-                        kuculmusFoto1_uri = data.getData();
 
                         //fotografi seçtikten sonra image ata
                         imgKam1.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto1, 128, 128, true));
@@ -492,7 +512,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                         }
 
                         //kuculmusFoto2_file = imageFile;
-                        kuculmusFoto2_uri = data.getData();
+                        //kuculmusFoto2_uri = data.getData();
 
                         //fotografi seçtikten sonra image ata
                         imgKam2.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto2, 128, 128, true));
@@ -521,7 +541,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                         }
 
                         //kuculmusFoto3_file = imageFile;
-                        kuculmusFoto3_uri = data.getData();
+                        //kuculmusFoto3_uri = data.getData();
 
                         //fotografi seçtikten sonra image ata
                         imgKam3.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto3, 128, 128, true));

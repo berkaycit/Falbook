@@ -1,9 +1,15 @@
 package com.falbookv4.helloteam.falbook.activities;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +35,8 @@ public class FaldetayActivity extends AppCompatActivity {
     private TextView bakilaninIsmi, falDetayYorum, falDetayTarih;
     private ImageView falDetayFoto;
     private String baktiranKisi, strCinsiyet = "", strBaktiran, strFalFoto1, falAciklamasi, strTarih;
+    private FloatingActionButton fbFalGonder;
+    private BottomNavigationView botToolbar;
 
     public void init(){
 
@@ -53,10 +61,52 @@ public class FaldetayActivity extends AppCompatActivity {
         //hangi fal a bastığını anlamak için yönlendiren activity den key bilgisini alıcaz
         strFalKey = getIntent().getExtras().getString("fal_id");
 
+        fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
+        botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
 
     }
 
+    private void menuleriHazirla() {
+
+        fbFalGonder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent anasayfaToKafe = new Intent(FaldetayActivity.this, KafeActivity.class);
+                anasayfaToKafe.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(anasayfaToKafe);
+                finish();
+            }
+        });
+
+        botToolbar.setSelectedItemId(R.id.menuBosButon);
+
+        botToolbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.menuAnasafaButon:
+                        Intent intentToAnasayfa = new Intent(FaldetayActivity.this, AnasayfaActivity.class);
+                        intentToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intentToAnasayfa);
+                        finish();
+                        break;
+                    case R.id.menuGelenfalButon:
+                        Intent intentToFallarim = new Intent(FaldetayActivity.this, GelenfallarActivity.class);
+                        intentToFallarim.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intentToFallarim);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
     public void handler(){
+
+        menuleriHazirla();
 
         //toolbar ı action bar ın özelliklerinden faydalanmasını sağlıyoruz
         setSupportActionBar(faldetayToolbar);

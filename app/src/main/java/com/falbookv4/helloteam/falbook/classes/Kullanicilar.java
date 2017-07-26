@@ -36,6 +36,14 @@ public class Kullanicilar {
         this.dogum = dogum;
     }
 
+    public String getCihazID() {
+        return cihazID;
+    }
+
+    public void setCihazID(String cihazID) {
+        this.cihazID = cihazID;
+    }
+
     public Integer getTelve() {
         return telve;
     }

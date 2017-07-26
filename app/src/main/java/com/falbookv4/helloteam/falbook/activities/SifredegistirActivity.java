@@ -66,6 +66,8 @@ public class SifredegistirActivity extends AppCompatActivity {
             }
         });
 
+        botToolbar.setSelectedItemId(R.id.menuBosButon);
+
         botToolbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

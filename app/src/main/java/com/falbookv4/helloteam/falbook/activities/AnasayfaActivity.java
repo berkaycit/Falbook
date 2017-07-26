@@ -107,6 +107,8 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         });
 
 
+        botToolbar.setSelectedItemId(R.id.menuAnasafaButon);
+
         botToolbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

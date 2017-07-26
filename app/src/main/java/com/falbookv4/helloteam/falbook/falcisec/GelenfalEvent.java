@@ -11,8 +11,7 @@ public class GelenfalEvent {
     private Uri uriKucukFoto1, uriKucukFoto2, uriKucukFoto3;
 
     public GelenfalEvent(String isim, String cinsiyet, String dogum, String iliski,
-                         byte[] kucukFoto1, byte[] kucukFoto2, byte[] kucukFoto3,
-                         Uri uriKucukFoto1, Uri uriKucukFoto2, Uri uriKucukFoto3) {
+                         byte[] kucukFoto1, byte[] kucukFoto2, byte[] kucukFoto3) {
         this.isim = isim;
         this.cinsiyet = cinsiyet;
         this.dogum = dogum;
@@ -20,9 +19,6 @@ public class GelenfalEvent {
         this.kucukFoto1 = kucukFoto1;
         this.kucukFoto2 = kucukFoto2;
         this.kucukFoto3 = kucukFoto3;
-        this.uriKucukFoto1 = uriKucukFoto1;
-        this.uriKucukFoto2 = uriKucukFoto2;
-        this.uriKucukFoto3 = uriKucukFoto3;
     }
 
     public Uri getUriKucukFoto2() {

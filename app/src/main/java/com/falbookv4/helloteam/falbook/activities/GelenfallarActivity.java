@@ -296,8 +296,12 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
                 Intent anasayfaToKafe = new Intent(GelenfallarActivity.this, KafeActivity.class);
                 anasayfaToKafe.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToKafe);
+                finish();
             }
         });
+
+
+        botToolbar.setSelectedItemId(R.id.menuGelenfalButon);
 
         botToolbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.RandomString;
 import com.falbookv4.helloteam.falbook.falcisec.Falci1telveEvent;
 import com.falbookv4.helloteam.falbook.falcisec.Falci2telveEvent;
 import com.falbookv4.helloteam.falbook.falcisec.Falci3telveEvent;
@@ -75,8 +76,6 @@ public class DilekActivity extends AppCompatActivity {
     private boolean gonderCooldown = true, asyncDonenSonuc = false, falGonderebilir = true;
     private int farkTelveSayisi, telveBedeli, yeniTelveSayiniz, bulunanTelve;
 
-
-    //TODO: telve eksiltmeyi ekle.
     @Subscribe(sticky = true)
     public void onGelenfalEvent(GelenfalEvent event){
         //kullanıcı gönderilerini alıyoruz
@@ -87,9 +86,6 @@ public class DilekActivity extends AppCompatActivity {
         dilekKucukFoto1 = event.getKucukFoto1();
         dilekKucukFoto2 = event.getKucukFoto2();
         dilekKucukFoto3 = event.getKucukFoto3();
-        uriKuculmusFoto1 = event.getUriKucukFoto1();
-        uriKuculmusFoto2 = event.getUriKucukFoto2();
-        uriKuculmusFoto3 = event.getUriKucukFoto3();
     }
 
     @Subscribe(sticky = true)
@@ -128,9 +124,9 @@ public class DilekActivity extends AppCompatActivity {
                     new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
                             dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
                 }
-                else if(bulunanTelve<=0 && farkTelveSayisi<0){
+                else if(bulunanTelve<=0 && farkTelveSayisi<=0){
                     Snackbar snacButunBilgi = Snackbar
-                            .make(dilekGenelLayout, "Telve sayınız AZ", Snackbar.LENGTH_LONG);
+                            .make(dilekGenelLayout, "Telve sayınız TÜKENDİ", Snackbar.LENGTH_LONG);
                     snacButunBilgi.show();
                 }
 
@@ -251,10 +247,11 @@ public class DilekActivity extends AppCompatActivity {
             String kullaniciID = mAuth.getCurrentUser().getUid();
             Random random = new Random();
             int randomSayi = random.nextInt(30);
+            RandomString randomDizi = new RandomString(5);
 
-            StorageReference filepath1 = mStorageKahve.child("Fal_Fotolari1").child(uriKuculmusFoto1.getLastPathSegment() + kullaniciID + "" + randomSayi);
-            StorageReference filepath2 = mStorageKahve.child("Fal_Fotolari2").child(uriKuculmusFoto2.getLastPathSegment() + kullaniciID + "" + randomSayi);
-            StorageReference filepath3 = mStorageKahve.child("Fal_Fotolari3").child(uriKuculmusFoto3.getLastPathSegment() + kullaniciID + "" + randomSayi);
+            StorageReference filepath1 = mStorageKahve.child("Fal_Fotolari1").child(kullaniciID + "" + randomDizi);
+            StorageReference filepath2 = mStorageKahve.child("Fal_Fotolari2").child(kullaniciID + "" + randomDizi);
+            StorageReference filepath3 = mStorageKahve.child("Fal_Fotolari3").child(kullaniciID + "" + randomDizi);
 
             //database de fal ın altında->uid-> push yaparak(random id) oluştur
             final DatabaseReference yeniPost = mDatabaseFal.child(mBulunanKullanici.getUid()).push();
@@ -410,3 +407,4 @@ public class DilekActivity extends AppCompatActivity {
 
 
 }
+
