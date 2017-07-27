@@ -39,6 +39,7 @@ public class MisafiruyeActivity extends AppCompatActivity {
     private SweetAlertDialog mProgressMisafirKayit;
     private Button btnMisafirUyeOlustur;
     private DatabaseReference mDatabaseKullanici;
+    private String strAd, strSoyad;
 
     public void init(){
 

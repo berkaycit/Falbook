@@ -51,6 +51,7 @@ public class Falci2 extends Fragment{
 
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabaseFalcilar = FirebaseDatabase.getInstance().getReference().child("Falcilar");
+        mDatabaseFalcilar.keepSynced(true);
     }
 
     private void falciDataAtamasi(){
@@ -97,7 +98,7 @@ public class Falci2 extends Fragment{
         final ImageView imageFalci2 = (ImageView) genelLayout.findViewById(R.id.imgFalci);
 
         //picasso framework ü kullanarak imajı yükle
-        Picasso.with(ctx).load(image).networkPolicy(NetworkPolicy.OFFLINE).into(imageFalci2, new Callback() {
+        Picasso.with(ctx).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.falcifotogbir).into(imageFalci2, new Callback() {
             @Override
             public void onSuccess() {
 

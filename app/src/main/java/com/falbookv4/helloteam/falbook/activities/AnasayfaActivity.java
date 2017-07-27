@@ -334,7 +334,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
                     strFalSayisi = "" + telveSayisi + " TELVENİZ\nVAR" + "";
                     txtTelveSayisi.setText(strFalSayisi);
 
-                    EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
+                    //EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
 
                     image = dataSnapshot.child("profilfoto").getValue().toString();
 

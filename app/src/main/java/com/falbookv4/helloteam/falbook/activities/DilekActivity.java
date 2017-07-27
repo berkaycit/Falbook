@@ -74,7 +74,8 @@ public class DilekActivity extends AppCompatActivity {
     private SweetAlertDialog mProgress, mProgressBasariliGonderme;
     private String strDilek = "";
     private boolean gonderCooldown = true, asyncDonenSonuc = false, falGonderebilir = true;
-    private int farkTelveSayisi, telveBedeli, yeniTelveSayiniz, bulunanTelve;
+    private int farkTelveSayisi, telveBedeli, yeniTelveSayiniz, bulunanTelve, telveKontrolSayi;
+    private DatabaseReference connectedRef;
 
     @Subscribe(sticky = true)
     public void onGelenfalEvent(GelenfalEvent event){
@@ -111,37 +112,68 @@ public class DilekActivity extends AppCompatActivity {
 
         strDilek = txtDilek.getText().toString();
 
-        mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+        connectedRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
 
-                bulunanTelve = ((Long) dataSnapshot.child("telve").getValue()).intValue();
+                    mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(farkTelveSayisi>=0 && falGonderebilir && bulunanTelve>0){
-                    falGonderebilir = false;
-                    farkTelveSayisi = bulunanTelve - telveBedeli;
-                    yeniTelveSayiniz = farkTelveSayisi;
-                    new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
-                            dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
+                            bulunanTelve = ((Long) dataSnapshot.child("telve").getValue()).intValue();
+
+                            if(farkTelveSayisi>=0 && falGonderebilir && bulunanTelve>0){
+                                falGonderebilir = false;
+                                farkTelveSayisi = bulunanTelve - telveBedeli;
+                                yeniTelveSayiniz = farkTelveSayisi;
+                                new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
+                                        dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
+                            }
+                            else if(bulunanTelve<=0 && farkTelveSayisi<=0){
+                                Snackbar snacButunBilgi = Snackbar
+                                        .make(dilekGenelLayout, "Telve sayınız TÜKENDİ", Snackbar.LENGTH_LONG);
+                                snacButunBilgi.show();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                            mProgress.hide();
+
+                            Snackbar snacGonderilemedi = Snackbar
+                                    .make(dilekGenelLayout, "Falınız GÖNDERİLEMEDİ.", Snackbar.LENGTH_LONG);
+                            snacGonderilemedi.show();
+
+                        }
+                    });
+
+
+
+                } else {
+                    new SweetAlertDialog(DilekActivity.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Hata")
+                            .setConfirmText("Tamam")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.cancel();
+                                }
+                            })
+                            .setContentText("İnternetinizi kontrol ediniz!")
+                            .show();
                 }
-                else if(bulunanTelve<=0 && farkTelveSayisi<=0){
-                    Snackbar snacButunBilgi = Snackbar
-                            .make(dilekGenelLayout, "Telve sayınız TÜKENDİ", Snackbar.LENGTH_LONG);
-                    snacButunBilgi.show();
-                }
-
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onCancelled(DatabaseError error) {
             }
         });
 
-
-
     }
-
 
     public void init(){
 
@@ -155,6 +187,8 @@ public class DilekActivity extends AppCompatActivity {
 
         mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").
                 child(mBulunanKullanici.getUid()); //database ref -> kullanıcıların altına kullanıcı id leri
+
+        connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
 
         dilekToolbar = (Toolbar) findViewById(R.id.toolbarDilek);
 
@@ -178,8 +212,6 @@ public class DilekActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
 
     }
 
@@ -328,6 +360,7 @@ public class DilekActivity extends AppCompatActivity {
                         yeniPost.child("uid").setValue(mBulunanKullanici.getUid());
                         yeniPost.child("fal_yorumu").setValue(fal_aciklamasi);
                         yeniPost.child("fal_dilek").setValue(dilek_val);
+                        yeniPost.child("harcanan_telve").setValue(telveBedeli);
 
 
                         Map<String, Object> updateTelveMap = new HashMap<>();
@@ -360,10 +393,14 @@ public class DilekActivity extends AppCompatActivity {
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
+                                mProgress.hide();
+
+                                Snackbar snacGonderilemedi = Snackbar
+                                        .make(dilekGenelLayout, "Falınız GÖNDERİLEMEDİ.", Snackbar.LENGTH_LONG);
+                                snacGonderilemedi.show();
+
                             }
                         });
-
-
 
 
                     }else{

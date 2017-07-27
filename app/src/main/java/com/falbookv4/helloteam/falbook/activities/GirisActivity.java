@@ -50,7 +50,6 @@ public class GirisActivity extends AppCompatActivity {
         btnKullaniciGirisi = (Button) findViewById(R.id.btnGirisKullaniciGiris);
         btnKayitOl = (Button) findViewById(R.id.btnGirisKayitOl);
 
-
         mProgressMisafir = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
 
         mAuth = FirebaseAuth.getInstance();
@@ -134,6 +133,84 @@ public class GirisActivity extends AppCompatActivity {
 
             //anonim olarak girişi sağlıyoruz.
             final Task<AuthResult> taskResult = mAuth.signInAnonymously();
+
+            taskResult.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if(task.isSuccessful()){
+
+                        //(current user)
+                        mBulunanKullanici = mAuth.getCurrentUser();
+                        String uid = mBulunanKullanici.getUid();
+
+                        mDatabaseKullanicilar = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
+                        //offline olduğu durumlar için
+                        mDatabaseKullanicilar.keepSynced(true);
+
+                        String kullaniciToken = FirebaseInstanceId.getInstance().getToken();
+
+                        //kullanıcı bilgileri
+                        Kullanicilar girisKullanici = new Kullanicilar("", "", "", "", "", "", girisTelve, "default", kullaniciToken);
+
+                        mDatabaseKullanicilar.setValue(girisKullanici).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                if(task.isSuccessful()){
+
+                                    misafirGirisDurumu = true;
+                                    mProgressMisafir.dismiss();
+
+                                    Intent girisToAnasayfa = new Intent(GirisActivity.this, AnasayfaActivity.class);
+                                    girisToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(girisToAnasayfa);
+                                    finish();
+                                }
+
+                                else{
+
+                                    misafirGirisDurumu = false;
+                                    mProgressMisafir.hide();
+
+                                    Snackbar snacMisafirGirisiYapilamadi = Snackbar
+                                            .make(girisMainLayout, "Giriş Yapılamadı", Snackbar.LENGTH_LONG);
+                                    snacMisafirGirisiYapilamadi.show();
+                                }
+                            }
+                        });
+
+                    }else {
+
+                        mProgressMisafir.hide();
+
+                        String errorGirisHata = "";
+                        try {
+                            throw taskResult.getException();
+                        } catch (Exception e) {
+
+                            new SweetAlertDialog(GirisActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Hata")
+                                    .setConfirmText("Tamam")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.cancel();
+                                        }
+                                    })
+                                    .setContentText("İnternetinizi kontrol ediniz!")
+                                    .show();
+
+                            errorGirisHata = "İnternetinizi kontrol edin!";
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                }
+            });
+
+            /*
             taskResult.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
@@ -180,12 +257,27 @@ public class GirisActivity extends AppCompatActivity {
                             }
                         });
 
+                    }else{
+
+                        mProgressMisafir.hide();
+
+                        String errorGirisHata = "";
+                        try {
+                            throw taskResult.getException();
+                        } catch (Exception e) {
+                            errorGirisHata = "İnternetinizi kontrol edin!";
+                            e.printStackTrace();
+                        }
+
+                        Snackbar snacProfilResmiHata = Snackbar
+                                .make(girisMainLayout, errorGirisHata, Snackbar.LENGTH_LONG);
+                        snacProfilResmiHata.show();
 
                     }
 
                 }
             });
-
+            */
 
             return misafirGirisDurumu;
         }

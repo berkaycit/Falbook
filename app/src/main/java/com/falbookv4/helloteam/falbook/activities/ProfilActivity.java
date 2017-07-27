@@ -3,8 +3,9 @@ package com.falbookv4.helloteam.falbook.activities;
 import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -18,7 +19,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -27,11 +27,10 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.media.VolumeProviderCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +47,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.joooonho.SelectableRoundedImageView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -124,6 +125,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         fbFalGonder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent anasayfaToKafe = new Intent(ProfilActivity.this, KafeActivity.class);
                 anasayfaToKafe.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToKafe);
@@ -311,12 +313,14 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         profilTxtDogum.setText(tarihDogum);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profil);
         init();
         handler();
+
     }
 
 
@@ -416,6 +420,18 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
                     }else{
                         fotoYuklenmeSonuc = false;
+
+                        String errorProfilResmi = "";
+                        try {
+                            throw task.getException();
+                        } catch (Exception e) {
+                            errorProfilResmi = "İnternetinizi kontrol edin!";
+                            e.printStackTrace();
+                        }
+
+                        Snackbar snacProfilResmiHata = Snackbar
+                                .make(profilLayout, errorProfilResmi, Snackbar.LENGTH_LONG);
+                        snacProfilResmiHata.show();
                     }
 
                 }
@@ -608,6 +624,9 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         handlerCinsiyet.removeCallbacksAndMessages(runnableCinsiyet);
 
         super.onDestroy();
+
+        Log.d("ProfilActivity", "Destroy Edildi");
+
     }
 
     @Override

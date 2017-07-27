@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v13.app.ActivityCompat;
@@ -68,7 +69,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
     private static final String TAG = "KafeActivity";
     private static final int KAFE_IZIN_REQUEST_CODE = 300;
-    private static final int REQUEST_CAMERA = 301;
+    private static final int KAMERA_IZIN_REQUEST_CODE = 305;
     private DrawerLayout genelLayout;
     private ImageButton imgAnasayfa;
     private Toolbar toolbar, toolbarKafe;
@@ -93,6 +94,8 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
     private DatabaseReference mDatabaseKullanici;
     private TextView navKullaniciIsmi, navKullaniciMail;
     private SelectableRoundedImageView navKullaniciProfilFoto;
+    private FloatingActionButton fbFalGonder;
+    private boolean fotoYerlesti1, fotoYerlesti2 , fotoYerlesti3;
 
     @Override
     protected void onStart() {
@@ -134,6 +137,8 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         handlerIliski = new Handler();
         handlerCinsiyet = new Handler();
 
+        fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
+
 
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser()!=null){
@@ -145,7 +150,25 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
     }
 
+
     private void menuleriHazirla(){
+
+        fbFalGonder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(!fotoYerlesti1){
+                    kam1Durum = true;
+                }else if(!fotoYerlesti2){
+                    kam2Durum = true;
+                }else if(!fotoYerlesti3){
+                    kam3Durum = true;
+                }
+
+                kameraIzin();
+            }
+        });
 
         btnFalGonder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,6 +229,13 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
     }
 
+    private void kameraIzin(){
+
+        String[] istenilenIzinler = {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        KafeActivity.super.izinIste(istenilenIzinler, KAMERA_IZIN_REQUEST_CODE);
+    }
+
     private void kafeIzni(){
 
         String[] istenilenIzinler = {
@@ -215,7 +245,15 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
     @Override
     public void izinVerildi(int requestCode) {
-        EasyImage.openChooserWithGallery(KafeActivity.this, "Telve Fotoğrafınız", 0);
+        if(requestCode == KAFE_IZIN_REQUEST_CODE){
+
+            EasyImage.openChooserWithGallery(KafeActivity.this, "Telve Fotoğrafınız", 0);
+        }
+
+        if(requestCode == KAMERA_IZIN_REQUEST_CODE){
+
+            EasyImage.openCamera(KafeActivity.this, 0);
+        }
     }
 
     private void kameraHandler(){
@@ -467,6 +505,91 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
             @Override
             public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
+/*
+                switch (yerlesecegiDeger){
+
+                    case 0:
+                        if (resultCode != RESULT_CANCELED) {
+
+                            kucukProfilFoto1 = null;
+
+                            try {
+                                kucukProfilFoto1 = new Compressor(KafeActivity.this)
+                                        .setMaxWidth(128)
+                                        .setMaxHeight(128)
+                                        .setQuality(50)
+                                        .compressToBitmap(imageFile);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            imgKam1.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto1, 128, 128, true));
+                            yerlesecegiDeger++;
+                        }
+                        break;
+
+                    case 1:
+                        if (resultCode != RESULT_CANCELED) {
+
+                            kucukProfilFoto2 = null;
+
+                            try {
+                                kucukProfilFoto2 = new Compressor(KafeActivity.this)
+                                        .setMaxWidth(128)
+                                        .setMaxHeight(128)
+                                        .setQuality(50)
+                                        .compressToBitmap(imageFile);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            imgKam2.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto2, 128, 128, true));
+                            yerlesecegiDeger++;
+                        }
+                        break;
+
+                    case 2:
+                        if (resultCode != RESULT_CANCELED) {
+
+                            kucukProfilFoto3 = null;
+
+                            try {
+                                kucukProfilFoto3 = new Compressor(KafeActivity.this)
+                                        .setMaxWidth(128)
+                                        .setMaxHeight(128)
+                                        .setQuality(50)
+                                        .compressToBitmap(imageFile);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            imgKam3.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto3, 128, 128, true));
+                            yerlesecegiDeger++;
+                        }
+                        break;
+
+                    default:
+                        if (resultCode != RESULT_CANCELED) {
+
+                            kucukProfilFoto1 = null;
+
+                            try {
+                                kucukProfilFoto1 = new Compressor(KafeActivity.this)
+                                        .setMaxWidth(128)
+                                        .setMaxHeight(128)
+                                        .setQuality(50)
+                                        .compressToBitmap(imageFile);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            imgKam1.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto1, 128, 128, true));
+                            //yerlesecegiDeger++;
+                        }
+                        break;
+                }
+*/
+
                 if(kam1Durum) {
 
                     kam1Durum = false;
@@ -487,6 +610,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
                         //fotografi seçtikten sonra image ata
                         imgKam1.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto1, 128, 128, true));
+                        fotoYerlesti1 = true;
 
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         kucukProfilFoto1.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -511,11 +635,9 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                             e.printStackTrace();
                         }
 
-                        //kuculmusFoto2_file = imageFile;
-                        //kuculmusFoto2_uri = data.getData();
-
                         //fotografi seçtikten sonra image ata
                         imgKam2.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto2, 128, 128, true));
+                        fotoYerlesti2 = true;
 
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         kucukProfilFoto2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -540,11 +662,9 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                             e.printStackTrace();
                         }
 
-                        //kuculmusFoto3_file = imageFile;
-                        //kuculmusFoto3_uri = data.getData();
-
                         //fotografi seçtikten sonra image ata
                         imgKam3.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto3, 128, 128, true));
+                        fotoYerlesti3 = true;
 
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         kucukProfilFoto3.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -561,10 +681,12 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                     File photoFile = EasyImage.lastlyTakenButCanceledPhoto(KafeActivity.this);
                     if (photoFile != null) photoFile.delete();
                     kam1Durum = false; kam2Durum = false; kam3Durum = false;
+                    fotoYerlesti1 = false; fotoYerlesti2 = false; fotoYerlesti3 = false;
                 }
 
                 if(source == EasyImage.ImageSource.GALLERY){
                     kam1Durum = false; kam2Durum = false; kam3Durum = false;
+                    fotoYerlesti1 = false; fotoYerlesti2 = false; fotoYerlesti3 = false;
                 }
 
             }
