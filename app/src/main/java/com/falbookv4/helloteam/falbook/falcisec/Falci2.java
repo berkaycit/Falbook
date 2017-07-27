@@ -36,7 +36,7 @@ public class Falci2 extends Fragment{
     private FrameLayout genelLayout;
     private Button btnGonder;
     String gonderenKisininIsmi = "";
-    private int falciBedel = 100;
+    private int falciBedel;
     private TextView falciIsmi, falciAciklamasi, falciTelveSayisi;
 
     private StorageReference mStorage;
@@ -73,6 +73,8 @@ public class Falci2 extends Fragment{
         mFalci2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                falciBedel = ((Long)dataSnapshot.child("Falci_Telve").getValue()).intValue();
 
                 falciIsmi.setText(dataSnapshot.child("Falci_Ismi").getValue().toString());
                 falciAciklamasi.setText(dataSnapshot.child("Falci_Aciklamasi").getValue().toString());

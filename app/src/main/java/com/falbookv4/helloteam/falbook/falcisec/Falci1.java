@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class Falci1 extends Fragment{
     private FrameLayout genelLayout;
     private Button btnGonder;
     String gonderenKisininIsmi = "";
-    private int falciBedel = 50;
+    private int falciBedel;
     private TextView falciIsmi, falciAciklamasi, falciTelveSayisi;
     private StorageReference mStorage;
     private DatabaseReference mDatabaseFalcilar, mFalci1, mFalci1Foto;
@@ -74,6 +75,8 @@ public class Falci1 extends Fragment{
         mFalci1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                falciBedel = ((Long)dataSnapshot.child("Falci_Telve").getValue()).intValue();
 
                 falciIsmi.setText(dataSnapshot.child("Falci_Ismi").getValue().toString());
                 falciAciklamasi.setText(dataSnapshot.child("Falci_Aciklamasi").getValue().toString());
@@ -117,6 +120,7 @@ public class Falci1 extends Fragment{
 
 
     public void handler(){
+
 
         falciDataAtamasi();
 

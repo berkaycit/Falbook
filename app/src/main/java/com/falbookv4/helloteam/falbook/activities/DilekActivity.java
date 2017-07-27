@@ -1,6 +1,7 @@
 package com.falbookv4.helloteam.falbook.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,7 +65,7 @@ public class DilekActivity extends AppCompatActivity {
     private Toolbar dilekToolbar;
     private EditText txtDilek;
     private Button btnGonder;
-    String dilekIsim, dilekIliski, dilekDogum, dilekCinsiyet, falGonderilmeTarihi, fal_aciklamasi = "";
+    String dilekIsim, dilekIliski, dilekDogum, dilekCinsiyet, falGonderilmeTarihi, fal_aciklamasi = "", strFalciIsmi;
     byte[] dilekKucukFoto1, dilekKucukFoto2, dilekKucukFoto3;
     boolean falGonderSonuc = false;
     private FirebaseAuth mAuth;
@@ -443,5 +445,34 @@ public class DilekActivity extends AppCompatActivity {
     }
 
 
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {}
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        deleteCache(this);
+        super.onDestroy();
+    }
 }
 

@@ -1,5 +1,6 @@
 package com.falbookv4.helloteam.falbook.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -48,6 +49,7 @@ import com.jirbo.adcolony.AdColonyBundleBuilder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -307,6 +309,7 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     @Override
     public void onDestroy() {
         mAd.destroy(this);
+        deleteCache(this);
 
         if(billingProcessor != null){
             billingProcessor.release();
@@ -347,6 +350,30 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
         }
 
 
+    }
+
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {}
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
     }
 
 

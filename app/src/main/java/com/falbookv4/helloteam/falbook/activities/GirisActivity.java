@@ -1,5 +1,6 @@
 package com.falbookv4.helloteam.falbook.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.io.File;
 import java.security.Permission;
 import java.util.HashMap;
 
@@ -78,7 +80,13 @@ public class GirisActivity extends AppCompatActivity {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE };
                 GirisActivity.super.izinIste(istenilenIzinler, UYGULAMAYA_GIRIS_REQUEST_CODE);
                 */
+            }
+        });
 
+        btnKullaniciGirisi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GirisActivity.this,KayitgirisiActivity.class));
             }
         });
 
@@ -210,80 +218,38 @@ public class GirisActivity extends AppCompatActivity {
                 }
             });
 
-            /*
-            taskResult.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                @Override
-                public void onSuccess(AuthResult authResult) {
-
-                    if(taskResult.isSuccessful()){
-
-                        //(current user)
-                        mBulunanKullanici = mAuth.getCurrentUser();
-                        String uid = mBulunanKullanici.getUid();
-
-                        mDatabaseKullanicilar = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
-                        //offline olduğu durumlar için
-                        mDatabaseKullanicilar.keepSynced(true);
-
-                        String kullaniciToken = FirebaseInstanceId.getInstance().getToken();
-
-                        //kullanıcı bilgileri
-                        Kullanicilar girisKullanici = new Kullanicilar("", "", "", "", "", "", girisTelve, "default", kullaniciToken);
-
-                        mDatabaseKullanicilar.setValue(girisKullanici).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-
-                                if(task.isSuccessful()){
-
-                                    misafirGirisDurumu = true;
-                                    mProgressMisafir.dismiss();
-
-                                    Intent girisToAnasayfa = new Intent(GirisActivity.this, AnasayfaActivity.class);
-                                    girisToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(girisToAnasayfa);
-                                    finish();
-                                }
-
-                                else{
-
-                                    misafirGirisDurumu = false;
-                                    mProgressMisafir.hide();
-
-                                    Snackbar snacMisafirGirisiYapilamadi = Snackbar
-                                            .make(girisMainLayout, "Giriş Yapılamadı", Snackbar.LENGTH_LONG);
-                                    snacMisafirGirisiYapilamadi.show();
-                                }
-                            }
-                        });
-
-                    }else{
-
-                        mProgressMisafir.hide();
-
-                        String errorGirisHata = "";
-                        try {
-                            throw taskResult.getException();
-                        } catch (Exception e) {
-                            errorGirisHata = "İnternetinizi kontrol edin!";
-                            e.printStackTrace();
-                        }
-
-                        Snackbar snacProfilResmiHata = Snackbar
-                                .make(girisMainLayout, errorGirisHata, Snackbar.LENGTH_LONG);
-                        snacProfilResmiHata.show();
-
-                    }
-
-                }
-            });
-            */
-
             return misafirGirisDurumu;
         }
     }
 
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {}
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
 
 
-
+    @Override
+    protected void onDestroy() {
+        deleteCache(this);
+        super.onDestroy();
+    }
 }

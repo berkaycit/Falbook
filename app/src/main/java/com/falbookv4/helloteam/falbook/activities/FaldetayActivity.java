@@ -119,7 +119,6 @@ public class FaldetayActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                //TODO: String strFalBaslik, tarih, fal icerigi eklenecek
                 strBaktiran = (String) dataSnapshot.child("isim").getValue();
                 strFalFoto1 = (String) dataSnapshot.child("foto1").getValue();
                 falAciklamasi = (String) dataSnapshot.child("fal_yorumu").getValue();

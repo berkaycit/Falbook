@@ -1,5 +1,6 @@
 package com.falbookv4.helloteam.falbook.falcisec;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,6 +19,8 @@ import com.falbookv4.helloteam.falbook.activities.SSSActivity;
 import com.falbookv4.helloteam.falbook.adapters.FalcilarPagerAdapter;
 import com.falbookv4.helloteam.falbook.adapters.FalcisecAdapter;
 import com.falbookv4.helloteam.falbook.R;
+
+import java.io.File;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -96,27 +99,33 @@ public class FalcilarActivity extends AppCompatActivity {
         handler();
     }
 
-    /*
-    @Subscribe
-    public void onGelenfalEvent(GelenfalEvent event){
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {}
+    }
 
-        String gonderenKisininIsmi = event.getIsim();
-        Log.d("Fragmentler", gonderenKisininIsmi);
-
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
+    protected void onDestroy() {
+        deleteCache(this);
+        super.onDestroy();
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-    */
-
-
 }
