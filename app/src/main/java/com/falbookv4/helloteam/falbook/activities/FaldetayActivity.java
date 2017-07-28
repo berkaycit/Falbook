@@ -37,6 +37,7 @@ public class FaldetayActivity extends AppCompatActivity {
     private String baktiranKisi, strCinsiyet = "", strBaktiran, strFalFoto1, falAciklamasi, strTarih;
     private FloatingActionButton fbFalGonder;
     private BottomNavigationView botToolbar;
+    private ValueEventListener mListener;
 
     public void init(){
 
@@ -115,7 +116,7 @@ public class FaldetayActivity extends AppCompatActivity {
 
         final String kullaniciID = mBulunanKullanici.getUid();
 
-        mDatabaseFal.child(kullaniciID).child(strFalKey).addValueEventListener(new ValueEventListener() {
+        mDatabaseFal.child(kullaniciID).child(strFalKey).addValueEventListener(mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -181,6 +182,11 @@ public class FaldetayActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
 
+        super.onDestroy();
 
+        mDatabaseFal.removeEventListener(mListener);
+    }
 }

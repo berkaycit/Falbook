@@ -40,6 +40,7 @@ public class Falci1 extends Fragment{
     private TextView falciIsmi, falciAciklamasi, falciTelveSayisi;
     private StorageReference mStorage;
     private DatabaseReference mDatabaseFalcilar, mFalci1, mFalci1Foto;
+    private ValueEventListener mListener;
 
 
     public void init(){
@@ -72,7 +73,7 @@ public class Falci1 extends Fragment{
         });
 
 
-        mFalci1.addValueEventListener(new ValueEventListener() {
+        mFalci1.addValueEventListener(mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -145,5 +146,12 @@ public class Falci1 extends Fragment{
         handler();
 
         return genelLayout;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        mFalci1.removeEventListener(mListener);
     }
 }

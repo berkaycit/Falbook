@@ -71,6 +71,7 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     static final String kucukTelve_id = "com.falbookv4.telve200";
     private boolean telveSatinalmaAktif = false;
     private AppCompatImageView tvIcon;
+    private ValueEventListener mListener;
 
     public void init(){
 
@@ -145,7 +146,7 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
     public void telveSatinAl(final int eklenecekTelveSayisi){
 
-        mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+        mDatabaseKullanici.addValueEventListener(mListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -315,6 +316,8 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
         }
 
         super.onDestroy();
+
+        mDatabaseKullanici.removeEventListener(mListener);
     }
 
 
@@ -350,7 +353,6 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
 
     }
-
 
 
 }

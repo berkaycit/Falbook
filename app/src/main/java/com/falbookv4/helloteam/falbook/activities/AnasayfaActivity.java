@@ -61,6 +61,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     private DatabaseReference mDatabaseKullanici;
     private TextView txtTelveSayisi;
     private String strFalSayisi;
+    private ValueEventListener mListener;
 
     public void init() {
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -320,7 +321,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         @Override
         protected Void doInBackground(Void... params) {
 
-            mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+            mDatabaseKullanici.addValueEventListener( mListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -385,7 +386,8 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
 
+        super.onDestroy();
+        mDatabaseKullanici.removeEventListener(mListener);
     }
 }

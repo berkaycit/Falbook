@@ -71,7 +71,13 @@ public class KayitgirisiActivity extends AppCompatActivity {
         super.onStart();
 
         mAuth.addAuthStateListener(mAuthListener);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        mAuth.removeAuthStateListener(mAuthListener);
     }
 
     private boolean mailDogrula(){

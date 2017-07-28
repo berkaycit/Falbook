@@ -101,6 +101,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
     private SelectableRoundedImageView navKullaniciProfilFoto;
     private FloatingActionButton fbFalGonder;
     private boolean fotoYerlesti1, fotoYerlesti2 , fotoYerlesti3;
+    private ValueEventListener mListener;
 
     @Override
     protected void onStart() {
@@ -641,7 +642,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         @Override
         protected Void doInBackground(Void... params) {
 
-            mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+            mDatabaseKullanici.addValueEventListener(mListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -736,5 +737,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         //clearCameraPic(this);
         //EasyImage.clearPublicTemp(getApplicationContext());
         super.onDestroy();
+
+        mDatabaseKullanici.removeEventListener(mListener);
     }
 }

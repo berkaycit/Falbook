@@ -86,6 +86,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
     boolean fotoYuklenmeSonuc;
     private FloatingActionButton fbFalGonder;
     private BottomNavigationView botToolbar;
+    private ValueEventListener mListener1, mListener2;
 
     public void init() {
 
@@ -467,7 +468,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
             final String kullaniciID = mBulunanKullanici.getUid();
 
-            mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+            mDatabaseKullanici.addValueEventListener(mListener1 = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -537,7 +538,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         @Override
         protected Boolean doInBackground(Void... voids) {
 
-            mDatabaseKullaniciIc.addValueEventListener(new ValueEventListener() {
+            mDatabaseKullaniciIc.addValueEventListener(mListener2 = new ValueEventListener() {
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshot) {
 
@@ -625,7 +626,8 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
         super.onDestroy();
 
-        Log.d("ProfilActivity", "Destroy Edildi");
+        //mDatabaseKullanici.removeEventListener(mListener1);
+        mDatabaseKullaniciIc.removeEventListener(mListener2);
 
     }
 

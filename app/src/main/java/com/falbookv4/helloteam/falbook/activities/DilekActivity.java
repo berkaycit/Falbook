@@ -84,6 +84,48 @@ public class DilekActivity extends AppCompatActivity {
     private boolean gonderCooldown = true, asyncDonenSonuc = false, falGonderebilir = true;
     private int farkTelveSayisi, telveBedeli, yeniTelveSayiniz, bulunanTelve, telveKontrolSayi;
     private DatabaseReference connectedRef;
+    private ValueEventListener mListener1, mListener2, mListener3;
+
+    public void init(){
+
+        dilekGenelLayout = (CoordinatorLayout) findViewById(R.id.dilek_layout);
+
+        mAuth = FirebaseAuth.getInstance();
+        mBulunanKullanici = mAuth.getCurrentUser();
+        mStorageKahve = FirebaseStorage.getInstance().getReference();
+        mDatabaseFal = FirebaseDatabase.getInstance().getReference().child("Fal"); //database ref
+        mDatabaseBakilmamisFal = FirebaseDatabase.getInstance().getReference().child("BakilmamisFal");
+
+        mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").
+                child(mBulunanKullanici.getUid()); //database ref -> kullanıcıların altına kullanıcı id leri
+
+        connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+
+        dilekToolbar = (Toolbar) findViewById(R.id.toolbarDilek);
+
+        txtDilek = (EditText) findViewById(R.id.txtDilekSoru);
+        btnGonder = (Button) findViewById(R.id.btnDilekGonder);
+
+        mProgress = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+
+        mProgressBasariliGonderme = new SweetAlertDialog(DilekActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+        mProgressBasariliGonderme.setTitleText("Fal Gönderildi!");
+        mProgressBasariliGonderme.setContentText("Falınız başarılı bir şekilde gönderildi!");
+        mProgressBasariliGonderme.setConfirmText("Tamam");
+        mProgressBasariliGonderme.setCancelable(false);
+        mProgressBasariliGonderme.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                mProgressBasariliGonderme.dismiss();
+                Intent dilekToAnasayfa = new Intent(DilekActivity.this, AnasayfaActivity.class);
+                dilekToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(dilekToAnasayfa);
+                finish();
+            }
+        });
+
+    }
+
 
     @Subscribe(sticky = true)
     public void onGelenfalEvent(GelenfalEvent event){
@@ -120,13 +162,13 @@ public class DilekActivity extends AppCompatActivity {
 
         strDilek = txtDilek.getText().toString();
 
-        connectedRef.addValueEventListener(new ValueEventListener() {
+        connectedRef.addValueEventListener(mListener1 = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 boolean connected = snapshot.getValue(Boolean.class);
                 if (connected) {
 
-                    mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+                    mDatabaseKullanici.addValueEventListener(mListener2 = new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -202,46 +244,6 @@ public class DilekActivity extends AppCompatActivity {
 
     }
 
-    public void init(){
-
-        dilekGenelLayout = (CoordinatorLayout) findViewById(R.id.dilek_layout);
-
-        mAuth = FirebaseAuth.getInstance();
-        mBulunanKullanici = mAuth.getCurrentUser();
-        mStorageKahve = FirebaseStorage.getInstance().getReference();
-        mDatabaseFal = FirebaseDatabase.getInstance().getReference().child("Fal"); //database ref
-        mDatabaseBakilmamisFal = FirebaseDatabase.getInstance().getReference().child("BakilmamisFal");
-
-        mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").
-                child(mBulunanKullanici.getUid()); //database ref -> kullanıcıların altına kullanıcı id leri
-
-        connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-
-        dilekToolbar = (Toolbar) findViewById(R.id.toolbarDilek);
-
-        txtDilek = (EditText) findViewById(R.id.txtDilekSoru);
-        btnGonder = (Button) findViewById(R.id.btnDilekGonder);
-
-        mProgress = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-
-        mProgressBasariliGonderme = new SweetAlertDialog(DilekActivity.this, SweetAlertDialog.SUCCESS_TYPE);
-        mProgressBasariliGonderme.setTitleText("Fal Gönderildi!");
-        mProgressBasariliGonderme.setContentText("Falınız başarılı bir şekilde gönderildi!");
-        mProgressBasariliGonderme.setConfirmText("Tamam");
-        mProgressBasariliGonderme.setCancelable(false);
-        mProgressBasariliGonderme.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                mProgressBasariliGonderme.dismiss();
-                Intent dilekToAnasayfa = new Intent(DilekActivity.this, AnasayfaActivity.class);
-                dilekToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(dilekToAnasayfa);
-                finish();
-            }
-        });
-
-    }
-
     public void handler(){
 
         setSupportActionBar(dilekToolbar);
@@ -291,7 +293,12 @@ public class DilekActivity extends AppCompatActivity {
 
         Utils.clearCameraPic(this);
         EasyImage.clearPublicTemp(getApplicationContext());
+
         super.onDestroy();
+
+        connectedRef.removeEventListener(mListener1);
+        mDatabaseKullanici.removeEventListener(mListener2);
+        mDatabaseFal.removeEventListener(mListener3);
     }
 
 
@@ -413,7 +420,7 @@ public class DilekActivity extends AppCompatActivity {
 
 
 
-                        mDatabaseFal.addValueEventListener(new ValueEventListener() {
+                        mDatabaseFal.addValueEventListener(mListener3 = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 

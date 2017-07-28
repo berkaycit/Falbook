@@ -68,6 +68,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     private SelectableRoundedImageView navKullaniciProfilFoto;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private ValueEventListener mListener;
 
     public void init(){
 
@@ -428,7 +429,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
         @Override
         protected Void doInBackground(Void... params) {
 
-            mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+            mDatabaseKullanici.addValueEventListener(mListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -484,7 +485,10 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
-
-
+        mDatabaseKullanici.removeEventListener(mListener);
+    }
 }
