@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
+import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.falbookv4.helloteam.falbook.falcisec.FalcilarActivity;
 import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
 import com.falbookv4.helloteam.falbook.R;
@@ -446,6 +447,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
+                                Utils.deleteCache(KafeActivity.this);
                                 mAuth.signOut();
                                 giriseGonder();
                             }
@@ -727,9 +729,11 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
     }
 
 
+
+
     @Override
     protected void onDestroy() {
-        clearCameraPic(this);
+        //clearCameraPic(this);
         //EasyImage.clearPublicTemp(getApplicationContext());
         super.onDestroy();
     }

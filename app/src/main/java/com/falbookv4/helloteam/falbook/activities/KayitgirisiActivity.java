@@ -113,6 +113,7 @@ public class KayitgirisiActivity extends AppCompatActivity {
 
                 if(firebaseAuth.getCurrentUser() != null){
 
+                    //TODO: kullanıcının tokenini tekrardan al ve güncelle, başka cihazdan girmiş olabilir.
                     Intent girisToAnasayfa = new Intent(KayitgirisiActivity.this, AnasayfaActivity.class);
                     girisToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(girisToAnasayfa);

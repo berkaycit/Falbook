@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.R;
@@ -86,9 +87,17 @@ public class GirisActivity extends AppCompatActivity {
         btnKullaniciGirisi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GirisActivity.this,KayitgirisiActivity.class));
+                startActivity(new Intent(GirisActivity.this, KayitgirisiActivity.class));
             }
         });
+
+        btnKayitOl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GirisActivity.this, KayitActivity.class));
+            }
+        });
+
 
 
     }

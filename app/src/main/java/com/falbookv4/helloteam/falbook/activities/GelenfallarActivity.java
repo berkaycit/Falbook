@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.Fal;
+import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -361,6 +362,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
+                                Utils.deleteCache(GelenfallarActivity.this);
                                 mAuth.signOut();
                                 giriseGonder();
                             }
@@ -481,6 +483,8 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
             return null;
         }
     }
+
+
 
 
 }

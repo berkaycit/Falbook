@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.RandomString;
+import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.falbookv4.helloteam.falbook.falcisec.Falci1telveEvent;
 import com.falbookv4.helloteam.falbook.falcisec.Falci2telveEvent;
 import com.falbookv4.helloteam.falbook.falcisec.Falci3telveEvent;
@@ -47,17 +49,21 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class DilekActivity extends AppCompatActivity {
 
@@ -279,6 +285,15 @@ public class DilekActivity extends AppCompatActivity {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
+
+    @Override
+    protected void onDestroy() {
+
+        Utils.clearCameraPic(this);
+        EasyImage.clearPublicTemp(getApplicationContext());
+        super.onDestroy();
+    }
+
 
 
     //parametre-progress-result
