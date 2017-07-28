@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -58,7 +59,10 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.UUID;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import id.zelory.compressor.Compressor;
@@ -505,90 +509,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
             @Override
             public void onImagePicked(File imageFile, EasyImage.ImageSource source, int type) {
-/*
-                switch (yerlesecegiDeger){
-
-                    case 0:
-                        if (resultCode != RESULT_CANCELED) {
-
-                            kucukProfilFoto1 = null;
-
-                            try {
-                                kucukProfilFoto1 = new Compressor(KafeActivity.this)
-                                        .setMaxWidth(128)
-                                        .setMaxHeight(128)
-                                        .setQuality(50)
-                                        .compressToBitmap(imageFile);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            imgKam1.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto1, 128, 128, true));
-                            yerlesecegiDeger++;
-                        }
-                        break;
-
-                    case 1:
-                        if (resultCode != RESULT_CANCELED) {
-
-                            kucukProfilFoto2 = null;
-
-                            try {
-                                kucukProfilFoto2 = new Compressor(KafeActivity.this)
-                                        .setMaxWidth(128)
-                                        .setMaxHeight(128)
-                                        .setQuality(50)
-                                        .compressToBitmap(imageFile);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            imgKam2.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto2, 128, 128, true));
-                            yerlesecegiDeger++;
-                        }
-                        break;
-
-                    case 2:
-                        if (resultCode != RESULT_CANCELED) {
-
-                            kucukProfilFoto3 = null;
-
-                            try {
-                                kucukProfilFoto3 = new Compressor(KafeActivity.this)
-                                        .setMaxWidth(128)
-                                        .setMaxHeight(128)
-                                        .setQuality(50)
-                                        .compressToBitmap(imageFile);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            imgKam3.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto3, 128, 128, true));
-                            yerlesecegiDeger++;
-                        }
-                        break;
-
-                    default:
-                        if (resultCode != RESULT_CANCELED) {
-
-                            kucukProfilFoto1 = null;
-
-                            try {
-                                kucukProfilFoto1 = new Compressor(KafeActivity.this)
-                                        .setMaxWidth(128)
-                                        .setMaxHeight(128)
-                                        .setQuality(50)
-                                        .compressToBitmap(imageFile);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            imgKam1.setImageBitmap(Bitmap.createScaledBitmap(kucukProfilFoto1, 128, 128, true));
-                            //yerlesecegiDeger++;
-                        }
-                        break;
-                }
-*/
 
                 if(kam1Durum) {
 
@@ -775,33 +695,42 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         }
     }
 
-    public static void deleteCache(Context context) {
-        try {
-            File dir = context.getCacheDir();
-            deleteDir(dir);
-        } catch (Exception e) {}
+    private static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 
-    public static boolean deleteDir(File dir) {
-        if (dir != null && dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-            return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
-            return dir.delete();
-        } else {
-            return false;
+    public static File getCameraPicLocation(Context context) throws IOException {
+
+        File cacheDir = context.getCacheDir();
+
+        if (isExternalStorageWritable()) {
+            cacheDir = context.getExternalCacheDir();
+        }
+
+        File dir = new File(cacheDir, "EasyImage");
+        if (!dir.exists()) dir.mkdirs();
+        return dir;
+    }
+
+    public static void clearCameraPic(Context context) {
+        List<File> tempFiles = new ArrayList<>();
+        File[] files = new File[0];
+        try {
+            files = getCameraPicLocation(context).listFiles();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (File file : files) {
+            file.delete();
         }
     }
 
+
     @Override
     protected void onDestroy() {
-        deleteCache(this);
+        clearCameraPic(this);
+        //EasyImage.clearPublicTemp(getApplicationContext());
         super.onDestroy();
     }
 }

@@ -40,6 +40,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class AnasayfaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -407,6 +408,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onDestroy() {
 
+        //EasyImage.clearPublicTemp(getApplicationContext());
         deleteCache(this);
         super.onDestroy();
 

@@ -126,9 +126,13 @@ public class DilekActivity extends AppCompatActivity {
 
                             bulunanTelve = ((Long) dataSnapshot.child("telve").getValue()).intValue();
 
+                            if(bulunanTelve>0){
+
+                                farkTelveSayisi = bulunanTelve - telveBedeli;
+                            }
+
                             if(farkTelveSayisi>=0 && falGonderebilir && bulunanTelve>0){
                                 falGonderebilir = false;
-                                farkTelveSayisi = bulunanTelve - telveBedeli;
                                 yeniTelveSayiniz = farkTelveSayisi;
                                 new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,
                                         dilekDogum, dilekCinsiyet, dilekIliski, fal_aciklamasi, strDilek);
@@ -137,6 +141,21 @@ public class DilekActivity extends AppCompatActivity {
                                 Snackbar snacButunBilgi = Snackbar
                                         .make(dilekGenelLayout, "Telve sayınız TÜKENDİ", Snackbar.LENGTH_LONG);
                                 snacButunBilgi.show();
+                            }
+                            else if(farkTelveSayisi< 0){
+
+                                new SweetAlertDialog(DilekActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                        .setTitleText("Telve Sayısı")
+                                        .setConfirmText("Tamam")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.cancel();
+                                            }
+                                        })
+                                        .setContentText("Telve sayınız yetersiz!")
+                                        .show();
+
                             }
 
                         }
