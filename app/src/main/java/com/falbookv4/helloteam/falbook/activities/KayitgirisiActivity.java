@@ -196,4 +196,11 @@ public class KayitgirisiActivity extends AppCompatActivity {
         init();
         handler();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        btnKayitGiris.setOnClickListener(null);
+
+    }
 }

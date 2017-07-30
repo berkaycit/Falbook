@@ -5,19 +5,19 @@ import android.content.Context;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 public class Falbook extends Application {
 
+    /*
     public static RefWatcher getRefWatcher(Context context) {
         Falbook application = (Falbook) context.getApplicationContext();
         return application.refWatcher;
     }
 
     private RefWatcher refWatcher;
+    */
 
 
     @Override

@@ -140,5 +140,10 @@ public class SSSActivity extends AppCompatActivity {
         handler();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fbFalGonder.setOnClickListener(null);
 
+    }
 }

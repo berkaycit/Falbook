@@ -317,7 +317,11 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
         super.onDestroy();
 
-        mDatabaseKullanici.removeEventListener(mListener);
+        fbFalGonder.setOnClickListener(null);
+        dusukTelve.setOnClickListener(null);
+        izleKazan.setOnClickListener(null);
+
+        //mDatabaseKullanici.removeEventListener(mListener);
     }
 
 

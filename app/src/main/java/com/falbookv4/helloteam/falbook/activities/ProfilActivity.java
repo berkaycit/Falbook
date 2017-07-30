@@ -626,8 +626,17 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
         super.onDestroy();
 
-        //mDatabaseKullanici.removeEventListener(mListener1);
-        mDatabaseKullaniciIc.removeEventListener(mListener2);
+        if(mDatabaseKullaniciIc != null){
+
+            mDatabaseKullaniciIc.removeEventListener(mListener2);
+        }
+
+        fbFalGonder.setOnClickListener(null);
+        profilTxtMail.setOnClickListener(null);
+        profilTxtCinsiyet.setOnClickListener(null);
+        profilTxtDogum.setOnClickListener(null);
+        profilTxtIliski.setOnClickListener(null);
+        kullaniciProfilFoto.setOnClickListener(null);
 
     }
 

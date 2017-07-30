@@ -231,4 +231,13 @@ public class GirisActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        btnMisafirGirisi.setOnClickListener(null);
+        btnKullaniciGirisi.setOnClickListener(null);
+        btnKayitOl.setOnClickListener(null);
+
+    }
 }

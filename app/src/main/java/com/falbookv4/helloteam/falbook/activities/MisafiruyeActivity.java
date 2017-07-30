@@ -178,4 +178,11 @@ public class MisafiruyeActivity extends AppCompatActivity {
         handler();
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        btnMisafirUyeOlustur.setOnClickListener(null);
+
+    }
 }

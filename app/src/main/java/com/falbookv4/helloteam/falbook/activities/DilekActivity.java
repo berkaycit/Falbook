@@ -255,6 +255,7 @@ public class DilekActivity extends AppCompatActivity {
 
                 if(gonderCooldown){
                     falGonder();
+                    btnGonder.setEnabled(false);
                 }else{
                     btnGonder.setEnabled(false);
                 }
@@ -296,9 +297,21 @@ public class DilekActivity extends AppCompatActivity {
 
         super.onDestroy();
 
-        connectedRef.removeEventListener(mListener1);
-        mDatabaseKullanici.removeEventListener(mListener2);
-        mDatabaseFal.removeEventListener(mListener3);
+        if(connectedRef!=null){
+
+            connectedRef.removeEventListener(mListener1);
+        }
+
+        if(mDatabaseKullanici != null){
+
+            mDatabaseKullanici.removeEventListener(mListener2);
+        }
+
+        if(mDatabaseFal != null){
+
+            //mDatabaseFal.removeEventListener(mListener3);
+        }
+
     }
 
 

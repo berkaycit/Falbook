@@ -489,6 +489,13 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     protected void onDestroy() {
         super.onDestroy();
 
-        mDatabaseKullanici.removeEventListener(mListener);
+        if(mDatabaseKullanici != null){
+
+            mDatabaseKullanici.removeEventListener(mListener);
+        }
+
+        fbFalGonder.setOnClickListener(null);
+        fbFalGonder.setImageDrawable(null);
+
     }
 }

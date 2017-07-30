@@ -85,4 +85,12 @@ public class FalbookhakkindaActivity extends AppCompatActivity {
         init();
         handler();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        fbFalGonder.setOnClickListener(null);
+
+    }
 }

@@ -137,7 +137,7 @@ public class FaldetayActivity extends AppCompatActivity {
                 */
 
                 //database deki fal açıklamasını set et
-                bakilaninIsmi.setText(strBaktiran);
+                bakilaninIsmi.setText("Sevgili " + strBaktiran + ";");
                 falDetayYorum.setText(falAciklamasi);
 
                 falDetayTarih.setText(strTarih);
@@ -187,6 +187,13 @@ public class FaldetayActivity extends AppCompatActivity {
 
         super.onDestroy();
 
-        mDatabaseFal.removeEventListener(mListener);
+        if(mDatabaseFal != null){
+
+            mDatabaseFal.removeEventListener(mListener);
+        }
+
+        fbFalGonder.setOnClickListener(null);
+        fbFalGonder.setImageDrawable(null);
+
     }
 }

@@ -266,6 +266,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     }
 
     public void anaBtnFonk() {
+        //TODO: intentlere flag ekle
         anaBtnFalBaktir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -304,7 +305,8 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         anaBtnTelveKazan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent anasayfaToSatinal = new Intent(AnasayfaActivity.this, SatinalActivity.class);
+                startActivity(anasayfaToSatinal);
             }
         });
 
@@ -388,6 +390,26 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     protected void onDestroy() {
 
         super.onDestroy();
-        mDatabaseKullanici.removeEventListener(mListener);
+        if(mDatabaseKullanici != null){
+            mDatabaseKullanici.removeEventListener(mListener);
+        }
+
+        fbFalGonder.setOnClickListener(null);
+        anaBtnFalBaktir.setOnClickListener(null);
+        anaBtnTelveSatinal.setOnClickListener(null);
+        anaBtnSSS.setOnClickListener(null);
+        anaBtnIletisim.setOnClickListener(null);
+        anaBtnTelveKazan.setOnClickListener(null);
+        anaBtnKullanim.setOnClickListener(null);
+
+        fbFalGonder.setImageDrawable(null);
+        anaBtnTelveKazan.setImageDrawable(null);
+        anaBtnTelveSatinal.setImageDrawable(null);
+        anaBtnSSS.setImageDrawable(null);
+        anaBtnIletisim.setImageDrawable(null);
+        anaBtnTelveKazan.setImageDrawable(null);
+        anaBtnKullanim.setImageDrawable(null);
+
+
     }
 }

@@ -160,5 +160,9 @@ public class SifredegistirActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fbFalGonder.setOnClickListener(null);
+    }
 }

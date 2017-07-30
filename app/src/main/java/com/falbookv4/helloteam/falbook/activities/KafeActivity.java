@@ -738,6 +738,23 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         //EasyImage.clearPublicTemp(getApplicationContext());
         super.onDestroy();
 
-        mDatabaseKullanici.removeEventListener(mListener);
+        if(mDatabaseKullanici != null){
+
+            mDatabaseKullanici.removeEventListener(mListener);
+        }
+
+        fbFalGonder.setOnClickListener(null);
+        btnFalGonder.setOnClickListener(null);
+        imgKam1.setOnClickListener(null);
+        imgKam2.setOnClickListener(null);
+        imgKam3.setOnClickListener(null);
+        kafeTxtIliski.setOnClickListener(null);
+        kafeTxtDogum.setOnClickListener(null);
+        kafeTxtCinsiyet.setOnClickListener(null);
+
+        imgKam1.setImageDrawable(null);
+        imgKam2.setImageDrawable(null);
+        imgKam3.setImageDrawable(null);
+
     }
 }

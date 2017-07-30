@@ -146,6 +146,6 @@ public class Falci2 extends Fragment{
     public void onDestroyView() {
         super.onDestroyView();
 
-        mFalci2.removeEventListener(mListener);
+        //mFalci2.removeEventListener(mListener);
     }
 }

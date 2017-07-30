@@ -200,4 +200,10 @@ public class KayitActivity extends AppCompatActivity {
         handler();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        btnMisafirUyeOlustur.setOnClickListener(null);
+
+    }
 }
