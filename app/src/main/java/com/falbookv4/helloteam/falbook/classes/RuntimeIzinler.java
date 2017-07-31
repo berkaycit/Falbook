@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.audiofx.EnvironmentalReverb;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -36,7 +37,7 @@ public abstract class RuntimeIzinler extends AppCompatActivity{
             mazeretGoster = mazeretGoster || ActivityCompat.shouldShowRequestPermissionRationale(this, izin);
         }
 
-            if(izinKontrol != PackageManager.PERMISSION_GRANTED){
+            if(izinKontrol != PackageManager.PERMISSION_GRANTED && Build.VERSION.SDK_INT >= 23){
 
                 //ikinci defada bir mazeret göstereceğiz
                 if(mazeretGoster){
@@ -61,6 +62,7 @@ public abstract class RuntimeIzinler extends AppCompatActivity{
                                 }
                             })
                             .show();
+
 
                 }else {
                     //kullanıcıya ilk defa izin isteğimizi soruyoruz.

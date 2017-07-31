@@ -38,11 +38,13 @@ public class FaldetayActivity extends AppCompatActivity {
     private FloatingActionButton fbFalGonder;
     private BottomNavigationView botToolbar;
     private ValueEventListener mListener;
+    private FloatingActionButton fbPaylas;
 
     public void init(){
 
         colToolbar = (CollapsingToolbarLayout)findViewById(R.id.faldetayColToolbar);
         colToolbar.setTitle("FALLARIM");
+        fbPaylas = (FloatingActionButton) findViewById(R.id.fbPaylas);
 
         faldetayToolbar = (Toolbar) findViewById(R.id.faldetayToolbar);
 
@@ -69,6 +71,18 @@ public class FaldetayActivity extends AppCompatActivity {
     }
 
     private void menuleriHazirla() {
+
+        fbPaylas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, falAciklamasi);
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+
+            }
+        });
 
         fbFalGonder.setOnClickListener(new View.OnClickListener() {
             @Override

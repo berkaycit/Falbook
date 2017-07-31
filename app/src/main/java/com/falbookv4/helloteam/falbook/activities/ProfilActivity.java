@@ -87,6 +87,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
     private FloatingActionButton fbFalGonder;
     private BottomNavigationView botToolbar;
     private ValueEventListener mListener1, mListener2;
+    private boolean kullaniciKayitli = false;
 
     public void init() {
 
@@ -176,27 +177,40 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
         new TextleriSet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+        profilTxtMail.setFocusable(false);
         //mail kısmına bastığında kayıtlı değilse kayıt activity sine gitsin.
         if (mAuth.getCurrentUser().getEmail() == null) {
-            //içerisine bir şey yazmayı kapat -> kullanıcı kayıtlı değil
-            profilTxtMail.setFocusable(false);
+            kullaniciKayitli = false;
         } else {
-            //içerisine bir şey yazmayı aç -> kullanıcı kayıtlı
-            profilTxtMail.setFocusable(true);
+            kullaniciKayitli = true;
         }
 
-        //eğer kullanıcı misafir girişi yapmışsa ve edittext e basıyorsa, geçiş yapıp kayıt olmasını sağlayacağız
-        profilTxtMail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mAuth.getCurrentUser().getEmail() == null) {
 
-                    Intent profilToMisafirkayit = new Intent(getApplicationContext(), MisafiruyeActivity.class);
-                    startActivity(profilToMisafirkayit);
-                    finish();
+        if(!kullaniciKayitli){
+
+            //eğer kullanıcı misafir girişi yapmışsa ve edittext e basıyorsa, geçiş yapıp kayıt olmasını sağlayacağız
+            profilTxtMail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        Intent profilToMisafirkayit = new Intent(getApplicationContext(), MisafiruyeActivity.class);
+                        startActivity(profilToMisafirkayit);
+                        finish();
                 }
-            }
-        });
+            });
+        }else{
+
+            profilTxtMail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                        Intent profilToMaildegistir = new Intent(getApplicationContext(), MaildegistirActivity.class);
+                        startActivity(profilToMaildegistir);
+                        finish();
+                }
+            });
+
+        }
+
 
         profilTxtIliski.setFocusable(false);
         profilTxtIliski.setOnClickListener(new View.OnClickListener() {

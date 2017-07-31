@@ -19,14 +19,14 @@
     <string name="kaydet">KAYDET</string>
     <string name="sifre_degistir">Şifre Değiştir</string>
     <string name="gonder">Gönder</string>
-    <string name="gonder_butonuna_bastiktan_sonra_lutfen_onay">Gönder butonuna bastıktan sonra lütfen onay için mailinizi kontol ediniz.</string>
+    <string name="gonder_butonuna_bastiktan_sonra_lutfen_onay">Gönder butonuna bastıktan sonra lütfen e-mailinizi kontrol ediniz.</string>
     <string name="sik_sorulan_sorular">Sık Sorulan Sorular</string>
     <string name="iletisim">iletişim</string>
     <string name="iletisim_bilgilendirme">Mail adresinize dönüş yapılacaktır. Profiliniz den hangi mail adresinize dönüş yapılacağını görebilirsiniz.</string>
     <string name="iletisim_hint">Görüşünüzü/Sorununuzu veya Önerilerinizi bize iletebilirsiniz. </string>
     <string name="telve_satin_al">Telve Satın Al</string>
     <string name="soru_hergunbedava">Evet. Her gün tamamen bedavaya kazandığınız telveler sayesinde, uygulamamızda hiç para harcamadan bedavaya fal baktırabilirsiniz. Bedava telveleri anasayfadaki telve kazan sayfasından her gün kazanabilirsiniz.</string>
-    <string name="enfazla">En fazla 20-25 dakika arasında size dönüş sağlanacaktır.</string>
+    <string name="enfazla">En fazla 20/25 dakika arasında size dönüş sağlanacaktır.</string>
     <string name="dilek_hint">İçinizden geçenleri ya da belirtmek istediğiniz herhangi bir şeyi yazabilirsiniz.</string>
     <string name="fal_baktir">Fal Baktır</string>
     <string name="web_de_oku">Web de Oku</string>
@@ -34,4 +34,6 @@
     <string name="fal_yorumunuz">Fal yorumunuz</string>
     <string name="base64encodedpublickey">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAif0NSwdJzs+PKdBDKn/nM9/4M/kYUkcY6FbDwKJGlH+ih9p0BM1Oc7j+ldZ/tszuTalSIzerD+jutDB2Hm/6xhGAdQYzLoZIMFvaE0a15L1YV+KtrUJIHyEgsKDn3yMs3i5kN/muRdNrYYjY89aun/TplL+63rAVfIzctLV1i5Lia2MCFZKAxyT/TDZCg2RU6BDKGHy+uomFCdZUyfSj8yfsLumDX1bNbZw6YS65kCWdP6dgAna0/UaROcnxqSvGRxxyQ1Q23dgLA+TEKe8fyAxDPR0a27NQ6Rz/5wuFotIGcN9/ULUdYn8pdG/aM366XVM1YHqykiXxE1otHyWtHwIDAQAB</string>
     <string name="izle_kazan">İzle kazanın çalışması için reklamın yüklenmiş olması lazım. Reklamın yüklenip yüklenmediğini anlamak için izle-kazanın çerçevesinin regine dikkat edebilirsiniz. Eğer çerçeve rengi yeşile dönmüş ise reklam yüklenmiş demektir, tıklayıp bedava telve kazanabilirsiniz.</string>
+    <string name="mail_degistir">Mail Değiştir</string>
+    <string name="send_to">Paylaş</string>
 </resources>

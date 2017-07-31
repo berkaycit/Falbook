@@ -191,19 +191,9 @@ public class DilekActivity extends AppCompatActivity {
                                 snacButunBilgi.show();
                             }
                             else if(farkTelveSayisi< 0){
-
-                                new SweetAlertDialog(DilekActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                        .setTitleText("Telve Sayısı")
-                                        .setConfirmText("Tamam")
-                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.cancel();
-                                            }
-                                        })
-                                        .setContentText("Telve sayınız yetersiz!")
-                                        .show();
-
+                                Snackbar snacButunBilgi = Snackbar
+                                        .make(dilekGenelLayout, "Telve sayınız YETERSİZ", Snackbar.LENGTH_LONG);
+                                snacButunBilgi.show();
                             }
 
                         }

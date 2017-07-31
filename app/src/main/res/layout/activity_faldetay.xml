@@ -48,17 +48,18 @@
     <include layout="@layout/contain_faldetay"></include>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fbPaylas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:src="@drawable/ic_action_share"
-        tool:layout_anchor="@id/faldetayAppBar"
-        tool:layout_anchorGravity="bottom|right"
         android:layout_marginRight="10dp"
-        tool:fabSize="mini"
+        android:padding="16dp"
         android:scaleType="center"
+        android:src="@drawable/ic_action_share"
+        tool:borderWidth="0dp"
         tool:elevation="10dp"
-        tool:borderWidth="0dp" />
+        tool:fabSize="mini"
+        tool:layout_anchor="@id/faldetayAppBar"
+        tool:layout_anchorGravity="bottom|right" />
 
     <TextView
         android:id="@+id/txtFalDetayTarih"
