@@ -97,6 +97,9 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
         anaBtnFonk();
 
+        //telve sayısını gönder.
+        EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
+
         if(mAuth.getCurrentUser()!= null){
 
             navBarDataYerlestir();
@@ -218,6 +221,8 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
                                 Utils.deleteCache(AnasayfaActivity.this);
+                                //çıkarken telve sayısını gönderiyorum ki tekrar girdiğinde aynı telve sayısından devam etsin
+                                EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
                                 mAuth.signOut();
                                 giriseGonder();
                             }

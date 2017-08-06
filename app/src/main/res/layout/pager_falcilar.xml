@@ -3,6 +3,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
@@ -33,7 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:id="@+id/imgFalci"
-                android:src="@drawable/falcifotogbir"
                 android:scaleType="centerCrop"
                 app:sriv_left_top_corner_radius="20dp"
                 app:sriv_right_top_corner_radius="20dp"

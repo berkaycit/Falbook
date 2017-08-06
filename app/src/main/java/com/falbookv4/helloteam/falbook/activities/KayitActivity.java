@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.Kullanicilar;
+import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -27,6 +28,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
@@ -44,7 +48,7 @@ public class KayitActivity extends AppCompatActivity {
     private Button btnMisafirUyeOlustur;
     private DatabaseReference mDatabaseKullanici, mDatabaseKullanicilar;
     private String strAd, strSoyad;
-    private int girisTelve = 50;
+    private int girisTelve = 50, dahaOncedenBulunanTelve = -1, verilecekTelveSayisi;
 
     public void init(){
 
@@ -64,6 +68,12 @@ public class KayitActivity extends AppCompatActivity {
 
         mProgressMisafirKayit = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
 
+    }
+
+    @Subscribe(sticky = true)
+    public void onTelveEvent(TelveEvent event){
+        //kullanıcının telvesini alıyoruz
+        dahaOncedenBulunanTelve = event.getTelveEventSayisi();
     }
 
     private boolean mailDogrula(){
@@ -133,7 +143,14 @@ public class KayitActivity extends AppCompatActivity {
                             String kullaniciToken = FirebaseInstanceId.getInstance().getToken();
 
                             //kullanıcı bilgileri
-                            Kullanicilar girisKullanici = new Kullanicilar("", "", mail, "", "", "", girisTelve, "default", kullaniciToken);
+
+                            if(dahaOncedenBulunanTelve != -1){
+                                verilecekTelveSayisi = dahaOncedenBulunanTelve;
+                            }else{
+                                verilecekTelveSayisi = girisTelve;
+                            }
+
+                            Kullanicilar girisKullanici = new Kullanicilar("", "", mail, "", "", "", verilecekTelveSayisi, "default", kullaniciToken);
 
                             mDatabaseKullanicilar.setValue(girisKullanici).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -186,7 +203,6 @@ public class KayitActivity extends AppCompatActivity {
                     }
                 });
 
-
             }
 
         }
@@ -204,6 +220,18 @@ public class KayitActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         btnMisafirUyeOlustur.setOnClickListener(null);
-
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
 }

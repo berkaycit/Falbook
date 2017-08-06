@@ -36,4 +36,6 @@
     <string name="izle_kazan">İzle kazanın çalışması için reklamın yüklenmiş olması lazım. Reklamın yüklenip yüklenmediğini anlamak için izle-kazanın çerçevesinin regine dikkat edebilirsiniz. Eğer çerçeve rengi yeşile dönmüş ise reklam yüklenmiş demektir, tıklayıp bedava telve kazanabilirsiniz.</string>
     <string name="mail_degistir">Mail Değiştir</string>
     <string name="send_to">Paylaş</string>
+    <string name="kayitolurken_bilgilendirme">Kayıt olarak <b>Kullanım ve Gizlilik Koşulları</b>\'nı kabul ediyorum.</string>
+    <string name="gizlilikpolitikasi_baslik">Falbook Uygulaması Kullanım Koşulları ve Gizlilik Politikası</string>
 </resources>

@@ -114,6 +114,7 @@
             android:launchMode="singleTop"
             android:parentActivityName=".activities.ProfilActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activities.GizlilikpolitikasiActivity"></activity>
     </application>
 
 </manifest>

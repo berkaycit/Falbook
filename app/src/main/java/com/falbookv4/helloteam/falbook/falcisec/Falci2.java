@@ -2,6 +2,8 @@ package com.falbookv4.helloteam.falbook.falcisec;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -41,10 +43,12 @@ public class Falci2 extends Fragment{
     private DatabaseReference mDatabaseFalcilar, mFalci2, mFalci2Foto;
     private ValueEventListener mListener;
     private boolean falGonderecek = true;
+    private ImageView imageFalci;
 
 
     public void init(){
 
+        imageFalci = (ImageView) genelLayout.findViewById(R.id.imgFalci);
         btnGonder = (Button) genelLayout.findViewById(R.id.btnFalciGonder);
         falciIsmi = (TextView) genelLayout.findViewById(R.id.txtFalciIsim);
         falciAciklamasi = (TextView) genelLayout.findViewById(R.id.txtFalciTanitim);
@@ -57,9 +61,14 @@ public class Falci2 extends Fragment{
 
     private void falciDataAtamasi(){
 
+
+        Bitmap bm2 = BitmapFactory.decodeResource(getResources(), R.drawable.falcip2);
+        imageFalci.setImageBitmap(bm2);
+
         mFalci2 = mDatabaseFalcilar.child("Falci2");
         mFalci2Foto = mFalci2.child("Falci_Foto");
 
+        /*
         StorageReference filepath = mStorage.child("Falcilar_Fotolari").child("falcip2.jpg");
 
         filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -69,6 +78,7 @@ public class Falci2 extends Fragment{
                 mFalci2Foto.setValue(uri.toString());
             }
         });
+        */
 
 
         mFalci2.addValueEventListener(mListener = new ValueEventListener() {
@@ -81,10 +91,12 @@ public class Falci2 extends Fragment{
                 falciAciklamasi.setText(dataSnapshot.child("Falci_Aciklamasi").getValue().toString());
                 String strTelveFalci2 = dataSnapshot.child("Falci_Telve").getValue().toString() + " Telve";
                 falciTelveSayisi.setText(strTelveFalci2);
+                /*
                 if(dataSnapshot.child("Falci_Foto").getValue() != null){
 
                     setFoto(getContext(), dataSnapshot.child("Falci_Foto").getValue().toString());
                 }
+                */
 
             }
 

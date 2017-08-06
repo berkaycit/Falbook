@@ -1,13 +1,18 @@
 package com.falbookv4.helloteam.falbook.activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +39,11 @@ public class MaildegistirActivity extends AppCompatActivity {
     private FirebaseUser mBulunanKullanici;
     private DatabaseReference mDatabaseKullanici;
 
+    private Toolbar toolbarFalbookHakkinda;
+
+    private FloatingActionButton fbFalGonder;
+    private BottomNavigationView botToolbar;
+
     public void init(){
 
         mAuth = FirebaseAuth.getInstance();
@@ -48,6 +58,48 @@ public class MaildegistirActivity extends AppCompatActivity {
         txtInputMail = (TextInputLayout) findViewById(R.id.textInputMailDegistir);
         txtInputSifre = (TextInputLayout) findViewById(R.id.txtInputMailDegistirSifre);
 
+
+        toolbarFalbookHakkinda = (Toolbar) findViewById(R.id.toolbarFalbookHakkinda);
+
+        fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
+        botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+    }
+
+    private void menuleriHazirla() {
+
+        fbFalGonder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent anasayfaToKafe = new Intent(MaildegistirActivity.this, KafeActivity.class);
+                startActivity(anasayfaToKafe);
+                finish();
+            }
+        });
+
+        botToolbar.setSelectedItemId(R.id.menuBosButon);
+
+        botToolbar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.menuAnasafaButon:
+                        Intent intentToAnasayfa = new Intent(MaildegistirActivity.this, AnasayfaActivity.class);
+                        intentToAnasayfa.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intentToAnasayfa);
+                        finish();
+                        break;
+                    case R.id.menuGelenfalButon:
+                        Intent intentToFallarim = new Intent(MaildegistirActivity.this, GelenfallarActivity.class);
+                        intentToFallarim.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intentToFallarim);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     private boolean mailDogrula(){
@@ -65,6 +117,8 @@ public class MaildegistirActivity extends AppCompatActivity {
     }
 
     public void handler(){
+
+        menuleriHazirla();
 
         btnGonder.setOnClickListener(new View.OnClickListener() {
             @Override

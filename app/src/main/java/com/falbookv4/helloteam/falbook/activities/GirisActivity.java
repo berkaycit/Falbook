@@ -11,12 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.Kullanicilar;
 import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
+import com.falbookv4.helloteam.falbook.falcisec.FalcitelveEvent;
+import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -26,6 +29,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.security.Permission;
@@ -44,7 +50,8 @@ public class GirisActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseKullanicilar;
     private FirebaseUser mBulunanKullanici;
     private boolean misafirGirisDurumu = true;
-    private int girisTelve = 50;
+    private int girisTelve = 50, dahaOncedenBulunanTelve = -1, verilecekTelveSayisi;
+    private TextView txtGizlilikPolitikasi;
 
     public void init(){
 
@@ -53,16 +60,29 @@ public class GirisActivity extends AppCompatActivity {
         btnKullaniciGirisi = (Button) findViewById(R.id.btnGirisKullaniciGiris);
         btnKayitOl = (Button) findViewById(R.id.btnGirisKayitOl);
 
+        txtGizlilikPolitikasi = (TextView) findViewById(R.id.txtSozlesme);
+
         mProgressMisafir = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
 
         mAuth = FirebaseAuth.getInstance();
 
+    }
 
-
+    @Subscribe(sticky = true)
+    public void onTelveEvent(TelveEvent event){
+        //kullanıcının telvesini alıyoruz
+        dahaOncedenBulunanTelve = event.getTelveEventSayisi();
     }
 
 
     public void handler(){
+
+        txtGizlilikPolitikasi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GirisActivity.this, GizlilikpolitikasiActivity.class));
+            }
+        });
 
         //misafir giriş yap butonuna basıldığı zaman
         btnMisafirGirisi.setOnClickListener(new View.OnClickListener() {
@@ -109,22 +129,6 @@ public class GirisActivity extends AppCompatActivity {
         init();
         handler();
     }
-/*
-    @Override
-    public void izinVerildi(int requestCode) {
-
-        if(requestCode == UYGULAMAYA_GIRIS_REQUEST_CODE){
-
-            mProgressMisafir.getProgressHelper().setBarColor(Color.parseColor("#795548"));
-            mProgressMisafir.setTitleText("Misafir girişiniz oluşturuluyor");
-            mProgressMisafir.setCancelable(false);
-            mProgressMisafir.show();
-
-            new MisafirKullaniciUyelik().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        }
-    }
-    */
 
     //parametre-progress-result
     private class  MisafirKullaniciUyelik extends AsyncTask<String, String, Boolean> {
@@ -168,7 +172,14 @@ public class GirisActivity extends AppCompatActivity {
                         String kullaniciToken = FirebaseInstanceId.getInstance().getToken();
 
                         //kullanıcı bilgileri
-                        Kullanicilar girisKullanici = new Kullanicilar("", "", "", "", "", "", girisTelve, "default", kullaniciToken);
+
+                        if(dahaOncedenBulunanTelve != -1){
+                            verilecekTelveSayisi = dahaOncedenBulunanTelve;
+                        }else{
+                            verilecekTelveSayisi = girisTelve;
+                        }
+
+                        Kullanicilar girisKullanici = new Kullanicilar("", "", "", "", "", "", verilecekTelveSayisi, "default", kullaniciToken);
 
                         mDatabaseKullanicilar.setValue(girisKullanici).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -238,6 +249,19 @@ public class GirisActivity extends AppCompatActivity {
         btnMisafirGirisi.setOnClickListener(null);
         btnKullaniciGirisi.setOnClickListener(null);
         btnKayitOl.setOnClickListener(null);
-
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+
 }
