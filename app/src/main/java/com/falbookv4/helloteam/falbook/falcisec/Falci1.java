@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,10 +14,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.falbookv4.helloteam.falbook.activities.DilekActivity;
 import com.falbookv4.helloteam.falbook.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,21 +32,24 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 public class Falci1 extends Fragment{
 
     private FrameLayout genelLayout;
     private Button btnGonder;
     String gonderenKisininIsmi = "";
-    private int falciBedel;
+    private int falciBedel, kullaniciTelveSayisi, farkTelveSayisi;
     private TextView falciIsmi, falciAciklamasi, falciTelveSayisi;
     private StorageReference mStorage;
-    private DatabaseReference mDatabaseFalcilar, mFalci1, mFalci1Foto;
+    private DatabaseReference mDatabaseFalcilar, mFalci1, mFalci1Foto, mKullanici;
     private ValueEventListener mListener;
+    private FirebaseAuth mAuth;
+    private boolean falGonderecek = true;
 
 
     public void init(){
+
+        mAuth = FirebaseAuth.getInstance();
 
         btnGonder = (Button) genelLayout.findViewById(R.id.btnFalciGonder);
         falciIsmi = (TextView) genelLayout.findViewById(R.id.txtFalciIsim);
@@ -52,7 +58,10 @@ public class Falci1 extends Fragment{
 
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabaseFalcilar = FirebaseDatabase.getInstance().getReference().child("Falcilar");
+        String uid = mAuth.getCurrentUser().getUid();
+        mKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
         mDatabaseFalcilar.keepSynced(true);
+        mKullanici.keepSynced(true);
 
     }
 
@@ -72,6 +81,18 @@ public class Falci1 extends Fragment{
             }
         });
 
+        mKullanici.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                kullaniciTelveSayisi = ((Long)dataSnapshot.child("telve").getValue()).intValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         mFalci1.addValueEventListener(mListener = new ValueEventListener() {
             @Override
@@ -129,9 +150,21 @@ public class Falci1 extends Fragment{
             @Override
             public void onClick(View view) {
 
-                EventBus.getDefault().postSticky(new Falci1telveEvent(falciBedel));
-                Intent falci1ToDilek = new Intent(getContext(), DilekActivity.class);
-                startActivity(falci1ToDilek);
+                if(kullaniciTelveSayisi > 0 && falGonderecek){
+
+                    falGonderecek = false;
+                    farkTelveSayisi = kullaniciTelveSayisi - falciBedel;
+                }
+
+                if(farkTelveSayisi >= 0 && kullaniciTelveSayisi > 0){
+
+                    EventBus.getDefault().postSticky(new FalcitelveEvent(falciBedel));
+                    Intent falci1ToDilek = new Intent(getContext(), DilekActivity.class);
+                    startActivity(falci1ToDilek);
+                }else{
+                    Snackbar snacYetersiz = Snackbar.make(genelLayout, "Telve Sayınız YETERSİZ!", Snackbar.LENGTH_LONG);
+                    snacYetersiz.show();
+                }
 
             }
         });

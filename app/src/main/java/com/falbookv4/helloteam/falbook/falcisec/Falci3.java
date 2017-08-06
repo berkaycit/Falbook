@@ -35,7 +35,7 @@ public class Falci3 extends Fragment{
             @Override
             public void onClick(View view) {
 
-                EventBus.getDefault().postSticky(new Falci3telveEvent(falciBedel));
+                EventBus.getDefault().postSticky(new FalcitelveEvent(falciBedel));
                 Intent falci3ToDilek = new Intent(getContext(), DilekActivity.class);
                 startActivity(falci3ToDilek);
 

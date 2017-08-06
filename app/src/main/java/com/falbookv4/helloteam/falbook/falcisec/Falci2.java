@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,18 +29,19 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 public class Falci2 extends Fragment{
 
     private FrameLayout genelLayout;
     private Button btnGonder;
     String gonderenKisininIsmi = "";
-    private int falciBedel;
+    private int falciBedel, kullaniciTelveSayisi, farkTelveSayisi;
     private TextView falciIsmi, falciAciklamasi, falciTelveSayisi;
     private StorageReference mStorage;
     private DatabaseReference mDatabaseFalcilar, mFalci2, mFalci2Foto;
     private ValueEventListener mListener;
+    private boolean falGonderecek = true;
+
 
     public void init(){
 
@@ -123,9 +124,23 @@ public class Falci2 extends Fragment{
             @Override
             public void onClick(View view) {
 
-                EventBus.getDefault().postSticky(new Falci2telveEvent(falciBedel));
-                Intent falci2ToDilek = new Intent(getContext(), DilekActivity.class);
-                startActivity(falci2ToDilek);
+                if(kullaniciTelveSayisi > 0 && falGonderecek){
+
+                    falGonderecek = false;
+                    farkTelveSayisi = kullaniciTelveSayisi - falciBedel;
+                }
+
+                if(farkTelveSayisi >= 0 && kullaniciTelveSayisi > 0){
+
+                    EventBus.getDefault().postSticky(new FalcitelveEvent(falciBedel));
+                    Intent falci2ToDilek = new Intent(getContext(), DilekActivity.class);
+                    startActivity(falci2ToDilek);
+                }else{
+                    Snackbar snacYetersiz = Snackbar.make(genelLayout, "Telve Sayınız YETERSİZ!", Snackbar.LENGTH_LONG);
+                    snacYetersiz.show();
+                }
+
+
 
             }
         });

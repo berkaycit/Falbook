@@ -11,8 +11,7 @@
         android:id="@+id/activity_anasayfa_kafe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="?attr/actionBarSize"
-        android:background="@color/colorPrimary">
+        android:layout_marginBottom="?attr/actionBarSize">
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline6"

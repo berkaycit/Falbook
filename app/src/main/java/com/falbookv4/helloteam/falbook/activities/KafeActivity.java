@@ -163,7 +163,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             @Override
             public void onClick(View v) {
 
-
                 if(!fotoYerlesti1){
                     kam1Durum = true;
                 }else if(!fotoYerlesti2){
@@ -490,11 +489,11 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             navigationViewKapat();
             //açık değilse bildiği işlemi yapsın
         else{
-            super.onBackPressed();
+            //super.onBackPressed();
             Intent kafeToAnasayfaBack = new Intent(KafeActivity.this, AnasayfaActivity.class);
             kafeToAnasayfaBack.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(kafeToAnasayfaBack);
-            finish();
+            //finish();
         }
     }
 
@@ -604,12 +603,12 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                     File photoFile = EasyImage.lastlyTakenButCanceledPhoto(KafeActivity.this);
                     if (photoFile != null) photoFile.delete();
                     kam1Durum = false; kam2Durum = false; kam3Durum = false;
-                    fotoYerlesti1 = false; fotoYerlesti2 = false; fotoYerlesti3 = false;
+                    //fotoYerlesti1 = false; fotoYerlesti2 = false; fotoYerlesti3 = false;
                 }
 
                 if(source == EasyImage.ImageSource.GALLERY){
                     kam1Durum = false; kam2Durum = false; kam3Durum = false;
-                    fotoYerlesti1 = false; fotoYerlesti2 = false; fotoYerlesti3 = false;
+                    //fotoYerlesti1 = false; fotoYerlesti2 = false; fotoYerlesti3 = false;
                 }
 
             }
@@ -751,10 +750,6 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         kafeTxtIliski.setOnClickListener(null);
         kafeTxtDogum.setOnClickListener(null);
         kafeTxtCinsiyet.setOnClickListener(null);
-
-        imgKam1.setImageDrawable(null);
-        imgKam2.setImageDrawable(null);
-        imgKam3.setImageDrawable(null);
 
     }
 }

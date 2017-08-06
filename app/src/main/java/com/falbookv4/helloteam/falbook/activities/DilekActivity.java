@@ -1,37 +1,25 @@
 package com.falbookv4.helloteam.falbook.activities;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.RandomString;
 import com.falbookv4.helloteam.falbook.classes.Utils;
-import com.falbookv4.helloteam.falbook.falcisec.Falci1telveEvent;
-import com.falbookv4.helloteam.falbook.falcisec.Falci2telveEvent;
-import com.falbookv4.helloteam.falbook.falcisec.Falci3telveEvent;
+import com.falbookv4.helloteam.falbook.falcisec.FalcitelveEvent;
 import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
-import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,19 +36,11 @@ import com.google.firebase.storage.UploadTask;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -140,21 +120,9 @@ public class DilekActivity extends AppCompatActivity {
     }
 
     @Subscribe(sticky = true)
-    public void onFalci1telveEvent(Falci1telveEvent event){
+    public void onFalcitelveEvent(FalcitelveEvent event){
         //kullanıcının telvesini alıyoruz
-        telveBedeli = event.getFalci1telveBedeli();
-    }
-
-    @Subscribe(sticky = true)
-    public void onFalci2telveEvent(Falci2telveEvent event){
-        //kullanıcının telvesini alıyoruz
-        telveBedeli = event.getFalci2telveBedeli();
-    }
-
-    @Subscribe(sticky = true)
-    public void onFalci3telveEvent(Falci3telveEvent event){
-        //kullanıcının telvesini alıyoruz
-        telveBedeli = event.getFalci3telveBedeli();
+        telveBedeli = event.getFalcitelveBedeli();
     }
 
 
@@ -282,25 +250,11 @@ public class DilekActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
 
+        //EventBus.clearCaches();
         Utils.clearCameraPic(this);
         EasyImage.clearPublicTemp(getApplicationContext());
 
         super.onDestroy();
-
-        if(connectedRef!=null){
-
-            connectedRef.removeEventListener(mListener1);
-        }
-
-        if(mDatabaseKullanici != null){
-
-            mDatabaseKullanici.removeEventListener(mListener2);
-        }
-
-        if(mDatabaseFal != null){
-
-            //mDatabaseFal.removeEventListener(mListener3);
-        }
 
     }
 
@@ -487,6 +441,7 @@ public class DilekActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
     }
+
 
 }
 
