@@ -1,6 +1,7 @@
 package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -42,6 +43,10 @@ public class FaldetayActivity extends AppCompatActivity {
 
     public void init(){
 
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
         colToolbar = (CollapsingToolbarLayout)findViewById(R.id.faldetayColToolbar);
         colToolbar.setTitle("FALLARIM");
         fbPaylas = (FloatingActionButton) findViewById(R.id.fbPaylas);
@@ -52,6 +57,9 @@ public class FaldetayActivity extends AppCompatActivity {
         bakilaninIsmi = (TextView) findViewById(R.id.faldetayContainBakilanIsmi);
         falDetayYorum = (TextView) findViewById(R.id.faldetayContainFalYorumu);
         falDetayTarih = (TextView) findViewById(R.id.txtFalDetayTarih);
+
+        falDetayYorum.setTypeface(typeFace);
+        bakilaninIsmi.setTypeface(typeFaceBold);
 
         //kullanıcı yönetmek için
         mAuth = FirebaseAuth.getInstance();

@@ -26,8 +26,11 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -119,11 +122,34 @@ public class KayitgirisiActivity extends AppCompatActivity {
 
                 if(firebaseAuth.getCurrentUser() != null){
 
-                    //TODO: kullanıcının tokenini tekrardan al ve güncelle, başka cihazdan girmiş olabilir.
-                    Intent girisToAnasayfa = new Intent(KayitgirisiActivity.this, AnasayfaActivity.class);
-                    girisToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(girisToAnasayfa);
-                    finish();
+                    String uid = firebaseAuth.getCurrentUser().getUid();
+                    mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
+
+                    String kullaniciTokenGiris = FirebaseInstanceId.getInstance().getToken();
+
+                    Map<String, Object> updateKullaniciGirisMap = new HashMap<>();
+                    updateKullaniciGirisMap.put("cihazID", kullaniciTokenGiris);
+
+                    mDatabaseKullanici.updateChildren(updateKullaniciGirisMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(!task.isSuccessful()){
+
+                                mProgressGiris.hide();
+                                Snackbar snacBilgiGuncellenemedi = Snackbar
+                                        .make(kayitGirisLayout, "Tekrar Deneyiniz", Snackbar.LENGTH_LONG);
+                                snacBilgiGuncellenemedi.show();
+                            }else{
+
+                                Intent girisToAnasayfa = new Intent(KayitgirisiActivity.this, AnasayfaActivity.class);
+                                girisToAnasayfa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(girisToAnasayfa);
+                                finish();
+                            }
+                        }
+                    });
+
+
                 }
 
             }

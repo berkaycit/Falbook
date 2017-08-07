@@ -3,6 +3,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -59,7 +60,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     private TextView navKullaniciIsmi, navKullaniciMail;
     private int telveSayisi;
     private DatabaseReference mDatabaseKullanici;
-    private TextView txtTelveSayisi;
+    private TextView txtTelveSayisi, txtFalBaktir;
     private String strFalSayisi;
     private ValueEventListener mListener;
 
@@ -79,7 +80,9 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         anaBtnSSS = (ImageView) findViewById(R.id.anaBtnSSS);
         anaBtnIletisim = (ImageView) findViewById(R.id.anaBtnIletisim);
         anaBtnKullanim = (ImageView) findViewById(R.id.anaBtnKullanim);
+
         txtTelveSayisi = (TextView) findViewById(R.id.telveSayisiTexts);
+        txtFalBaktir = (TextView) findViewById(R.id.falbaktirText);
 
 
         //->Firebase
@@ -90,6 +93,13 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
             mDatabaseKullanici.keepSynced(true);
         }
+
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        txtFalBaktir.setTypeface(typeFace);
 
     }
 
@@ -271,12 +281,12 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     }
 
     public void anaBtnFonk() {
-        //TODO: intentlere flag ekle
         anaBtnFalBaktir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent anasayfaToKafe = new Intent(AnasayfaActivity.this, KafeActivity.class);
+                anasayfaToKafe.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToKafe);
                 finish();
             }
@@ -286,6 +296,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(View view) {
                 Intent anasayfaToSatinal = new Intent(AnasayfaActivity.this, SatinalActivity.class);
+                anasayfaToSatinal.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToSatinal);
             }
         });
@@ -295,6 +306,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             public void onClick(View view) {
 
                 Intent anasayfaToSSS = new Intent(AnasayfaActivity.this, SSSActivity.class);
+                anasayfaToSSS.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToSSS);
             }
         });
@@ -303,6 +315,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(View view) {
                 Intent anasayfaToIletisim = new Intent(AnasayfaActivity.this, IletisimActivity.class);
+                anasayfaToIletisim.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToIletisim);
             }
         });
@@ -311,6 +324,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(View view) {
                 Intent anasayfaToSatinal = new Intent(AnasayfaActivity.this, SatinalActivity.class);
+                anasayfaToSatinal.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToSatinal);
             }
         });

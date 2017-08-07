@@ -499,7 +499,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
                         updateKullaniciProfilMap.put("iliski", strIliski);
                         updateKullaniciProfilMap.put("dogum", strDogum);
 
-                        mDatabaseKullanici.child(kullaniciID).updateChildren(updateKullaniciProfilMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        mDatabaseKullaniciIc.updateChildren(updateKullaniciProfilMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 //eğer veriyi değiştiremezse
