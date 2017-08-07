@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
 
@@ -21,6 +22,7 @@ public class FalbookhakkindaActivity extends AppCompatActivity {
 
     private FloatingActionButton fbFalGonder;
     private BottomNavigationView botToolbar;
+    private TextView txtKullanim, txtGizlilik;
 
     private void init(){
 
@@ -29,9 +31,26 @@ public class FalbookhakkindaActivity extends AppCompatActivity {
         fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
+        txtKullanim = (TextView) findViewById(R.id.txtKullanimSartlari);
+        txtGizlilik = (TextView) findViewById(R.id.txtGizlilikPolitikasi);
+
     }
 
     private void menuleriHazirla() {
+
+        txtKullanim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FalbookhakkindaActivity.this, GizlilikpolitikasiActivity.class));
+            }
+        });
+
+        txtGizlilik.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FalbookhakkindaActivity.this, GizlilikpolitikasiActivity.class));
+            }
+        });
 
         fbFalGonder.setOnClickListener(new View.OnClickListener() {
             @Override

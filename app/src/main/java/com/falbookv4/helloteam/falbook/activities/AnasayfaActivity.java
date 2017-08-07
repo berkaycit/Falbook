@@ -4,6 +4,7 @@ package com.falbookv4.helloteam.falbook.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -16,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,6 +27,11 @@ import android.widget.TextView;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
+import com.google.android.gms.appinvite.AppInvite;
+import com.google.android.gms.appinvite.AppInviteInvitation;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +39,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.joooonho.SelectableRoundedImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -44,8 +53,9 @@ import java.io.File;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
-public class AnasayfaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AnasayfaActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+    private static final int REQUEST_INVITE = 900;
     private Toolbar toolbarAnasayfa, toolbar;
     private FloatingActionButton fbFalGonder;
     private ConstraintLayout consToolBar;
@@ -60,7 +70,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     private TextView navKullaniciIsmi, navKullaniciMail;
     private int telveSayisi;
     private DatabaseReference mDatabaseKullanici;
-    private TextView txtTelveSayisi, txtFalBaktir;
+    private TextView txtTelveSayisi, txtFalBaktir, txtTelveSatinal, txtTelveKazan, txtSSS, txtIletisim, txtKullanim, toolbarBaslik;
     private String strFalSayisi;
     private ValueEventListener mListener;
 
@@ -83,6 +93,11 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
         txtTelveSayisi = (TextView) findViewById(R.id.telveSayisiTexts);
         txtFalBaktir = (TextView) findViewById(R.id.falbaktirText);
+        txtTelveKazan = (TextView) findViewById(R.id.telvekazanText);
+        txtSSS = (TextView) findViewById(R.id.sssText);
+        txtIletisim = (TextView) findViewById(R.id.iletisimText);
+        txtKullanim = (TextView) findViewById(R.id.kullanimText);
+        toolbarBaslik = (TextView) findViewById(R.id.anasayfa_toolbar_baslik);
 
 
         //->Firebase
@@ -96,16 +111,33 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
     }
 
+    private void onInviteClicked() {
+        Intent intent = new AppInviteInvitation.IntentBuilder("Paylaş")
+                .setMessage("Falbook uygulamasını denemeni tavsiye ederim!")
+                .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
+                //.setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
+                .setCallToActionText("İndir")
+                .build();
+        startActivityForResult(intent, REQUEST_INVITE);
+    }
+
     private void fontHandler(){
 
         Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
         txtFalBaktir.setTypeface(typeFace);
+        txtTelveSayisi.setTypeface(typeFace);
+        txtTelveKazan.setTypeface(typeFace);
+        txtSSS.setTypeface(typeFace);
+        txtIletisim.setTypeface(typeFace);
+        txtKullanim.setTypeface(typeFace);
+        toolbarBaslik.setTypeface(typeFace);
 
     }
 
     public void handler() {
 
         anaBtnFonk();
+        fontHandler();
 
         //telve sayısını gönder.
         EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
@@ -218,6 +250,27 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
                 Intent anasayfaToFalbookhk = new Intent(AnasayfaActivity.this, FalbookhakkindaActivity.class);
                 anasayfaToFalbookhk.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(anasayfaToFalbookhk);
+                break;
+
+            case R.id.navPaylas:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.invitation_deep_link));
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                //onInviteClicked();
+                break;
+
+            case R.id.navTeknik:
+                Intent anasayfaToIletisim = new Intent(AnasayfaActivity.this, IletisimActivity.class);
+                anasayfaToIletisim.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(anasayfaToIletisim);
+                break;
+
+            case R.id.navPuanVer:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=com.falbookv4.helloteam.falbook"));
+                startActivity(intent);
                 break;
 
             case R.id.navCikis:
@@ -406,6 +459,27 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
+
+        if (requestCode == REQUEST_INVITE) {
+            if (resultCode == RESULT_OK) {
+                // Get the invitation IDs of all sent messages
+                String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+                for (String id : ids) {
+                    Log.d("AnasayfaActivity", "onActivityResult: sent invitation " + id);
+                }
+            } else {
+                // Sending failed or it was canceled, show failure message to the user
+                // ...
+            }
+        }
+    }
+
+
+
+    @Override
     protected void onDestroy() {
 
         super.onDestroy();
@@ -428,7 +502,6 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         anaBtnIletisim.setImageDrawable(null);
         anaBtnTelveKazan.setImageDrawable(null);
         anaBtnKullanim.setImageDrawable(null);
-
 
     }
 }

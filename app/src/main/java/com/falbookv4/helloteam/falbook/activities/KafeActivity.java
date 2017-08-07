@@ -437,6 +437,27 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                 startActivity(anasayfaToFalbookhk);
                 break;
 
+            case R.id.navPaylas:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.invitation_deep_link));
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                //onInviteClicked();
+                break;
+
+            case R.id.navTeknik:
+                Intent anasayfaToIletisim = new Intent(KafeActivity.this, IletisimActivity.class);
+                anasayfaToIletisim.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(anasayfaToIletisim);
+                break;
+
+            case R.id.navPuanVer:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=com.falbookv4.helloteam.falbook"));
+                startActivity(intent);
+                break;
+
             case R.id.navCikis:
 
                 new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)

@@ -38,4 +38,6 @@
     <string name="send_to">Paylaş</string>
     <string name="kayitolurken_bilgilendirme">Kayıt olarak <b>Kullanım ve Gizlilik Koşulları</b>\'nı kabul ediyorum.</string>
     <string name="gizlilikpolitikasi_baslik">Falbook Uygulaması Kullanım Koşulları ve Gizlilik Politikası</string>
+    <string name="invitation_deep_link">Fal Baktır - Falbook | Hemen fincanının fotoğrafını gönder, senin de falını yorumlayalım. Ayrıca bu linkten indirebilirsin yada detaylı bilgi için falbookapp.com u ziyaret edebilirsin.\nhttps://fw29m.app.goo.gl/V9Hh </string>
+
 </resources>
