@@ -24,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 public class FaldetayActivity extends AppCompatActivity {
 
 
@@ -43,10 +45,6 @@ public class FaldetayActivity extends AppCompatActivity {
 
     public void init(){
 
-
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
-
         colToolbar = (CollapsingToolbarLayout)findViewById(R.id.faldetayColToolbar);
         colToolbar.setTitle("FALLARIM");
         fbPaylas = (FloatingActionButton) findViewById(R.id.fbPaylas);
@@ -58,8 +56,6 @@ public class FaldetayActivity extends AppCompatActivity {
         falDetayYorum = (TextView) findViewById(R.id.faldetayContainFalYorumu);
         falDetayTarih = (TextView) findViewById(R.id.txtFalDetayTarih);
 
-        falDetayYorum.setTypeface(typeFace);
-        bakilaninIsmi.setTypeface(typeFaceBold);
 
         //kullanıcı yönetmek için
         mAuth = FirebaseAuth.getInstance();
@@ -75,6 +71,17 @@ public class FaldetayActivity extends AppCompatActivity {
         fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
+
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
+        falDetayYorum.setTypeface(typeFace);
+        bakilaninIsmi.setTypeface(typeFaceBold);
+        falDetayTarih.setTypeface(typeFace);
 
     }
 
@@ -129,6 +136,7 @@ public class FaldetayActivity extends AppCompatActivity {
 
     public void handler(){
 
+        fontHandler();
         menuleriHazirla();
 
         //toolbar ı action bar ın özelliklerinden faydalanmasını sağlıyoruz

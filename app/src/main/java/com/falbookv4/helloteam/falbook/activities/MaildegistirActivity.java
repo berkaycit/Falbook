@@ -1,6 +1,7 @@
 package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +28,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -38,6 +42,7 @@ public class MaildegistirActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mBulunanKullanici;
     private DatabaseReference mDatabaseKullanici;
+    private TextView toolbarBaslik, txtMailDegistirBilgilendirme;
 
     private Toolbar toolbarFalbookHakkinda;
 
@@ -51,18 +56,32 @@ public class MaildegistirActivity extends AppCompatActivity {
         String uid = mBulunanKullanici.getUid();
         mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
 
+        toolbarBaslik = (TextView) findViewById(R.id.maildegistir_toolbar_baslik);
         genelLayout = (CoordinatorLayout) findViewById(R.id.mailDegistirGenelLayout);
         btnGonder = (Button) findViewById(R.id.btnMailDegistir);
         txtSifre = (EditText) findViewById(R.id.txtMailDegistirSifre);
         txtMail = (EditText) findViewById(R.id.txtMailDegistirMail);
         txtInputMail = (TextInputLayout) findViewById(R.id.textInputMailDegistir);
         txtInputSifre = (TextInputLayout) findViewById(R.id.txtInputMailDegistirSifre);
-
+        txtMailDegistirBilgilendirme = (TextView) findViewById(R.id.txtMailDegistirBilgilendirme);
 
         toolbarFalbookHakkinda = (Toolbar) findViewById(R.id.toolbarFalbookHakkinda);
 
         fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
+        toolbarBaslik.setTypeface(typeFaceBold);
+        txtMailDegistirBilgilendirme.setTypeface(typeFace);
+        txtSifre.setTypeface(typeFace);
+        txtMail.setTypeface(typeFace);
+        btnGonder.setTypeface(typeFace);
 
     }
 
@@ -118,6 +137,7 @@ public class MaildegistirActivity extends AppCompatActivity {
 
     public void handler(){
 
+        fontHandler();
         menuleriHazirla();
 
         btnGonder.setOnClickListener(new View.OnClickListener() {

@@ -2,6 +2,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.RandomString;
@@ -65,8 +67,12 @@ public class DilekActivity extends AppCompatActivity {
     private int farkTelveSayisi, telveBedeli, yeniTelveSayiniz, bulunanTelve, telveKontrolSayi;
     private DatabaseReference connectedRef;
     private ValueEventListener mListener1, mListener2, mListener3;
+    private TextView toolbarBaslik, txtDilekBilgilendirme;
 
     public void init(){
+
+        toolbarBaslik = (TextView) findViewById(R.id.dilek_toolbar_baslik);
+        txtDilekBilgilendirme = (TextView) findViewById(R.id.txtDilekBilgilendirme);
 
         dilekGenelLayout = (CoordinatorLayout) findViewById(R.id.dilek_layout);
 
@@ -103,6 +109,18 @@ public class DilekActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+
+        toolbarBaslik.setTypeface(typeFaceBold);
+        txtDilekBilgilendirme.setTypeface(typeFace);
+        txtDilek.setTypeface(typeFace);
+        btnGonder.setTypeface(typeFace);
 
     }
 
@@ -203,6 +221,8 @@ public class DilekActivity extends AppCompatActivity {
     }
 
     public void handler(){
+
+        fontHandler();
 
         setSupportActionBar(dilekToolbar);
         getSupportActionBar().setTitle(null);

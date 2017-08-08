@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.falbookv4.helloteam.falbook"
     android:installLocation="preferExternal"
-    android:versionCode="1"
-    android:versionName="1.0">
+    android:versionCode="5"
+    android:versionName="1.4">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -115,7 +115,10 @@
             android:launchMode="singleTop"
             android:parentActivityName=".activities.ProfilActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.GizlilikpolitikasiActivity"></activity>
+        <activity
+            android:name=".activities.GizlilikpolitikasiActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

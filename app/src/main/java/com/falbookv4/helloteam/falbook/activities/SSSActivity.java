@@ -2,6 +2,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -24,14 +26,25 @@ public class SSSActivity extends AppCompatActivity {
 
     private FloatingActionButton fbFalGonder;
     private BottomNavigationView botToolbar;
+    private TextView toolbarBaslik;
 
 
     public void init(){
 
+        toolbarBaslik = (TextView) findViewById(R.id.sss_toolbar_baslik);
         toolbarSSS = (Toolbar) findViewById(R.id.toolbarSSS);
 
         fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
+        toolbarBaslik.setTypeface(typeFaceBold);
 
     }
 
@@ -75,6 +88,7 @@ public class SSSActivity extends AppCompatActivity {
 
     public void handler(){
 
+        fontHandler();
         menuleriHazirla();
 
         setSupportActionBar(toolbarSSS);

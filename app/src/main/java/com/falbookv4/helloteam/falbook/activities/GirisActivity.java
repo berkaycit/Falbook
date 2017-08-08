@@ -3,6 +3,7 @@ package com.falbookv4.helloteam.falbook.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -68,6 +69,18 @@ public class GirisActivity extends AppCompatActivity {
 
     }
 
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
+        btnMisafirGirisi.setTypeface(typeFace);
+        btnKullaniciGirisi.setTypeface(typeFace);
+        btnKayitOl.setTypeface(typeFace);
+        txtGizlilikPolitikasi.setTypeface(typeFace);
+
+    }
+
     @Subscribe(sticky = true)
     public void onTelveEvent(TelveEvent event){
         //kullanıcının telvesini alıyoruz
@@ -76,6 +89,8 @@ public class GirisActivity extends AppCompatActivity {
 
 
     public void handler(){
+
+        fontHandler();
 
         txtGizlilikPolitikasi.setOnClickListener(new View.OnClickListener() {
             @Override

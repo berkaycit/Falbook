@@ -163,6 +163,7 @@
             app:layout_constraintTop_toBottomOf="@+id/profilTxtDogum" />
 
         <TextView
+            android:id="@+id/txtProfilBilgilendirme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"

@@ -3,6 +3,7 @@ package com.falbookv4.helloteam.falbook.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -70,9 +71,11 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ValueEventListener mListener;
+    private TextView toolbarBaslik;
 
     public void init(){
 
+        toolbarBaslik = (TextView) findViewById(R.id.fallarim_toolbar_baslik);
         progressFalSil = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
 
         toolbarGelenfal = (Toolbar) findViewById(R.id.toolbarGelenFallar);
@@ -112,6 +115,16 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
         //recyclerview a istediğimiz kuralları uyguluyoruz
         gelenFalRecyclerView.setLayoutManager(layoutManager);
+
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
+        toolbarBaslik.setTypeface(typeFaceBold);
+
 
     }
 
@@ -277,6 +290,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
     public void handler(){
 
+        fontHandler();
         menuleriHazirla();
         navBarDataYerlestir();
 

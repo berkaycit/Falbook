@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -19,6 +20,7 @@ import android.telephony.TelephonyManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adcolony.sdk.AdColony;
@@ -48,6 +50,7 @@ import com.jirbo.adcolony.AdColonyBundleBuilder;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.HashMap;
@@ -72,8 +75,21 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     private boolean telveSatinalmaAktif = false;
     private AppCompatImageView tvIcon;
     private ValueEventListener mListener;
+    private TextView toolbarBaslik, txtTelveSayisi1, txtTelveParasi1, txtTelveSayisi2, txtTelveParasi2,
+                        txtTelveSayisi3, txtTelveParasi3, txtTelveSayisi4, txtTelveParasi4, txtIzleKazan;
 
     public void init(){
+
+        toolbarBaslik = (TextView) findViewById(R.id.satinal_toolbar_baslik);
+        txtTelveSayisi1 = (TextView) findViewById(R.id.txtTelveSayisi);
+        txtTelveParasi1 = (TextView) findViewById(R.id.txtTelveParasi);
+        txtTelveSayisi2 = (TextView) findViewById(R.id.txtTelveSayisi300);
+        txtTelveParasi2 = (TextView) findViewById(R.id.txtTelveParasi25);
+        txtTelveSayisi3 = (TextView) findViewById(R.id.txtTelveSayisi500);
+        txtTelveParasi3 = (TextView) findViewById(R.id.txtTelveParasi30);
+        txtTelveSayisi4 = (TextView) findViewById(R.id.txtTelveSayisi1000);
+        txtTelveParasi4 = (TextView) findViewById(R.id.txtTelveParasi50);
+        txtIzleKazan = (TextView) findViewById(R.id.txtIzleyerekKazan);
 
         base64EncodedPublicKey = getString(R.string.base64encodedpublickey);
 
@@ -106,6 +122,25 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
     }
+
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
+        toolbarBaslik.setTypeface(typeFaceBold);
+        txtTelveSayisi1.setTypeface(typeFace);
+        txtTelveParasi1.setTypeface(typeFace);
+        txtTelveSayisi2.setTypeface(typeFace);
+        txtTelveParasi2.setTypeface(typeFace);
+        txtTelveSayisi3.setTypeface(typeFace);
+        txtTelveParasi3.setTypeface(typeFace);
+        txtTelveSayisi4.setTypeface(typeFace);
+        txtTelveParasi4.setTypeface(typeFace);
+        txtIzleKazan.setTypeface(typeFace);
+    }
+
+
 
     private void menuleriHazirla() {
 
@@ -218,6 +253,7 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
     public void handler(){
 
+        fontHandler();
         menuleriHazirla();
         satinAlimHandler();
 

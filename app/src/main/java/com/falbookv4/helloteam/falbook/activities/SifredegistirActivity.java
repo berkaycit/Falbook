@@ -2,6 +2,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -46,9 +47,14 @@ public class SifredegistirActivity extends AppCompatActivity {
     private BottomNavigationView botToolbar;
     private String kullaniciMaili;
     private TextInputLayout textInputSifre, textInputYeniSifre;
+    private TextView toolbarBaslik, txtMailKontrol;
 
 
     public void init(){
+
+        toolbarBaslik = (TextView) findViewById(R.id.sifredegistir_toolbar_baslik);
+        txtMailKontrol = (TextView) findViewById(R.id.txtMailKontrolEt);
+
         mAuth = FirebaseAuth.getInstance();
         mBulunanKullanici = mAuth.getCurrentUser();
 
@@ -66,6 +72,18 @@ public class SifredegistirActivity extends AppCompatActivity {
         fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
+        toolbarBaslik.setTypeface(typeFaceBold);
+        txtMailKontrol.setTypeface(typeFace);
+        txtSifreDegistir.setTypeface(typeFace);
+        txtSifreDegistir.setTypeface(typeFace);
+        btnGonder.setTypeface(typeFace);
     }
 
     private void menuleriHazirla() {
@@ -108,6 +126,7 @@ public class SifredegistirActivity extends AppCompatActivity {
 
     public void handler(){
 
+        fontHandler();
         menuleriHazirla();
 
         setSupportActionBar(sifreDegistirToolbar);

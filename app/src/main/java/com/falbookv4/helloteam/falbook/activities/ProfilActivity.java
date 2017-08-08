@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -36,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -88,6 +90,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
     private BottomNavigationView botToolbar;
     private ValueEventListener mListener1, mListener2;
     private boolean kullaniciKayitli = false;
+    private TextView toolbarBaslik, txtProfilBilgilendirme;
 
     public void init() {
 
@@ -99,6 +102,9 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         mResimStorage = FirebaseStorage.getInstance().getReference();
         //offline olduğu durumlar için
         mDatabaseKullaniciIc.keepSynced(true);
+
+        toolbarBaslik = (TextView) findViewById(R.id.profil_toolbar_baslik);
+        txtProfilBilgilendirme = (TextView) findViewById(R.id.txtProfilBilgilendirme);
 
         profilLayout = (CoordinatorLayout) findViewById(R.id.profilLayout);
 
@@ -120,6 +126,21 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
 
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
+        toolbarBaslik.setTypeface(typeFaceBold);
+        txtProfilBilgilendirme.setTypeface(typeFace);
+        profilTxtMail.setTypeface(typeFace);
+        profilTxtAd.setTypeface(typeFace);
+        profilTxtSoyad.setTypeface(typeFace);
+        profilTxtCinsiyet.setTypeface(typeFace);
+        profilTxtDogum.setTypeface(typeFace);
+        profilTxtIliski.setTypeface(typeFace);
     }
 
     private void menuleriHazirla() {
@@ -169,6 +190,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
     public void handler() {
 
+        fontHandler();
         menuleriHazirla();
 
         setSupportActionBar(profilToolbar);

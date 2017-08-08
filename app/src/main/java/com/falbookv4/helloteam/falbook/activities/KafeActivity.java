@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -56,6 +57,7 @@ import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.greenrobot.eventbus.EventBus;
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -102,6 +104,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
     private FloatingActionButton fbFalGonder;
     private boolean fotoYerlesti1, fotoYerlesti2 , fotoYerlesti3;
     private ValueEventListener mListener;
+    private TextView toolbarBaslik, txtFotografSec, txtBilgilendirme;
 
     @Override
     protected void onStart() {
@@ -121,6 +124,10 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
     }
 
     public void init(){
+
+        toolbarBaslik = (TextView) findViewById(R.id.kafe_toolbar_baslik);
+        txtFotografSec = (TextView) findViewById(R.id.fotografsecText);
+        txtBilgilendirme = (TextView) findViewById(R.id.bilgilendirmefalText);
 
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayoutKafe);
@@ -153,6 +160,22 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
             mDatabaseKullanici.keepSynced(true);
         }
+
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+
+        toolbarBaslik.setTypeface(typeFaceBold);
+        txtFotografSec.setTypeface(typeFace);
+        txtBilgilendirme.setTypeface(typeFace);
+        btnFalGonder.setTypeface(typeFace);
+        gondereninAdi.setTypeface(typeFace);
+        kafeTxtIliski.setTypeface(typeFace);
+        kafeTxtDogum.setTypeface(typeFace);
+        kafeTxtCinsiyet.setTypeface(typeFace);
 
     }
 
@@ -401,6 +424,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
     public void handler(){
 
+        fontHandler();
         kameraHandler();
         menuleriHazirla();
         textHandler();

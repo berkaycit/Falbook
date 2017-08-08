@@ -2,6 +2,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -22,9 +23,11 @@ public class FalbookhakkindaActivity extends AppCompatActivity {
 
     private FloatingActionButton fbFalGonder;
     private BottomNavigationView botToolbar;
-    private TextView txtKullanim, txtGizlilik;
+    private TextView txtKullanim, txtGizlilik, toolbarBaslik, txtLisans;
 
     private void init(){
+
+        toolbarBaslik = (TextView) findViewById(R.id.falbookhakkinda_toolbar_baslik);
 
         toolbarFalbookHakkinda = (Toolbar) findViewById(R.id.toolbarFalbookHakkinda);
 
@@ -33,6 +36,19 @@ public class FalbookhakkindaActivity extends AppCompatActivity {
 
         txtKullanim = (TextView) findViewById(R.id.txtKullanimSartlari);
         txtGizlilik = (TextView) findViewById(R.id.txtGizlilikPolitikasi);
+        txtLisans = (TextView) findViewById(R.id.txtLisanslar);
+
+    }
+
+    private void fontHandler(){
+
+        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+
+        toolbarBaslik.setTypeface(typeFaceBold);
+        txtKullanim.setTypeface(typeFace);
+        txtGizlilik.setTypeface(typeFace);
+        txtLisans.setTypeface(typeFace);
 
     }
 
@@ -89,6 +105,7 @@ public class FalbookhakkindaActivity extends AppCompatActivity {
 
     private void handler(){
 
+        fontHandler();
         menuleriHazirla();
 
         setSupportActionBar(toolbarFalbookHakkinda);
