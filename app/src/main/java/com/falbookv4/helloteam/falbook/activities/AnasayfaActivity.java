@@ -408,6 +408,11 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(View view) {
 
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.invitation_deep_link));
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
             }
         });
     }

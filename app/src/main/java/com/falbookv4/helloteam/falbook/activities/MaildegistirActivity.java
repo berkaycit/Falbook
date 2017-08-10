@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ public class MaildegistirActivity extends AppCompatActivity {
 
     private CoordinatorLayout genelLayout;
     private Button btnGonder;
-    private EditText txtSifre, txtMail;
+    private TextInputEditText txtSifre, txtMail;
     private TextInputLayout txtInputMail, txtInputSifre;
     private FirebaseAuth mAuth;
     private FirebaseUser mBulunanKullanici;
@@ -59,8 +60,8 @@ public class MaildegistirActivity extends AppCompatActivity {
         toolbarBaslik = (TextView) findViewById(R.id.maildegistir_toolbar_baslik);
         genelLayout = (CoordinatorLayout) findViewById(R.id.mailDegistirGenelLayout);
         btnGonder = (Button) findViewById(R.id.btnMailDegistir);
-        txtSifre = (EditText) findViewById(R.id.txtMailDegistirSifre);
-        txtMail = (EditText) findViewById(R.id.txtMailDegistirMail);
+        txtSifre = (TextInputEditText) findViewById(R.id.txtMailDegistirSifre);
+        txtMail = (TextInputEditText) findViewById(R.id.txtMailDegistirMail);
         txtInputMail = (TextInputLayout) findViewById(R.id.textInputMailDegistir);
         txtInputSifre = (TextInputLayout) findViewById(R.id.txtInputMailDegistirSifre);
         txtMailDegistirBilgilendirme = (TextView) findViewById(R.id.txtMailDegistirBilgilendirme);

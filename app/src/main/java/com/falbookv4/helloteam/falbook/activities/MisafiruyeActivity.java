@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class MisafiruyeActivity extends AppCompatActivity {
     private ConstraintLayout misafirUyeKayitLayout;
     private FirebaseAuth mAuth;
     private FirebaseUser mBulunanKullanici;
-    private EditText misafirKayitTxtSifre, misafirKayitTxtMail;
+    private TextInputEditText misafirKayitTxtSifre, misafirKayitTxtMail;
     private TextInputLayout textInputMisafirSifre, textInputMisafirSifreOnay, textInputMisafirMail;
     private String sifre, mail, profilfoto;
     private SweetAlertDialog mProgressMisafirKayit;
@@ -52,8 +53,8 @@ public class MisafiruyeActivity extends AppCompatActivity {
 
         mBulunanKullanici = mAuth.getCurrentUser();
 
-        misafirKayitTxtMail = (EditText) findViewById(R.id.txtMisafirMail);
-        misafirKayitTxtSifre = (EditText) findViewById(R.id.txtMisafirSifre);
+        misafirKayitTxtMail = (TextInputEditText) findViewById(R.id.txtMisafirMail);
+        misafirKayitTxtSifre = (TextInputEditText) findViewById(R.id.txtMisafirSifre);
 
         textInputMisafirMail = (TextInputLayout) findViewById(R.id.textInputMisafirMail);
         textInputMisafirSifre = (TextInputLayout) findViewById(R.id.textInputMisafirSifre);

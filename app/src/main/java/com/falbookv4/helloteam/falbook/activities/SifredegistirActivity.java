@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +41,7 @@ public class SifredegistirActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mBulunanKullanici;
     private TextView txtBilgilendirme;
-    private EditText txtSifreDegistir, txtSifreDegistirOnay;
+    private TextInputEditText txtSifreDegistir, txtSifreDegistirOnay;
     private Button btnGonder;
     private String strYeniSifre, strYeniSifreOnay;
     private FloatingActionButton fbFalGonder;
@@ -62,8 +63,8 @@ public class SifredegistirActivity extends AppCompatActivity {
         sifreDegistirToolbar = (Toolbar) findViewById(R.id.toolbarSifreDegistir);
 
         txtBilgilendirme = (TextView) findViewById(R.id.txtSifreDegistirBilgilendirme);
-        txtSifreDegistir = (EditText) findViewById(R.id.txtSifreDegistirSifre);
-        txtSifreDegistirOnay = (EditText) findViewById(R.id.txtSifreDegistirSifreOnay);
+        txtSifreDegistir = (TextInputEditText) findViewById(R.id.txtSifreDegistirSifre);
+        txtSifreDegistirOnay = (TextInputEditText) findViewById(R.id.txtSifreDegistirSifreOnay);
         textInputSifre = (TextInputLayout) findViewById(R.id.textInputSifreDegistir);
         textInputYeniSifre = (TextInputLayout) findViewById(R.id.textInputSifreDegistirOnay);
 

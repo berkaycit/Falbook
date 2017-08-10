@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class KayitgirisiActivity extends AppCompatActivity {
     private ConstraintLayout kayitGirisLayout;
     private FirebaseAuth mAuth;
     private FirebaseUser mBulunanKullanici;
-    private EditText girisTxtSifre, girisTxtMail;
+    private TextInputEditText girisTxtSifre, girisTxtMail;
     private TextInputLayout textInputGirisSifre, textInputGirisMail;
     private String sifre, mail;
     private SweetAlertDialog mProgressGiris;
@@ -58,8 +59,8 @@ public class KayitgirisiActivity extends AppCompatActivity {
 
         mBulunanKullanici = mAuth.getCurrentUser();
 
-        girisTxtMail = (EditText) findViewById(R.id.txtKayitGirisMail);
-        girisTxtSifre = (EditText) findViewById(R.id.txtKayitGirisSifre);
+        girisTxtMail = (TextInputEditText) findViewById(R.id.txtKayitGirisMail);
+        girisTxtSifre = (TextInputEditText) findViewById(R.id.txtKayitGirisSifre);
 
         textInputGirisMail = (TextInputLayout) findViewById(R.id.textInputKayitGirisMail);
         textInputGirisSifre = (TextInputLayout) findViewById(R.id.textInputKayitGirisSifre);

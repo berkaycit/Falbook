@@ -182,7 +182,6 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
                     @Override
                     public void onClick(View view) {
 
-
                         AlertDialog.Builder builder;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             builder = new AlertDialog.Builder(GelenfallarActivity.this, android.R.style.Theme_Material_Dialog_Alert);
@@ -196,8 +195,10 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
                                         //fal yorumlandıysa sil
                                         if(falYorumlandi){
 
-                                            DatabaseReference itemRef = getRef(position);
+                                            DatabaseReference itemRef = getRef(viewHolder.getAdapterPosition());
                                             itemRef.removeValue();
+                                            //firebaseRecyclerAdapter.cleanup();
+
                                         }
                                     }
                                 })

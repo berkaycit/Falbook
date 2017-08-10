@@ -76,18 +76,6 @@ public class Falci2 extends Fragment{
         mFalci2 = mDatabaseFalcilar.child("Falci2");
         mFalci2Foto = mFalci2.child("Falci_Foto");
 
-        /*
-        StorageReference filepath = mStorage.child("Falcilar_Fotolari").child("falcip2.jpg");
-
-        filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-
-                mFalci2Foto.setValue(uri.toString());
-            }
-        });
-        */
-
         mKullanici.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -177,7 +165,6 @@ public class Falci2 extends Fragment{
 
             }
         });
-
     }
 
     @Override
