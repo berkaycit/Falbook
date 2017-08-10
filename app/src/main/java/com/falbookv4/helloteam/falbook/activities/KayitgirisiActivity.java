@@ -2,6 +2,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -14,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.Sabitler;
+import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -45,7 +48,7 @@ public class KayitgirisiActivity extends AppCompatActivity {
     private SweetAlertDialog mProgressGiris;
     private Button btnKayitGiris;
     private DatabaseReference mDatabaseKullanici;
-    private String strAd, strSoyad;
+    private String strAd, strSoyad, strMail, strSifre;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
 
@@ -116,6 +119,18 @@ public class KayitgirisiActivity extends AppCompatActivity {
 
     public void handler(){
 
+
+        SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
+        strMail = preferences.getString(Sabitler.KULLANICI_MAIL);
+        strSifre = preferences.getString(Sabitler.KULLANICI_SIFRE);
+
+        if(strMail !=  null && strSifre != null){
+
+            girisTxtMail.setText(strMail);
+            girisTxtSifre.setText(strSifre);
+        }
+
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -159,7 +174,17 @@ public class KayitgirisiActivity extends AppCompatActivity {
         btnKayitGiris.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                girisYap();
+
+                if(mailDogrula() && sifreDogrula()){
+
+                    girisYap();
+                }else{
+
+                    Snackbar snacMisafirUyelikHata = Snackbar
+                            .make(kayitGirisLayout, "Boş bırakmayınız", Snackbar.LENGTH_LONG);
+                    snacMisafirUyelikHata.show();
+                }
+
             }
         });
 
@@ -183,8 +208,13 @@ public class KayitgirisiActivity extends AppCompatActivity {
 
                     if(task.isSuccessful()){
 
-                        mProgressGiris.dismiss();
+                        SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
+                        strMail = girisTxtMail.getText().toString();
+                        strSifre = girisTxtSifre.getText().toString();
+                        preferences.put(Sabitler.KULLANICI_MAIL, strMail);
+                        preferences.put(Sabitler.KULLANICI_SIFRE, strSifre);
 
+                        mProgressGiris.dismiss();
 
                     }else{
 

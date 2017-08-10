@@ -2,6 +2,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -19,6 +20,9 @@ import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.Kullanicilar;
 import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
+import com.falbookv4.helloteam.falbook.classes.Sabitler;
+import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
+import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.falbookv4.helloteam.falbook.falcisec.FalcitelveEvent;
 import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -53,6 +57,7 @@ public class GirisActivity extends AppCompatActivity {
     private boolean misafirGirisDurumu = true;
     private int girisTelve = 50, dahaOncedenBulunanTelve = -1, verilecekTelveSayisi;
     private TextView txtGizlilikPolitikasi;
+    private String strTelveSayisi, strMail;
 
     public void init(){
 
@@ -81,15 +86,29 @@ public class GirisActivity extends AppCompatActivity {
 
     }
 
-    @Subscribe(sticky = true)
-    public void onTelveEvent(TelveEvent event){
-        //kullanıcının telvesini alıyoruz
-        dahaOncedenBulunanTelve = event.getTelveEventSayisi();
-    }
+    public void misafirTelveSayisiYukle(){
 
+        //secure olarak shared pref i al, -> string geliyor
+        SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
+        strTelveSayisi = preferences.getString(Sabitler.TELVE_SAYISI_MISAFIR);
+        strMail = preferences.getString(Sabitler.KULLANICI_MAIL);
+
+        //int e dönüştürerek kullan
+        if(strTelveSayisi != null && strMail == null){
+
+            dahaOncedenBulunanTelve = Integer.parseInt(strTelveSayisi);
+        }else if(strMail == null){
+            //ilk giriş durumu
+            dahaOncedenBulunanTelve = -1;
+        }else{
+            //kullanıcının daha önceden giriş yaptığı ve mail inin girili olduğu durum
+            dahaOncedenBulunanTelve = 0;
+        }
+    }
 
     public void handler(){
 
+        misafirTelveSayisiYukle();
         fontHandler();
 
         txtGizlilikPolitikasi.setOnClickListener(new View.OnClickListener() {
@@ -264,18 +283,6 @@ public class GirisActivity extends AppCompatActivity {
         btnMisafirGirisi.setOnClickListener(null);
         btnKullaniciGirisi.setOnClickListener(null);
         btnKayitOl.setOnClickListener(null);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
 

@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.Kullanicilar;
+import com.falbookv4.helloteam.falbook.classes.Sabitler;
+import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
 import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -47,7 +49,7 @@ public class KayitActivity extends AppCompatActivity {
     private SweetAlertDialog mProgressMisafirKayit;
     private Button btnMisafirUyeOlustur;
     private DatabaseReference mDatabaseKullanici, mDatabaseKullanicilar;
-    private String strAd, strSoyad;
+    private String strAd, strSoyad, strTelveSayisi, strMail;
     private int girisTelve = 50, dahaOncedenBulunanTelve = -1, verilecekTelveSayisi;
 
     public void init(){
@@ -70,11 +72,26 @@ public class KayitActivity extends AppCompatActivity {
 
     }
 
-    @Subscribe(sticky = true)
-    public void onTelveEvent(TelveEvent event){
-        //kullanıcının telvesini alıyoruz
-        dahaOncedenBulunanTelve = event.getTelveEventSayisi();
+    public void misafirTelveSayisiYukle(){
+
+        //secure olarak shared pref i al, -> string geliyor
+        SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
+        strTelveSayisi = preferences.getString(Sabitler.TELVE_SAYISI_MISAFIR);
+        strMail = preferences.getString(Sabitler.KULLANICI_MAIL);
+
+        //int e dönüştürerek kullan
+        if(strTelveSayisi != null && strMail == null){
+
+            dahaOncedenBulunanTelve = Integer.parseInt(strTelveSayisi);
+        }else if(strMail == null){
+            //ilk giriş durumu
+            dahaOncedenBulunanTelve = -1;
+        }else{
+            //kullanıcının daha önceden giriş yaptığı ve mail inin girili olduğu durum
+            dahaOncedenBulunanTelve = 0;
+        }
     }
+
 
     private boolean mailDogrula(){
 
@@ -106,10 +123,21 @@ public class KayitActivity extends AppCompatActivity {
 
     public void handler(){
 
+        misafirTelveSayisiYukle();
         btnMisafirUyeOlustur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                kayitOlustur();
+
+                if(mailDogrula() && sifreDogrula()){
+
+                    kayitOlustur();
+                }else{
+
+                    Snackbar snacMisafirGirisiYapilamadi = Snackbar
+                            .make(misafirUyeKayitLayout, "Boş bırakmayınız", Snackbar.LENGTH_LONG);
+                    snacMisafirGirisiYapilamadi.show();
+                }
+
             }
         });
 
@@ -157,6 +185,10 @@ public class KayitActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
 
                                     if(task.isSuccessful()){
+
+                                        SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
+                                        preferences.put(Sabitler.KULLANICI_MAIL, mail);
+                                        preferences.put(Sabitler.KULLANICI_SIFRE, sifre);
 
                                         mProgressMisafirKayit.dismiss();
                                         Intent kayitToAnasayfa = new Intent(KayitActivity.this, AnasayfaActivity.class);
@@ -220,18 +252,6 @@ public class KayitActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         btnMisafirUyeOlustur.setOnClickListener(null);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
 }

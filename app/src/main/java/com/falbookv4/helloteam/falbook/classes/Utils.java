@@ -2,6 +2,7 @@ package com.falbookv4.helloteam.falbook.classes;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Base64;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +70,15 @@ public class Utils {
         }
     }
 
+    /* şifreleme */
+    public static String encrypt(String input) {
+        // This is base64 encoding, which is not an encryption
+        return Base64.encodeToString(input.getBytes(), Base64.DEFAULT);
+    }
+
+    public static String decrypt(String input) {
+        return new String(Base64.decode(input, Base64.DEFAULT));
+    }
 
 
 }

@@ -3,6 +3,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -25,7 +26,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.Sabitler;
 import com.falbookv4.helloteam.falbook.classes.Utils;
+import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
 import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitation;
@@ -70,10 +73,12 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     private int telveSayisi;
     private DatabaseReference mDatabaseKullanici;
     private TextView txtTelveSayisi, txtFalBaktir, txtTelveSatinal, txtTelveKazan, txtSSS, txtIletisim, txtKullanim, toolbarBaslik;
-    private String strFalSayisi;
+    private String strFalSayisi, strTelveSayisi;
     private ValueEventListener mListener;
 
     public void init() {
+
+
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.anaNavView);
@@ -138,13 +143,17 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         anaBtnFonk();
         fontHandler();
 
-        //telve sayısını gönder.
-        EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
-
         if(mAuth.getCurrentUser()!= null){
 
             navBarDataYerlestir();
         }
+
+        //else{
+        //    telveSayisi = -1;
+        //}
+
+        //telve sayısını gönder.
+        //EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
 
         fbFalGonder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,6 +215,10 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         //kullanıcının giriş yapıp yapmadığını kontrol et
         if (currentUser == null && mDatabaseKullanici == null) {
             giriseGonder();
+        }else{
+
+            SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
+            preferences.put(Sabitler.TELVE_SAYISI_MISAFIR, strTelveSayisi);
         }
     }
 
@@ -282,9 +295,19 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
-                                Utils.deleteCache(AnasayfaActivity.this);
+                                //Utils.deleteCache(AnasayfaActivity.this);
+
                                 //çıkarken telve sayısını gönderiyorum ki tekrar girdiğinde aynı telve sayısından devam etsin
-                                EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
+                                //EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
+
+                                SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
+                                preferences.put(Sabitler.TELVE_SAYISI_MISAFIR, strTelveSayisi);
+
+                                if(mAuth.getCurrentUser().getEmail() != null){
+
+                                    preferences.put(Sabitler.KULLANICI_MAIL, mAuth.getCurrentUser().getEmail());
+                                }
+
                                 mAuth.signOut();
                                 giriseGonder();
                             }
@@ -412,6 +435,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
                     telveSayisi = ((Long) dataSnapshot.child("telve").getValue()).intValue();
                     strFalSayisi = "" + telveSayisi + " TELVENİZ\nVAR" + "";
+                    strTelveSayisi = "" + telveSayisi;
                     txtTelveSayisi.setText(strFalSayisi);
 
                     //EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));

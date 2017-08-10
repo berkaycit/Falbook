@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.Sabitler;
+import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -131,6 +133,10 @@ public class MisafiruyeActivity extends AppCompatActivity {
                             mDatabaseKullanici.setValue(mail).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+
+                                    SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
+                                    preferences.put(Sabitler.KULLANICI_MAIL, mail);
+                                    preferences.put(Sabitler.KULLANICI_SIFRE, sifre);
 
                                     mProgressMisafirKayit.dismiss();
                                     Intent regToProfil = new Intent(MisafiruyeActivity.this, ProfilActivity.class);

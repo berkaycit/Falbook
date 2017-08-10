@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.activities.DilekActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,13 +41,16 @@ public class Falci2 extends Fragment{
     private int falciBedel, kullaniciTelveSayisi, farkTelveSayisi;
     private TextView falciIsmi, falciAciklamasi, falciTelveSayisi;
     private StorageReference mStorage;
-    private DatabaseReference mDatabaseFalcilar, mFalci2, mFalci2Foto;
+    private DatabaseReference mDatabaseFalcilar, mFalci2, mFalci2Foto, mKullanici;
     private ValueEventListener mListener;
     private boolean falGonderecek = true;
     private ImageView imageFalci;
+    private FirebaseAuth mAuth;
 
 
     public void init(){
+
+        mAuth = FirebaseAuth.getInstance();
 
         imageFalci = (ImageView) genelLayout.findViewById(R.id.imgFalci);
         btnGonder = (Button) genelLayout.findViewById(R.id.btnFalciGonder);
@@ -57,6 +61,10 @@ public class Falci2 extends Fragment{
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabaseFalcilar = FirebaseDatabase.getInstance().getReference().child("Falcilar");
         mDatabaseFalcilar.keepSynced(true);
+
+        String uid = mAuth.getCurrentUser().getUid();
+        mKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
+        mKullanici.keepSynced(true);
     }
 
     private void falciDataAtamasi(){
@@ -79,6 +87,19 @@ public class Falci2 extends Fragment{
             }
         });
         */
+
+        mKullanici.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                kullaniciTelveSayisi = ((Long)dataSnapshot.child("telve").getValue()).intValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         mFalci2.addValueEventListener(mListener = new ValueEventListener() {
