@@ -92,7 +92,7 @@ public class FaldetayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, falAciklamasi);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.invitation_deep_link) + falAciklamasi);
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
 

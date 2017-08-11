@@ -82,7 +82,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton3"
             android:paddingRight="10dp"
-            android:text="Soru 3"
+            android:text="Nasıl daha rahat fincan fotoğraflarını çekebilirim?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -100,7 +100,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bos_yazi"
+                android:text="@string/foto_trick"
                 android:textColor="#FFFFFF" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -113,7 +113,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton4"
             android:paddingRight="10dp"
-            android:text="Soru 4"
+            android:text="Profilimi nasıl düzenleyebilirim?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -131,7 +131,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bos_yazi"
+                android:text="@string/profil_duzen_trick"
                 android:textColor="#FFFFFF" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -144,7 +144,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton5"
             android:paddingRight="10dp"
-            android:text="Soru 5"
+            android:text="Misafir Üye nasıl kalıcı üye olur?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -162,7 +162,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bos_yazi"
+                android:text="@string/kalici_uye_trick"
                 android:textColor="#FFFFFF" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -175,7 +175,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton6"
             android:paddingRight="10dp"
-            android:text="Soru 6"
+            android:text="Nereden telve satın alabilirim?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -193,7 +193,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bos_yazi"
+                android:text="@string/satinal_trick"
                 android:textColor="#FFFFFF" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -206,7 +206,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton7"
             android:paddingRight="10dp"
-            android:text="Soru 7"
+            android:text="Kahve falından başka fal baktırabilir miyim?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -224,7 +224,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bos_yazi"
+                android:text="@string/sadecefal_trick"
                 android:textColor="#FFFFFF" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -237,7 +237,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton8"
             android:paddingRight="10dp"
-            android:text="Soru 8"
+            android:text="Nasıl Çalışıyor?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -255,7 +255,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bos_yazi"
+                android:text="@string/nasilgonderilir_trick"
                 android:textColor="#FFFFFF" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -268,7 +268,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton9"
             android:paddingRight="10dp"
-            android:text="Soru 9"
+            android:text="Yorumlama en fazla kaç dk sürer?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -286,7 +286,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bos_yazi"
+                android:text="@string/enfazlakacdk_trick"
                 android:textColor="#FFFFFF" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -299,7 +299,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton10"
             android:paddingRight="10dp"
-            android:text="Soru 10"
+            android:text="İade ve iptal koşulları nelerdir?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout
@@ -317,7 +317,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bos_yazi"
+                android:text="@string/iptal_kosulu"
                 android:textColor="#FFFFFF" />
         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 

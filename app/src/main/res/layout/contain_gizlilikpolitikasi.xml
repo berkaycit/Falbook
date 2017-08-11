@@ -21,7 +21,7 @@
             android:id="@+id/txtGizlilikPolitikasi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bos_yazi"
+            android:text="@string/gizlilik_poitikasi"
             android:layout_below="@id/txtGizlilikPolitikasiBaslik" />
 
     </RelativeLayout>
