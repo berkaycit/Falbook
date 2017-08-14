@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.Fal;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -120,8 +121,8 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
     private void fontHandler(){
 
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= FontCache.get("fonts/MyriadPro.ttf", this);
+        Typeface typeFaceBold= FontCache.get("fonts/MyriadProBold.ttf", this);
 
         toolbarBaslik.setTypeface(typeFaceBold);
 

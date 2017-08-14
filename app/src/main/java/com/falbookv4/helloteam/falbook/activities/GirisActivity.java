@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.falbookv4.helloteam.falbook.classes.Kullanicilar;
 import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
 import com.falbookv4.helloteam.falbook.classes.Sabitler;
@@ -76,8 +77,8 @@ public class GirisActivity extends AppCompatActivity {
 
     private void fontHandler(){
 
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= FontCache.get("fonts/MyriadPro.ttf", this);
+        Typeface typeFaceBold= FontCache.get("fonts/MyriadProBold.ttf", this);
 
         btnMisafirGirisi.setTypeface(typeFace);
         btnKullaniciGirisi.setTypeface(typeFace);
@@ -251,17 +252,20 @@ public class GirisActivity extends AppCompatActivity {
                             throw taskResult.getException();
                         } catch (Exception e) {
 
-                            new SweetAlertDialog(GirisActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Hata")
-                                    .setConfirmText("Tamam")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            sweetAlertDialog.cancel();
-                                        }
-                                    })
-                                    .setContentText("İnternetinizi kontrol ediniz!")
-                                    .show();
+                            if(!isFinishing()){
+
+                                new SweetAlertDialog(GirisActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                        .setTitleText("Hata")
+                                        .setConfirmText("Tamam")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.cancel();
+                                            }
+                                        })
+                                        .setContentText("İnternetinizi kontrol ediniz!")
+                                        .show();
+                            }
 
                             errorGirisHata = "İnternetinizi kontrol edin!";
                             e.printStackTrace();

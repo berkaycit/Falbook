@@ -2,6 +2,7 @@ package com.falbookv4.helloteam.falbook.activities;
 
 import com.falbookv4.helloteam.falbook.Manifest;
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -130,8 +131,8 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
     private void fontHandler(){
 
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= FontCache.get("fonts/MyriadPro.ttf", this);
+        Typeface typeFaceBold= FontCache.get("fonts/MyriadProBold.ttf", this);
 
         toolbarBaslik.setTypeface(typeFaceBold);
         txtProfilBilgilendirme.setTypeface(typeFace);
@@ -395,11 +396,14 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
 
 
             } else {
-                new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("Bilgiler Eksik")
-                        .setContentText("Lütfen bütün bilgilerinizi doldurun!")
-                        .setConfirmText("Tamam")
-                        .show();
+                if(!isFinishing()){
+
+                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Bilgiler Eksik")
+                            .setContentText("Lütfen bütün bilgilerinizi doldurun!")
+                            .setConfirmText("Tamam")
+                            .show();
+                }
             }
         }
 
@@ -496,7 +500,10 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
 
-            mProgressKayitGuncelle.show();
+            if(!isFinishing()){
+
+                mProgressKayitGuncelle.show();
+            }
         }
 
         @Override

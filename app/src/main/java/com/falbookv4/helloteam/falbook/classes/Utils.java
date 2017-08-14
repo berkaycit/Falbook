@@ -1,12 +1,14 @@
 package com.falbookv4.helloteam.falbook.classes;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Environment;
 import android.util.Base64;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class Utils {

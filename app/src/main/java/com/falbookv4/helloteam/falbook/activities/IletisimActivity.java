@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,8 +58,8 @@ public class IletisimActivity extends AppCompatActivity {
 
     private void fontHandler(){
 
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= FontCache.get("fonts/MyriadPro.ttf", this);
+        Typeface typeFaceBold= FontCache.get("fonts/MyriadProBold.ttf", this);
 
         toolbarBaslik.setTypeface(typeFaceBold);
         txtIletisimBilgilendirme.setTypeface(typeFace);
@@ -107,17 +108,21 @@ public class IletisimActivity extends AppCompatActivity {
 
 
                         }else{
-                            new SweetAlertDialog(IletisimActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Hata")
-                                    .setConfirmText("Tamam")
-                                    .setContentText("İnternetinizi kontrol ediniz!")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            sweetAlertDialog.cancel();
-                                        }
-                                    })
-                                    .show();
+
+                            if(!isFinishing()){
+
+                                new SweetAlertDialog(IletisimActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                        .setTitleText("Hata")
+                                        .setConfirmText("Tamam")
+                                        .setContentText("İnternetinizi kontrol ediniz!")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.cancel();
+                                            }
+                                        })
+                                        .show();
+                            }
 
                         }
 

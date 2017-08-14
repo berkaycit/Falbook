@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 import java.io.File;
@@ -41,8 +42,8 @@ public class SSSActivity extends AppCompatActivity {
 
     private void fontHandler(){
 
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= FontCache.get("fonts/MyriadPro.ttf", this);
+        Typeface typeFaceBold= FontCache.get("fonts/MyriadProBold.ttf", this);
 
         toolbarBaslik.setTypeface(typeFaceBold);
 

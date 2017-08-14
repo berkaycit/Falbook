@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -75,8 +76,8 @@ public class MaildegistirActivity extends AppCompatActivity {
 
     private void fontHandler(){
 
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= FontCache.get("fonts/MyriadPro.ttf", this);
+        Typeface typeFaceBold= FontCache.get("fonts/MyriadProBold.ttf", this);
 
         toolbarBaslik.setTypeface(typeFaceBold);
         txtMailDegistirBilgilendirme.setTypeface(typeFace);
@@ -171,17 +172,20 @@ public class MaildegistirActivity extends AppCompatActivity {
 
                                                 mDatabaseKullanici.child("mail").setValue(strMail);
 
-                                                new SweetAlertDialog(MaildegistirActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                                        .setTitleText("Başarılı!")
-                                                        .setConfirmText("Tamam")
-                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                            @Override
-                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                                sweetAlertDialog.cancel();
-                                                            }
-                                                        })
-                                                        .setContentText("Mailiniz başarıyla değiştirildi!")
-                                                        .show();
+                                                if(!isFinishing()){
+
+                                                    new SweetAlertDialog(MaildegistirActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                                            .setTitleText("Başarılı!")
+                                                            .setConfirmText("Tamam")
+                                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                                @Override
+                                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                                    sweetAlertDialog.cancel();
+                                                                }
+                                                            })
+                                                            .setContentText("Mailiniz başarıyla değiştirildi!")
+                                                            .show();
+                                                }
                                             }else{
 
                                                 Snackbar snacSifreHata = Snackbar

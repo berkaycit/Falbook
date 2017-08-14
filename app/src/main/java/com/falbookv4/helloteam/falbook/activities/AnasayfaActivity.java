@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.falbookv4.helloteam.falbook.classes.Sabitler;
 import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
@@ -127,7 +128,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
 
     private void fontHandler(){
 
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= FontCache.get("fonts/MyriadProBold.ttf", this);
         txtFalBaktir.setTypeface(typeFace);
         txtTelveSayisi.setTypeface(typeFace);
         txtTelveKazan.setTypeface(typeFace);
@@ -135,6 +136,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         txtIletisim.setTypeface(typeFace);
         txtKullanim.setTypeface(typeFace);
         toolbarBaslik.setTypeface(typeFace);
+
 
     }
 

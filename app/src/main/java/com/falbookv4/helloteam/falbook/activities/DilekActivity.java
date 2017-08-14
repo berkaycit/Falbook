@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.falbookv4.helloteam.falbook.classes.RandomString;
 import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.falbookv4.helloteam.falbook.falcisec.FalcitelveEvent;
@@ -114,8 +115,8 @@ public class DilekActivity extends AppCompatActivity {
 
     private void fontHandler(){
 
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= FontCache.get("fonts/MyriadProBold.ttf", this);
+        Typeface typeFace= FontCache.get("fonts/MyriadPro.ttf", this);
 
         toolbarBaslik.setTypeface(typeFaceBold);
         txtDilekBilgilendirme.setTypeface(typeFace);
@@ -199,17 +200,12 @@ public class DilekActivity extends AppCompatActivity {
 
 
                 } else {
-                    new SweetAlertDialog(DilekActivity.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Hata")
-                            .setConfirmText("Tamam")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    sweetAlertDialog.cancel();
-                                }
-                            })
-                            .setContentText("İnternetinizi kontrol ediniz!")
-                            .show();
+                    if(!isFinishing()){
+
+                        Snackbar snacGonderilemedi = Snackbar
+                                .make(dilekGenelLayout, "İnternetinizi kontrol ediniz.", Snackbar.LENGTH_LONG);
+                        snacGonderilemedi.show();
+                    }
                 }
             }
 
@@ -415,9 +411,6 @@ public class DilekActivity extends AppCompatActivity {
 
                                 mProgress.hide();
 
-                                Snackbar snacGonderilemedi = Snackbar
-                                        .make(dilekGenelLayout, "Falınız GÖNDERİLEMEDİ.", Snackbar.LENGTH_LONG);
-                                snacGonderilemedi.show();
 
                             }
                         });
@@ -444,10 +437,13 @@ public class DilekActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            mProgress.getProgressHelper().setBarColor(Color.parseColor("#795548"));
-            mProgress.setTitleText("Fal Gönderiliyor!");
-            mProgress.setCancelable(false);
-            mProgress.show();
+            if(!isFinishing()){
+
+                mProgress.getProgressHelper().setBarColor(Color.parseColor("#795548"));
+                mProgress.setTitleText("Fal Gönderiliyor!");
+                mProgress.setCancelable(false);
+                mProgress.show();
+            }
 
         }
 

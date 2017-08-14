@@ -37,6 +37,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.Manifest;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.falbookv4.helloteam.falbook.classes.RuntimeIzinler;
 import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.falbookv4.helloteam.falbook.falcisec.FalcilarActivity;
@@ -165,8 +166,8 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
     private void fontHandler(){
 
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
+        Typeface typeFace= FontCache.get("fonts/MyriadPro.ttf", this);
+        Typeface typeFaceBold= FontCache.get("fonts/MyriadProBold.ttf", this);
 
         toolbarBaslik.setTypeface(typeFaceBold);
         txtFotografSec.setTypeface(typeFace);
@@ -210,7 +211,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                 //fragment ın alabilmesi için yayın açıyorum
                 //&& kuculmusFoto1_uri != null && kucukProfilFoto2 !=null && kuculmusFoto3_uri != null
                 if(!TextUtils.isEmpty(strAd) && !TextUtils.isEmpty(strCinsiyet) && !TextUtils.isEmpty(strDogum)
-                        && !TextUtils.isEmpty(strIliski)) {
+                        && !TextUtils.isEmpty(strIliski) && fotoYerlesti1 && fotoYerlesti2 && fotoYerlesti3) {
 
                     EventBus.getDefault().postSticky(new GelenfalEvent(strAd, strCinsiyet, strDogum,
                             strIliski, kuculmusFoto1_byte, kuculmusFoto2_byte, kuculmusFoto3_byte));

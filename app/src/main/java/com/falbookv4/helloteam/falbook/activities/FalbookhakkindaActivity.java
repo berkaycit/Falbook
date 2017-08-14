@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.falbookv4.helloteam.falbook.R;
+import com.falbookv4.helloteam.falbook.classes.FontCache;
 
 import java.io.File;
 
@@ -42,8 +43,8 @@ public class FalbookhakkindaActivity extends AppCompatActivity {
 
     private void fontHandler(){
 
-        Typeface typeFaceBold= Typeface.createFromAsset(getAssets(),"fonts/MyriadProBold.ttf");
-        Typeface typeFace= Typeface.createFromAsset(getAssets(),"fonts/MyriadPro.ttf");
+        Typeface typeFaceBold= FontCache.get("fonts/MyriadProBold.ttf", this);
+        Typeface typeFace= FontCache.get("fonts/MyriadPro.ttf", this);
 
         toolbarBaslik.setTypeface(typeFaceBold);
         txtKullanim.setTypeface(typeFace);
