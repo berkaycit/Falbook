@@ -583,6 +583,9 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         kucukProfilFoto1.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                         kuculmusFoto1_byte = baos.toByteArray();
+
+                        imageFile.delete();
+
                     }
                 }
 
@@ -610,6 +613,8 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         kucukProfilFoto2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                         kuculmusFoto2_byte = baos.toByteArray();
+
+                        imageFile.delete();
                     }
                 }
 
@@ -637,6 +642,8 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         kucukProfilFoto3.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                         kuculmusFoto3_byte = baos.toByteArray();
+
+                        imageFile.delete();
                     }
                 }
 

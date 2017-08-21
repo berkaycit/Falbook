@@ -68,6 +68,12 @@
                 />
 
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtFalciTelveSayisi"
+                android:layout_centerInParent="true">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,10 +85,13 @@
                 android:text="Falcı açıklaması"
                 android:textSize="14dp"
                 android:gravity="center"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
                 android:layout_marginBottom="48dp"
+                android:paddingBottom="64dp"
                 />
+
+            </ScrollView>
 
             <Button
                 android:layout_width="match_parent"
@@ -100,6 +109,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp"
                 />
+
 
         </RelativeLayout>
 

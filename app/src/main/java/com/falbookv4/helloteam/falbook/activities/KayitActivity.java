@@ -77,7 +77,7 @@ public class KayitActivity extends AppCompatActivity {
 
         //secure olarak shared pref i al, -> string geliyor
         SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
-        strTelveSayisi = preferences.getString(Sabitler.TELVE_SAYISI_MISAFIR);
+        strTelveSayisi = preferences.getString(Sabitler.MISAFIR_SAYISI);
         strMail = preferences.getString(Sabitler.KULLANICI_MAIL);
 
         //int e dönüştürerek kullan

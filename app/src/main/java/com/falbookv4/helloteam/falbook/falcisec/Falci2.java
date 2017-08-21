@@ -46,6 +46,7 @@ public class Falci2 extends Fragment{
     private boolean falGonderecek = true;
     private ImageView imageFalci;
     private FirebaseAuth mAuth;
+    private Bitmap bm2;
 
 
     public void init(){
@@ -70,7 +71,7 @@ public class Falci2 extends Fragment{
     private void falciDataAtamasi(){
 
 
-        Bitmap bm2 = BitmapFactory.decodeResource(getResources(), R.drawable.falcip2);
+        bm2 = BitmapFactory.decodeResource(getResources(), R.drawable.falcip2);
         imageFalci.setImageBitmap(bm2);
 
         mFalci2 = mDatabaseFalcilar.child("Falci2");
@@ -153,7 +154,7 @@ public class Falci2 extends Fragment{
 
                 if(farkTelveSayisi >= 0 && kullaniciTelveSayisi > 0){
 
-                    EventBus.getDefault().postSticky(new FalcitelveEvent(falciBedel));
+                    EventBus.getDefault().postSticky(new FalcitelveEvent(falciBedel, true));
                     Intent falci2ToDilek = new Intent(getContext(), DilekActivity.class);
                     startActivity(falci2ToDilek);
                 }else{
@@ -179,8 +180,8 @@ public class Falci2 extends Fragment{
 
     @Override
     public void onDestroyView() {
+        bm2.recycle();
+        bm2 = null;
         super.onDestroyView();
-
-        //mFalci2.removeEventListener(mListener);
     }
 }

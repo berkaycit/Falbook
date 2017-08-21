@@ -56,7 +56,7 @@ public class DilekActivity extends AppCompatActivity {
     private Button btnGonder;
     String dilekIsim, dilekIliski, dilekDogum, dilekCinsiyet, falGonderilmeTarihi, fal_aciklamasi = "", strFalciIsmi;
     byte[] dilekKucukFoto1, dilekKucukFoto2, dilekKucukFoto3;
-    boolean falGonderSonuc = false;
+    boolean falGonderSonuc = false, falciDilekAktif;
     private FirebaseAuth mAuth;
     private FirebaseUser mBulunanKullanici;
     private StorageReference mStorageKahve;
@@ -142,6 +142,7 @@ public class DilekActivity extends AppCompatActivity {
     public void onFalcitelveEvent(FalcitelveEvent event){
         //kullanıcının telvesini alıyoruz
         telveBedeli = event.getFalcitelveBedeli();
+        falciDilekAktif = event.isFalciDilekAktif();
     }
 
 
@@ -175,11 +176,6 @@ public class DilekActivity extends AppCompatActivity {
                             else if(bulunanTelve<=0 && farkTelveSayisi<=0){
                                 Snackbar snacButunBilgi = Snackbar
                                         .make(dilekGenelLayout, "Telve sayınız TÜKENDİ", Snackbar.LENGTH_LONG);
-                                snacButunBilgi.show();
-                            }
-                            else if(farkTelveSayisi< 0){
-                                Snackbar snacButunBilgi = Snackbar
-                                        .make(dilekGenelLayout, "Telve sayınız YETERSİZ", Snackbar.LENGTH_LONG);
                                 snacButunBilgi.show();
                             }
 
@@ -222,6 +218,34 @@ public class DilekActivity extends AppCompatActivity {
 
         setSupportActionBar(dilekToolbar);
         getSupportActionBar().setTitle(null);
+
+        txtDilek.setFocusable(false);
+        txtDilek.setFocusableInTouchMode(false);
+
+        if(telveBedeli > 100){
+            txtDilek.setFocusable(true);
+            txtDilek.setFocusableInTouchMode(true);
+        }
+
+        txtDilek.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(telveBedeli > 100){
+                    txtDilek.setFocusable(true);
+                    txtDilek.setFocusableInTouchMode(true);
+                }
+
+                if(telveBedeli < 100){
+
+                    //txtDilek.setFocusable(false);
+                    //txtDilek.getText().clear();
+                    Snackbar snacGonderilemedi = Snackbar
+                            .make(dilekGenelLayout, "Bu falcı niyet kabul etmiyor.(Başka falcı seçebilirsiniz)", Snackbar.LENGTH_LONG);
+                    snacGonderilemedi.show();
+                }
+            }
+        });
 
         btnGonder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,6 +292,7 @@ public class DilekActivity extends AppCompatActivity {
 
         //EventBus.clearCaches();
         Utils.clearCameraPic(this);
+        //Utils.deleteCache(this);
         EasyImage.clearPublicTemp(getApplicationContext());
 
         super.onDestroy();
@@ -292,7 +317,7 @@ public class DilekActivity extends AppCompatActivity {
             final String dilek_val = strings[5];
 
             //storage da 'fotograflarin' altına cekilen fotograflarin id
-            String kullaniciID = mAuth.getCurrentUser().getUid();
+            final String kullaniciID = mAuth.getCurrentUser().getUid();
             Random random = new Random();
             int randomSayi = random.nextInt(30);
             RandomString randomDizi = new RandomString(5);
@@ -302,7 +327,7 @@ public class DilekActivity extends AppCompatActivity {
             StorageReference filepath3 = mStorageKahve.child("Fal_Fotolari3").child(kullaniciID + "" + randomDizi);
 
             //database de fal ın altında->uid-> push yaparak(random id) oluştur
-            final DatabaseReference yeniPost = mDatabaseFal.child(mBulunanKullanici.getUid()).push();
+            final DatabaseReference yeniPost = mDatabaseFal.child(kullaniciID).push();
 
             filepath3.putBytes(dilekKucukFoto3).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -353,7 +378,7 @@ public class DilekActivity extends AppCompatActivity {
 
 
                         //bakılmamış fal database
-                        yeniBakilmamisFalPost.child("uid").setValue(mBulunanKullanici.getUid());
+                        yeniBakilmamisFalPost.child("uid").setValue(kullaniciID);
                         yeniBakilmamisFalPost.child("date").setValue(ServerValue.TIMESTAMP);
                         yeniBakilmamisFalPost.child("fid").setValue(yeniPost.getKey());
 
@@ -373,7 +398,7 @@ public class DilekActivity extends AppCompatActivity {
                         yeniPost.child("dogum").setValue(dogum_val);
                         yeniPost.child("cinsiyet").setValue(cinsiyet_val);
                         yeniPost.child("iliski").setValue(iliski_val);
-                        yeniPost.child("uid").setValue(mBulunanKullanici.getUid());
+                        yeniPost.child("uid").setValue(kullaniciID);
                         yeniPost.child("fal_yorumu").setValue(fal_aciklamasi);
                         yeniPost.child("fal_dilek").setValue(dilek_val);
                         yeniPost.child("harcanan_telve").setValue(telveBedeli);

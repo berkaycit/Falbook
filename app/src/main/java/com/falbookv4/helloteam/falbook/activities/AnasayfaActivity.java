@@ -220,7 +220,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         }else{
 
             SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
-            preferences.put(Sabitler.TELVE_SAYISI_MISAFIR, strTelveSayisi);
+            preferences.put(Sabitler.MISAFIR_SAYISI, strTelveSayisi);
         }
     }
 
@@ -303,7 +303,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
                                 //EventBus.getDefault().postSticky(new TelveEvent(telveSayisi));
 
                                 SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "150", true);
-                                preferences.put(Sabitler.TELVE_SAYISI_MISAFIR, strTelveSayisi);
+                                preferences.put(Sabitler.MISAFIR_SAYISI, strTelveSayisi);
 
                                 if(mAuth.getCurrentUser().getEmail() != null){
 
