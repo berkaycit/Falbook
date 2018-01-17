@@ -64,7 +64,7 @@
 
     <TextView
         android:id="@+id/txtFalDetayTarih"
-        android:layout_width="128dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"

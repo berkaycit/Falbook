@@ -167,7 +167,7 @@ public class DilekActivity extends AppCompatActivity {
                                 farkTelveSayisi = bulunanTelve - telveBedeli;
                             }
 
-                            if(farkTelveSayisi>=0 && falGonderebilir && bulunanTelve>0){
+                            if(farkTelveSayisi>=0 && falGonderebilir && bulunanTelve>0 && telveBedeli>0){
                                 falGonderebilir = false;
                                 yeniTelveSayiniz = farkTelveSayisi;
                                 new FalGonderAsync().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, dilekIsim,

@@ -102,11 +102,9 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
             mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
             mDatabase = FirebaseDatabase.getInstance().getReference().child("Fal");
 
-            mDatabaseKullanici.keepSynced(true);
-
             //offline olduğu durumlar için
             mDatabaseKullanici.keepSynced(true);
-            mDatabase.keepSynced(true);
+            //mDatabase.keepSynced(true);
         }
 
         //layout manager oluşturuyoruz
@@ -221,6 +219,20 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
         //adepter ı bağlıyoruz
         gelenFalRecyclerView.setAdapter(firebaseRecyclerAdapter);
+
+        /*
+        gelenFalRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+        */
 
     }
 

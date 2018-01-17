@@ -19,6 +19,8 @@ import com.falbookv4.helloteam.falbook.activities.SSSActivity;
 import com.falbookv4.helloteam.falbook.adapters.FalcilarPagerAdapter;
 import com.falbookv4.helloteam.falbook.adapters.FalcisecAdapter;
 import com.falbookv4.helloteam.falbook.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 
@@ -32,6 +34,7 @@ public class FalcilarActivity extends AppCompatActivity {
     private CircleIndicator indicator;
     private BottomNavigationView botToolbar;
     private FloatingActionButton fbFalGonder;
+    //private DatabaseReference connectedRef;
 
     public void init(){
 
@@ -40,6 +43,8 @@ public class FalcilarActivity extends AppCompatActivity {
 
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
+
+        //connectedRef = FirebaseDatabase.getInstance().getReference().child("/info.connected");
 
     }
 

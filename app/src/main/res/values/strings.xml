@@ -33,7 +33,7 @@
     <string name="evet_sil">Evet, SİL!</string>
     <string name="fal_yorumunuz">Fal yorumunuz</string>
     <string name="base64encodedpublickey">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAif0NSwdJzs+PKdBDKn/nM9/4M/kYUkcY6FbDwKJGlH+ih9p0BM1Oc7j+ldZ/tszuTalSIzerD+jutDB2Hm/6xhGAdQYzLoZIMFvaE0a15L1YV+KtrUJIHyEgsKDn3yMs3i5kN/muRdNrYYjY89aun/TplL+63rAVfIzctLV1i5Lia2MCFZKAxyT/TDZCg2RU6BDKGHy+uomFCdZUyfSj8yfsLumDX1bNbZw6YS65kCWdP6dgAna0/UaROcnxqSvGRxxyQ1Q23dgLA+TEKe8fyAxDPR0a27NQ6Rz/5wuFotIGcN9/ULUdYn8pdG/aM366XVM1YHqykiXxE1otHyWtHwIDAQAB</string>
-    <string name="izle_kazan">İzle kazanın çalışması için reklamın yüklenmiş olması lazım. Reklamın yüklenip yüklenmediğini anlamak için izle-kazanın çerçevesinin regine dikkat edebilirsiniz. Eğer çerçeve rengi yeşile dönmüş ise reklam yüklenmiş demektir, tıklayıp bedava telve kazanabilirsiniz. Reklam-izle kazandan günde en fazla 1 defa yararlanabilirsiniz.</string>
+    <string name="izle_kazan">İzle kazanın çalışması için reklamın yüklenmiş olması lazım. Reklamın yüklenip yüklenmediğini anlamak için izle-kazanın çerçevesinin regine dikkat edebilirsiniz. Eğer çerçeve rengi yeşile dönmüş ise reklam yüklenmiş demektir, tıklayıp bedava telve kazanabilirsiniz. İzle kazanda 24 saat içerisinde en fazla izleyebileceğiniz sayı sınırlıdır. Bu sınıra ulaştıkdan sonra ancak 24 saat sonra izleyebilirisiniz.</string>
     <string name="mail_degistir">Mail Değiştir</string>
     <string name="send_to">Paylaş</string>
     <string name="kayitolurken_bilgilendirme">Kayıt olarak <b>Kullanım ve Gizlilik Koşulları</b>\'nı kabul ediyorum.</string>

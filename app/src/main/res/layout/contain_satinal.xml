@@ -64,7 +64,7 @@
                     android:layout_below="@+id/txtTelveParasi"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="3dp"
-                    android:text="SADECE 4.99TL"
+                    android:text="SADECE 7.99TL"
                     android:textColor="@color/colorFalciIsmi"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -123,7 +123,7 @@
                     android:layout_below="@+id/txtTelveParasi25"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="3dp"
-                    android:text="SADECE 5.99TL"
+                    android:text="SADECE 9.99TL"
                     android:textColor="@color/colorFalciIsmi"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -188,7 +188,7 @@
                     android:layout_below="@+id/txtTelveParasi30"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="3dp"
-                    android:text="SADECE 9.99TL"
+                    android:text="SADECE 14.99TL"
                     android:textColor="@color/colorFalciIsmi"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -247,7 +247,7 @@
                     android:layout_below="@+id/txtTelveParasi50"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="3dp"
-                    android:text="SADECE 19.99TL"
+                    android:text="SADECE 24.99TL"
                     android:textColor="@color/colorFalciIsmi"
                     android:textSize="16sp"
                     android:textStyle="bold" />

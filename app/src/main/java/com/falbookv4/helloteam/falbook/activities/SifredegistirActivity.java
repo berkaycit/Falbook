@@ -150,7 +150,7 @@ public class SifredegistirActivity extends AppCompatActivity {
                 strYeniSifre = txtSifreDegistir.getText().toString();
                 strYeniSifreOnay = txtSifreDegistirOnay.getText().toString();
 
-                if(mAuth.getCurrentUser().getEmail() != null){
+                if(mAuth.getCurrentUser().getEmail() != null && sifreDoluMu()){
 
                     sifreGuncelle(strYeniSifre, strYeniSifreOnay);
                 }else{
@@ -165,11 +165,25 @@ public class SifredegistirActivity extends AppCompatActivity {
 
     }
 
+
+    private boolean sifreDoluMu(){
+
+        String sifrem = txtSifreDegistirOnay.getText().toString();
+        String sifrem2 = txtSifreDegistir.getText().toString();
+
+        if(sifrem.isEmpty() || sifrem2.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
     private boolean sifreDogrula(String eskiSifre, String yeniSifre){
 
         String parola = txtSifreDegistirOnay.getText().toString().trim();
 
-        if(parola.length()<6){
+        if(parola.length()<6 || parola.isEmpty()){
             textInputYeniSifre.setError("Şifreniz 6 karakterden daha az!");
             return false;
         }else if(eskiSifre.equals(yeniSifre)){

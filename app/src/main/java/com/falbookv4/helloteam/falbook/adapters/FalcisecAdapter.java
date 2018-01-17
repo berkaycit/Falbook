@@ -7,10 +7,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.falbookv4.helloteam.falbook.falcisec.Falci1;
 import com.falbookv4.helloteam.falbook.falcisec.Falci2;
 import com.falbookv4.helloteam.falbook.falcisec.Falci3;
+import com.falbookv4.helloteam.falbook.falcisec.Falci4;
+import com.falbookv4.helloteam.falbook.falcisec.Falci5;
+import com.falbookv4.helloteam.falbook.falcisec.Falci6;
 
 public class FalcisecAdapter extends FragmentStatePagerAdapter {
 
-    private final int ITEMS = 3; // 3 tane sayfamız olduğunu varsayıyoruz.
+    private final int ITEMS = 6; // 6 tane sayfamız olduğunu varsayıyoruz.
 
     public FalcisecAdapter(FragmentManager fm){
         super(fm);
@@ -26,6 +29,12 @@ public class FalcisecAdapter extends FragmentStatePagerAdapter {
                 return new Falci2();
             case 2:
                 return new Falci3();
+            case 3:
+                return new Falci4();
+            case 4:
+                return new Falci5();
+            case 5:
+                return new Falci6();
 
             default:
                 return new Falci1();

@@ -123,7 +123,6 @@ public class IletisimActivity extends AppCompatActivity {
                                         })
                                         .show();
                             }
-
                         }
 
                     }
