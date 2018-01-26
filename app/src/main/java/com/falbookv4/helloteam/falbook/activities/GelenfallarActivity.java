@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.Fal;
 import com.falbookv4.helloteam.falbook.classes.FontCache;
@@ -73,9 +74,11 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ValueEventListener mListener;
     private TextView toolbarBaslik;
+    private ShimmerFrameLayout container;
 
     public void init(){
 
+        container = (ShimmerFrameLayout) findViewById(R.id.shimmer_rv_container);
         toolbarBaslik = (TextView) findViewById(R.id.fallarim_toolbar_baslik);
         progressFalSil = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
 
@@ -215,10 +218,18 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
             }
 
+            @Override
+            protected void onDataChanged() {
+
+                container.stopShimmerAnimation();
+                container.setVisibility(View.GONE);
+            }
         };
 
         //adepter ı bağlıyoruz
         gelenFalRecyclerView.setAdapter(firebaseRecyclerAdapter);
+
+
 
         /*
         gelenFalRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -307,6 +318,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
         fontHandler();
         menuleriHazirla();
         navBarDataYerlestir();
+
 
     }
 
@@ -533,6 +545,19 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
 
             return null;
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        container.startShimmerAnimation();
+    }
+
+    @Override
+    protected void onPause() {
+        container.stopShimmerAnimation();
+        super.onPause();
     }
 
     @Override

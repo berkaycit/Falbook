@@ -411,35 +411,16 @@ public class DilekActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
+                                    falGonderSonuc = true;
+                                    mProgress.dismiss();
 
+                                    if(!isFinishing()){
+
+                                        mProgressBasariliGonderme.show();
+                                    }
                                 }
                             }
                         });
-
-
-
-                        mDatabaseFal.addValueEventListener(mListener3 = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                falGonderSonuc = true;
-                                mProgress.dismiss();
-
-                                if(!isFinishing()){
-
-                                    mProgressBasariliGonderme.show();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                                mProgress.hide();
-
-
-                            }
-                        });
-
 
                     }else{
 

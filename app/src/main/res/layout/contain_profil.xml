@@ -35,7 +35,6 @@
             app:sriv_right_bottom_corner_radius="16dip"
             app:sriv_right_top_corner_radius="0dip" />
 
-
         <EditText
             android:id="@+id/profilTxtAd"
             android:layout_width="0dp"

@@ -135,7 +135,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         mNavigationView = (NavigationView) findViewById(R.id.anaNavView);
 
         toolbarKafe = (Toolbar) findViewById(R.id.toolbarKafe); //->actionbar
-        toolbar = (Toolbar) findViewById(R.id.genelToolbar);
+        //toolbar = (Toolbar) findViewById(R.id.genelToolbar);
         //imgAnasayfa = (ImageButton) toolbar.findViewById(R.id.anasafaButon);
         btnFalGonder = (Button) findViewById(R.id.btnGonderFal);
 
@@ -161,6 +161,8 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             mDatabaseKullanici = FirebaseDatabase.getInstance().getReference().child("Kullanicilar").child(uid);
             mDatabaseKullanici.keepSynced(true);
         }
+
+        new TextleriSet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
@@ -781,7 +783,51 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         }
     }
 
+    //parametre-progress-result
+    private class TextleriSet extends AsyncTask<Void, Void, Boolean> {
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            mDatabaseKullanici.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(final DataSnapshot dataSnapshot) {
+
+                    //firebase in databese inden verileri oku
+                    strAd = (String) dataSnapshot.child("isim").getValue();
+                    strIliski = (String) dataSnapshot.child("iliski").getValue();
+                    strDogum = (String) dataSnapshot.child("dogum").getValue();
+                    strCinsiyet = (String) dataSnapshot.child("cinsiyet").getValue();
+
+                    if(strAd != null && strIliski != null && strDogum != null && strCinsiyet != null) {
+                        //okuduğun verileri editable text lere yaz.
+                        gondereninAdi.setText(strAd);
+                        kafeTxtDogum.setText(strDogum);
+                        kafeTxtIliski.setText(strIliski);
+                        kafeTxtCinsiyet.setText(strCinsiyet);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            return null;
+        }
+    }
 
 
     @Override

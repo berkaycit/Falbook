@@ -104,6 +104,17 @@ Son güncelleme tarihi: 11 Ağustos 2017
 © 2017 Falbook. All Rights Reserved
 
 </string>
+    <string name="_200_telve">200 Telve</string>
+    <string name="_19tl">19TL</string>
+    <string name="_300_telve">300 Telve</string>
+    <string name="_25tl">25TL</string>
+    <string name="_39tl">39TL</string>
+    <string name="_500_telve">500 Telve</string>
+    <string name="_1000telve">1000Telve</string>
+    <string name="_69tl">69TL</string>
+    <string name="video_zleyerek_kazan">Video İzleyerek Kazan</string>
+    <string name="_24_saat_i_erisinde_en_fazla_5_kere_izleyebilirsiniz">24 saat içerisinde en fazla 5 kere izleyebilirsiniz!</string>
+    <string name="f_rsat">Fırsat</string>
 
 
 </resources>

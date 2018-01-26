@@ -482,8 +482,9 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         }
     }
 
+
     //parametre-progress-result
-    private class BilgileriDegistir extends AsyncTask<String, Void, Boolean> {
+    private class BilgileriDegistir extends AsyncTask<String, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -497,8 +498,8 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
 
             if(!isFinishing()){
 
@@ -507,57 +508,29 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         }
 
         @Override
-        protected Boolean doInBackground(String... strings) {
+        protected Void doInBackground(String... strings) {
 
             final String kullaniciID = mBulunanKullanici.getUid();
 
-            mDatabaseKullanici.addValueEventListener(mListener1 = new ValueEventListener() {
+            Map<String, Object> updateKullaniciProfilMap = new HashMap<>();
+            updateKullaniciProfilMap.put("isim", strAd);
+            updateKullaniciProfilMap.put("soyisim", strSoyad);
+            updateKullaniciProfilMap.put("mail", strMail);
+            updateKullaniciProfilMap.put("cinsiyet", strCinsiyet);
+            updateKullaniciProfilMap.put("iliski", strIliski);
+            updateKullaniciProfilMap.put("dogum", strDogum);
+
+            mDatabaseKullaniciIc.updateChildren(updateKullaniciProfilMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    if (dataSnapshot.hasChild(kullaniciID)) {
-
-                        //kullanıcı bilgilerini güncelle -> bu şekilde yapınca ve setValue diyince boş girdiğimiz bilgileri veri tabanından siliyor
-                        //Kullanicilar kullanici = new Kullanicilar(strAd, strSoyad, strMail, strCinsiyet, strIliski, strDogum, null, null);
-
-                        Map<String, Object> updateKullaniciProfilMap = new HashMap<>();
-                        updateKullaniciProfilMap.put("isim", strAd);
-                        updateKullaniciProfilMap.put("soyisim", strSoyad);
-                        updateKullaniciProfilMap.put("mail", strMail);
-                        updateKullaniciProfilMap.put("cinsiyet", strCinsiyet);
-                        updateKullaniciProfilMap.put("iliski", strIliski);
-                        updateKullaniciProfilMap.put("dogum", strDogum);
-
-                        mDatabaseKullaniciIc.updateChildren(updateKullaniciProfilMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                //eğer veriyi değiştiremezse
-                                if (!task.isSuccessful()) {
-                                    mProgressKayitGuncelle.hide();
-
-                                    Snackbar snacBilgiGuncellenemedi = Snackbar
-                                            .make(profilLayout, "Bilgileriniz GÜNCELLENEMEDİ", Snackbar.LENGTH_LONG);
-                                    snacBilgiGuncellenemedi.show();
-                                }
-                            }
-                        });
-
-                        //güncel bilgileri editable textlere yerleştir
-                        new TextleriSet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-                    } else {
+                public void onComplete(@NonNull Task<Void> task) {
+                    //eğer veriyi değiştiremezse
+                    if (!task.isSuccessful()) {
                         mProgressKayitGuncelle.hide();
 
-                        Snackbar snacBilgiKullaniciBulunamadi = Snackbar
-                                .make(profilLayout, "Kullanıcı BULUNAMADI", Snackbar.LENGTH_LONG);
-                        snacBilgiKullaniciBulunamadi.show();
+                        Snackbar snacBilgiGuncellenemedi = Snackbar
+                                .make(profilLayout, "Bilgileriniz GÜNCELLENEMEDİ", Snackbar.LENGTH_LONG);
+                        snacBilgiGuncellenemedi.show();
                     }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                    mProgressKayitGuncelle.hide();
                 }
             });
 
@@ -634,40 +607,41 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
     }
 
 
+
     @Override
     public void onBackPressed() {
 
-        //handlerIliski.removeCallbacksAndMessages(runnableIliski);
-        //handlerCinsiyet.removeCallbacksAndMessages(runnableCinsiyet);
-
         super.onBackPressed();
+
+        handlerIliski.removeCallbacksAndMessages(runnableIliski);
+        handlerCinsiyet.removeCallbacksAndMessages(runnableCinsiyet);
     }
 
     @Override
     protected void onPause() {
+        super.onPause();
 
         handlerIliski.removeCallbacksAndMessages(runnableIliski);
         handlerCinsiyet.removeCallbacksAndMessages(runnableCinsiyet);
-
-        super.onPause();
     }
 
     @Override
     protected void onStop() {
 
+        super.onStop();
+
         handlerIliski.removeCallbacksAndMessages(runnableIliski);
         handlerCinsiyet.removeCallbacksAndMessages(runnableCinsiyet);
-
-        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
 
+        super.onDestroy();
+
+
         handlerIliski.removeCallbacksAndMessages(runnableIliski);
         handlerCinsiyet.removeCallbacksAndMessages(runnableCinsiyet);
-
-        super.onDestroy();
 
         if(mDatabaseKullaniciIc != null){
 
@@ -682,6 +656,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
         kullaniciProfilFoto.setOnClickListener(null);
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, final int resultCode, final Intent data) {

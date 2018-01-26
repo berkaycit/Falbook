@@ -1,9 +1,11 @@
 package com.falbookv4.helloteam.falbook.activities;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -50,6 +52,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
+import org.w3c.dom.Text;
 
 import java.io.File;
 
@@ -73,12 +76,16 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     private TextView navKullaniciIsmi, navKullaniciMail;
     private int telveSayisi;
     private DatabaseReference mDatabaseKullanici;
-    private TextView txtTelveSayisi, txtFalBaktir, txtTelveSatinal, txtTelveKazan, txtSSS, txtIletisim, txtKullanim, toolbarBaslik;
+    private TextView txtTelveSayisi, txtFalBaktir, txtTelveSatinal, txtTelveKazan, txtSSS, txtIletisim, txtKullanim, toolbarBaslik, txtpopupKapat, txtpopupEskiFiyat;
     private String strFalSayisi, strTelveSayisi;
     private ValueEventListener mListener;
+    private Dialog kampanyaDialog;
 
     public void init() {
 
+
+        kampanyaDialog = new Dialog(this);
+        kampanyaDialog.setContentView(R.layout.kampanya_popup);
 
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayout);
@@ -103,6 +110,8 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         txtIletisim = (TextView) findViewById(R.id.iletisimText);
         txtKullanim = (TextView) findViewById(R.id.kullanimText);
         toolbarBaslik = (TextView) findViewById(R.id.anasayfa_toolbar_baslik);
+        txtpopupKapat = (TextView) kampanyaDialog.findViewById(R.id.txtpopupKapat);
+        txtpopupEskiFiyat = (TextView) kampanyaDialog.findViewById(R.id.txtpopupEskiFiyat);
 
 
         //->Firebase
@@ -137,7 +146,7 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         txtKullanim.setTypeface(typeFace);
         toolbarBaslik.setTypeface(typeFace);
 
-
+        txtpopupEskiFiyat.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
     public void handler() {
@@ -195,6 +204,17 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         //tıklanma olayları için navigation view a listener veriyoruz
         mNavigationView.setNavigationItemSelectedListener(this);
 
+
+
+        txtpopupKapat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                kampanyaDialog.dismiss();
+            }
+        });
+
+        kampanyaDialog.show();
     }
 
     private void navBarDataYerlestir() {

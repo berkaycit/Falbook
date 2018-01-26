@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -31,6 +32,8 @@ import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.FontCache;
+import com.falbookv4.helloteam.falbook.classes.Sabitler;
+import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
 import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -67,7 +70,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class SatinalActivity extends AppCompatActivity implements RewardedVideoAdListener, BillingProcessor.IBillingHandler {
 
     private Toolbar toolbarSatinal;
-    private RelativeLayout dusukTelve, normalTelve, buyukTelve, cokbuyukTelve, izleKazan;
+    private CardView dusukTelve, normalTelve, buyukTelve, cokbuyukTelve, izleKazan;
     private FirebaseAuth mAuth;
     private FirebaseUser mBulunanKullanici;
     private DatabaseReference mDatabaseKullanici, mDatabaseSiparis;
@@ -83,28 +86,28 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     static final String normalTelve_id = "com.falbookv4.telve300yeni1";
     static final String buyukTelve_id = "com.falbookv4.telve500yeni1";
     static final String cokbuyukTelve_id = "com.falbookv4.telve1000yeni1";
-    private boolean telveSatinalmaAktif = false, reklamaTiklandi = false;
-    private AppCompatImageView tvIcon;
+    private boolean telveSatinalmaAktif = false;
     private ValueEventListener mListener;
     private TextView toolbarBaslik, txtTelveSayisi1, txtTelveParasi1, txtTelveSayisi2, txtTelveParasi2,
                         txtTelveSayisi3, txtTelveParasi3, txtTelveSayisi4, txtTelveParasi4, txtIzleKazan;
     private SweetAlertDialog pDialog;
+    private static int toplamTiklama = 0;
 
 
     public void init(){
 
-        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
 
         toolbarBaslik = (TextView) findViewById(R.id.satinal_toolbar_baslik);
         txtTelveSayisi1 = (TextView) findViewById(R.id.txtTelveSayisi);
         txtTelveParasi1 = (TextView) findViewById(R.id.txtTelveParasi);
         txtTelveSayisi2 = (TextView) findViewById(R.id.txtTelveSayisi300);
-        txtTelveParasi2 = (TextView) findViewById(R.id.txtTelveParasi25);
+        txtTelveParasi2 = (TextView) findViewById(R.id.txtTelveParasi300);
         txtTelveSayisi3 = (TextView) findViewById(R.id.txtTelveSayisi500);
-        txtTelveParasi3 = (TextView) findViewById(R.id.txtTelveParasi30);
+        txtTelveParasi3 = (TextView) findViewById(R.id.txtTelveParasi500);
         txtTelveSayisi4 = (TextView) findViewById(R.id.txtTelveSayisi1000);
-        txtTelveParasi4 = (TextView) findViewById(R.id.txtTelveParasi50);
+        txtTelveParasi4 = (TextView) findViewById(R.id.txtTelveParasi1000);
         txtIzleKazan = (TextView) findViewById(R.id.txtIzleyerekKazan);
+
 
         base64EncodedPublicKey = getString(R.string.base64encodedpublickey);
 
@@ -121,14 +124,13 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
         mAd = MobileAds.getRewardedVideoAdInstance(this);
         mAd.setRewardedVideoAdListener(this);
 
-        izleKazan = (RelativeLayout) findViewById(R.id.satinalIzleKazan);
-        tvIcon = (AppCompatImageView) findViewById(R.id.imgTv);
+        izleKazan = (CardView) findViewById(R.id.card_izle_kazan);
 
         toolbarSatinal = (Toolbar) findViewById(R.id.toolbarSatinal);
-        dusukTelve = (RelativeLayout) findViewById(R.id.dusukTelveSatinAl);
-        normalTelve = (RelativeLayout) findViewById(R.id.normalTelveSatinAl);
-        buyukTelve = (RelativeLayout) findViewById(R.id.buyukTelveSatinAl);
-        cokbuyukTelve = (RelativeLayout) findViewById(R.id.cokbuyukTelveSatinAl);
+        dusukTelve = (CardView) findViewById(R.id.card_dusuk_telve);
+        normalTelve = (CardView) findViewById(R.id.card_normal_telve);
+        buyukTelve = (CardView) findViewById(R.id.card_buyuk_telve);
+        cokbuyukTelve = (CardView) findViewById(R.id.card_cokbuyuk_telve);
 
         mAuth = FirebaseAuth.getInstance();
         mBulunanKullanici = mAuth.getCurrentUser();
@@ -142,6 +144,10 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
         fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
+    }
+
+    private void initAlert(){
+            pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
     }
 
     private void fontHandler(){
@@ -292,7 +298,13 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
                     mAd.show();
                 }
 
-                if(pDialog != null && !reklamaTiklandi){
+                if(toplamTiklama>=5){
+                    Toast.makeText(SatinalActivity.this, "24 saat içerisinde en fazla 5 defa izleyebilirsiniz", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                initAlert();
+                if(pDialog != null){
 
                     pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                     pDialog.setTitleText("Reklam yükleniyor");
@@ -300,7 +312,6 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
                     pDialog.show();
                 }
 
-                reklamaTiklandi = true;
 
             }
         });
@@ -350,12 +361,10 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     @Override
     public void onRewardedVideoAdLoaded() {
         //izleKazan.setEnabled(true);
-        izleKazan.setBackground(ContextCompat.getDrawable(getApplication(), R.drawable.satinalaktif_background));
 
-        if(pDialog != null && reklamaTiklandi){
+        if(pDialog != null){
             pDialog.dismissWithAnimation();
             pDialog = null;
-            reklamaTiklandi = false;
             mAd.show();
         }
 
@@ -363,30 +372,26 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
     @Override
     public void onRewardedVideoAdOpened() {
+        toplamTiklama++;
 
-        izleKazan.setBackground(ContextCompat.getDrawable(getApplication(), R.drawable.satinalpasif_background));
-
-        if(pDialog != null && reklamaTiklandi){
+        if(pDialog != null){
             pDialog.dismissWithAnimation();
             pDialog = null;
-            reklamaTiklandi = false;
         }
     }
 
     @Override
     public void onRewardedVideoStarted() {
 
-        if(pDialog != null && reklamaTiklandi){
+        if(pDialog != null){
             pDialog.dismissWithAnimation();
             pDialog = null;
-            reklamaTiklandi = false;
         }
     }
 
     @Override
     public void onRewardedVideoAdClosed() {
         //izleKazan.setEnabled(false); //sorun buradan olabilir
-        reklamaTiklandi = false;
         loadAd();
     }
 
@@ -399,7 +404,6 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     @Override
     public void onRewardedVideoAdLeftApplication() {
 
-        reklamaTiklandi = false;
     }
 
     @Override
