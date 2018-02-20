@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -23,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -214,7 +217,20 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
             }
         });
 
-        kampanyaDialog.show();
+        if(kampanyaDialog!=null){
+
+            kampanyaDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            int divierId = kampanyaDialog.getContext().getResources()
+                    .getIdentifier("android:id/titleDivider", null, null);
+            View divider = kampanyaDialog.findViewById(divierId);
+            if(divider != null){
+
+                divider.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
+
+            kampanyaDialog.show();
+        }
     }
 
     private void navBarDataYerlestir() {

@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
-    android:layout_height="350dp"
+    android:layout_height="380dp"
     android:layout_gravity="center"
-    android:background="@color/colorFalciAciklama"
+    android:background="@drawable/popupbg"
     android:orientation="vertical"
     android:padding="5dp">
 
@@ -13,6 +13,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="end"
+        android:layout_margin="5dp"
         android:background="@drawable/beanbackgroundcircle"
         android:gravity="center"
         android:text="X"
@@ -28,37 +29,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
             android:text="@string/f_rsat"
             android:textAllCaps="true"
-            android:textColor="@color/colorAccent"
+            android:textColor="#FBEFDF"
             android:textSize="25sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="25dp"
-            android:text="Bu ÖZEL indirimi kaçırma!"
-            android:textColor="@color/colorAccent"
-            android:textSize="20sp" />
+        <ImageView
+            android:layout_width="128dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ikon"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:text="1000 Telve"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:textColor="@color/colorAccent"
+            android:layout_marginTop="10dp"
+            android:text="Bu ÖZEL indirimi kaçırma!"
+            android:textColor="#FBEFDF"
             android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="72dp"
+            android:text="1000 "
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:textColor="@color/yello"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="9dp"
+            android:text="Telve"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:textColor="#FBEFDF"
+            android:textSize="20sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
             <TextView
@@ -70,9 +96,8 @@
                 android:paddingLeft="48dp"
                 android:paddingRight="22dp"
                 android:paddingStart="48dp"
-
                 android:text="69 TL"
-                android:textColor="@color/colorAccent"
+                android:textColor="#FBEFDF"
                 android:textSize="20sp" />
 
             <TextView
@@ -80,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="19.99 TL"
-                android:textColor="@color/colorAccent"
+                android:textColor="#FBEFDF"
                 android:textSize="32sp"
                 android:textStyle="bold" />
 
@@ -91,9 +116,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/buttonstyle"
-        android:text="Sana özel sayfaya git"
-        android:textColor="@color/colorAccent" />
+        android:text="SANA ÖZEL SAYFAYA GİT"
+        android:textColor="@color/colorFalciIsmi" />
 
 </LinearLayout>
