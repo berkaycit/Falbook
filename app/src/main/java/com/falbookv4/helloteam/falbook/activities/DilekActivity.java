@@ -3,14 +3,17 @@ package com.falbookv4.helloteam.falbook.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.icu.util.DateInterval;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +22,8 @@ import android.widget.TextView;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.FontCache;
 import com.falbookv4.helloteam.falbook.classes.RandomString;
+import com.falbookv4.helloteam.falbook.classes.Sabitler;
+import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
 import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.falbookv4.helloteam.falbook.falcisec.FalcitelveEvent;
 import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
@@ -40,10 +45,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -54,7 +63,7 @@ public class DilekActivity extends AppCompatActivity {
     private Toolbar dilekToolbar;
     private EditText txtDilek;
     private Button btnGonder;
-    String dilekIsim, dilekIliski, dilekDogum, dilekCinsiyet, falGonderilmeTarihi, fal_aciklamasi = "", strFalciIsmi;
+    String dilekIsim, dilekIliski, dilekDogum, dilekCinsiyet, falGonderilmeTarihi, fal_aciklamasi = "", strFalciIsmi, strOncekiTarih;
     byte[] dilekKucukFoto1, dilekKucukFoto2, dilekKucukFoto3;
     boolean falGonderSonuc = false, falciDilekAktif;
     private FirebaseAuth mAuth;
@@ -68,12 +77,15 @@ public class DilekActivity extends AppCompatActivity {
     private int farkTelveSayisi, telveBedeli, yeniTelveSayiniz, bulunanTelve, telveKontrolSayi;
     private DatabaseReference connectedRef;
     private ValueEventListener mListener1, mListener2, mListener3;
-    private TextView toolbarBaslik, txtDilekBilgilendirme;
+    private TextView toolbarBaslik, txtDilekBilgilendirme, txtOdenecekUcret;
+    private boolean bedavaGonder;
+    private String strOdenecekBilgilendirme;
 
     public void init(){
 
         toolbarBaslik = (TextView) findViewById(R.id.dilek_toolbar_baslik);
         txtDilekBilgilendirme = (TextView) findViewById(R.id.txtDilekBilgilendirme);
+        txtOdenecekUcret = (TextView) findViewById(R.id.txtOdenecekUcret);
 
         dilekGenelLayout = (CoordinatorLayout) findViewById(R.id.dilek_layout);
 
@@ -143,6 +155,9 @@ public class DilekActivity extends AppCompatActivity {
         //kullanıcının telvesini alıyoruz
         telveBedeli = event.getFalcitelveBedeli();
         falciDilekAktif = event.isFalciDilekAktif();
+
+        strOdenecekBilgilendirme = "Bu falcının telve bedeli: " + "" + telveBedeli + "";
+        txtOdenecekUcret.setText(strOdenecekBilgilendirme);
     }
 
 
@@ -212,6 +227,12 @@ public class DilekActivity extends AppCompatActivity {
 
     }
 
+    public static long getDateDiff(long timeUpdate, long timeNow, TimeUnit timeUnit)
+    {
+        long diffInHours = Math.abs(timeNow - timeUpdate);
+        return timeUnit.convert(diffInHours, TimeUnit.HOURS);
+    }
+
     public void handler(){
 
         fontHandler();
@@ -251,19 +272,66 @@ public class DilekActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(gonderCooldown){
-                    falGonder();
-                    btnGonder.setEnabled(false);
+                if(telveBedeli > 100) {
+
+                    if (gonderCooldown) {
+
+                        falGonder();
+                        btnGonder.setEnabled(false);
+
+                    } else {
+                        btnGonder.setEnabled(false);
+                    }
+
+                    gonderCooldown = false;
                 }else{
-                    btnGonder.setEnabled(false);
+
+                    SecurePreferences preferences = new SecurePreferences(getApplicationContext(), "difs", "550", true);
+                    strOncekiTarih = preferences.getString(Sabitler.GUNDE_MAX);
+
+                    if (strOncekiTarih == null || strOncekiTarih.equals("")) {
+                        bedavaGonder = true;
+                    } else {
+                        long diffTime = -1;
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        String strCurrentTime  = dateFormat.format(new Date().getTime());
+                        try {
+                            Date dateCurrent = dateFormat.parse(strCurrentTime);
+                            long msCurrent = dateCurrent.getTime();
+                            Date dateBefore = dateFormat.parse(strOncekiTarih);
+                            long msBefore = dateBefore.getTime();
+
+                            Log.d("SimdikiZaman", String.valueOf(msCurrent));
+                            Log.d("OncekiZaman", String.valueOf(msBefore));
+
+                            diffTime = msCurrent - msBefore;
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        if(diffTime > 72000000){
+                            bedavaGonder = true;
+                        }else{
+                            bedavaGonder = false;
+                        }
+
+                    }
+
+                    if(bedavaGonder){
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        String strOncekiTarih  = dateFormat.format(new Date().getTime());
+                        preferences.put(Sabitler.GUNDE_MAX, strOncekiTarih);
+                        falGonder();
+                    }else{
+                        Snackbar snacGonderilemedi = Snackbar
+                                .make(dilekGenelLayout, "Bu falcıya günde en fazla 1 defa gönderebilirsiniz.", Snackbar.LENGTH_LONG);
+                        snacGonderilemedi.show();
+                    }
+
                 }
-
-                gonderCooldown = false;
-
             }
         });
-
-
     }
 
 

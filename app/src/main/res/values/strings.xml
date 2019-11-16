@@ -33,7 +33,7 @@
     <string name="evet_sil">Evet, SİL!</string>
     <string name="fal_yorumunuz">Fal yorumunuz</string>
     <string name="base64encodedpublickey">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAif0NSwdJzs+PKdBDKn/nM9/4M/kYUkcY6FbDwKJGlH+ih9p0BM1Oc7j+ldZ/tszuTalSIzerD+jutDB2Hm/6xhGAdQYzLoZIMFvaE0a15L1YV+KtrUJIHyEgsKDn3yMs3i5kN/muRdNrYYjY89aun/TplL+63rAVfIzctLV1i5Lia2MCFZKAxyT/TDZCg2RU6BDKGHy+uomFCdZUyfSj8yfsLumDX1bNbZw6YS65kCWdP6dgAna0/UaROcnxqSvGRxxyQ1Q23dgLA+TEKe8fyAxDPR0a27NQ6Rz/5wuFotIGcN9/ULUdYn8pdG/aM366XVM1YHqykiXxE1otHyWtHwIDAQAB</string>
-    <string name="izle_kazan">İzle kazanın çalışması için reklamın yüklenmiş olması lazım. Reklamın yüklenip yüklenmediğini anlamak için izle-kazanın çerçevesinin regine dikkat edebilirsiniz. Eğer çerçeve rengi yeşile dönmüş ise reklam yüklenmiş demektir, tıklayıp bedava telve kazanabilirsiniz. İzle kazanda 24 saat içerisinde en fazla izleyebileceğiniz sayı sınırlıdır. Bu sınıra ulaştıkdan sonra ancak 24 saat sonra izleyebilirisiniz.</string>
+    <string name="izle_kazan">İzle kazanın çalışması için reklamın yüklenmiş olması lazım. Yüklenmesi için belirli bir süre bekleyin. İzle kazanda 24 saat içerisinde en fazla izleyebileceğiniz sayı sınırlıdır. Bu sınıra ulaştıkdan sonra ancak 24 saat sonra izleyebilirisiniz. İzlemeniz tamamlandıktan sonraki günün öğleden sonra saat ikisinden itibaren yeni reklamlar aktif olacaktır.</string>
     <string name="mail_degistir">Mail Değiştir</string>
     <string name="send_to">Paylaş</string>
     <string name="kayitolurken_bilgilendirme">Kayıt olarak <b>Kullanım ve Gizlilik Koşulları</b>\'nı kabul ediyorum.</string>
@@ -44,9 +44,9 @@
     <string name="kalici_uye_trick">Profilimi Düzenle sayfasından bütün bilgilerinizi doldurarak kalıcı üyemiz olabilirsiniz.</string>
     <string name="satinal_trick">Anasayfa da XX TELVENİZ VAR butonuna basarak telve satın alma sayfasına gidebilirsiniz.</string>
     <string name="sadecefal_trick">Maalesef hayır, şu anda sadece kahve fal ı baktırabilirsiniz, alakasız gönderilen fotoğraflar değerlendirmeye alınmayacaktır.</string>
-    <string name="nasilgonderilir_trick">2 tane fincan, 1 tane tabak fotoğrafı çektip bilgilerinizi doldurduktan sonra yorumlatmak istediğiniz falcıyı seçip gönderebilirsiniz. Daha sonrasında falcılarımız sizin için özenle sizin falınızı yorumlayacaktır.</string>
-    <string name="enfazlakacdk_trick">Fal yorumları elinize genellikle 25/30dk arasında elinizde olur, ancak falcıların çeşitli işlerinden dolayı çok nadir de olsa daha fazla gecikmeler olabilir. Bu gecikmeler 2 saatten fazla sürmez. Eğer olağanüstü bir durum varsa iletişimden bizimle iletişime geçiniz.</string>
-    <string name="iptal_kosulu">Bir falın sizin beklentinizi karşılamadığını, yanlış yorumlandığını veya farklı bir memnuniyetsizliğiniz var ise Anasayfadaki iletişim bölümünden bizimle iletişime geçin. Sizin mutluluğunuz için çalışıyoruz.</string>
+    <string name="nasilgonderilir_trick">2 tane fincan, 1 tane tabak fotoğrafı çektip bilgilerinizi doldurduktan sonra yorumlatmak istediğiniz falcıyı seçip gönderebilirsiniz. Daha sonrasında falınız yorumlanacaktır.</string>
+    <string name="enfazlakacdk_trick">Fal yorumları elinize genellikle 25/30dk arasında elinizde olur, ancak yoğunluktan dolayı daha fazla gecikme olabilir. Bu gecikmeler 2 saatten fazla sürmez.</string>
+    <string name="iptal_kosulu">Profil bilgilerinizi doldurursanız, fal gönderirken tekrar tekrar bilgilerinizi girmek zorunda kalmazsınız. Otomatik olarak bilgileriniz gelecektir.</string>
     <string name="gizlilik_poitikasi">
 İş bu Kullanım Şartları, Falbook internet sitesi ve uygulaması ile (bundan böyle Falbook olarak anılacaktır) tüm özel ve tüzel kişi ve kurumlar (bundan böyle KULLANICI olarak anılacaktır) arasındaki kullanım şartlarını içermektedir.
 KULLANICIlar, Falbook’da sunulan hizmetlerden (belirli bir bedel ödeyerek ya da bedelsiz olarak) yararlanarak veya herhangi bir şekilde site veya uygulamaya erişim sağlayarak 18 yaşından büyük olduklarını veya reşit olmayıp ebeveynlerinin ya da kendilerine bakmakla yükümlü bir kişinin yasal onayına sahip olduklarını; iş bu Kullanım Şartları nın tamamını okuduklarını ve içeriğini tamamıyla anladıklarını ve tüm maddelerini kayıtsız şartsız kabul ederek onayladıklarını peşinen taahhüt ederler. Bu KULLANICIlar Falbook tarafından iş bu Site Kullanım Koşulları hükümlerinde yapılan her değişikliği önceden kabul etmiş sayılmaktadır.
@@ -115,6 +115,7 @@ Son güncelleme tarihi: 11 Ağustos 2017
     <string name="video_zleyerek_kazan">Video İzleyerek Kazan</string>
     <string name="_24_saat_i_erisinde_en_fazla_5_kere_izleyebilirsiniz">24 saat içerisinde en fazla 5 kere izleyebilirsiniz!</string>
     <string name="f_rsat">Fırsat</string>
+    <string name="temizle">Temizle</string>
 
 
 </resources>

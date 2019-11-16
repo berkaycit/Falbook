@@ -76,6 +76,7 @@ public class GelenfallarActivity extends AppCompatActivity implements Navigation
     private TextView toolbarBaslik;
     private ShimmerFrameLayout container;
 
+
     public void init(){
 
         container = (ShimmerFrameLayout) findViewById(R.id.shimmer_rv_container);

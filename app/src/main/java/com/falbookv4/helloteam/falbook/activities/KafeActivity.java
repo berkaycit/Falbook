@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -44,6 +46,7 @@ import com.falbookv4.helloteam.falbook.falcisec.FalcilarActivity;
 import com.falbookv4.helloteam.falbook.falcisec.GelenfalEvent;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -60,8 +63,11 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -223,7 +229,7 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
                 }else{
 
                     Snackbar snacBilgiGuncellenemedi = Snackbar
-                            .make(mDrawerLayout, "Bilgileriniz EKSİK", Snackbar.LENGTH_LONG);
+                            .make(mDrawerLayout, "Bilgileriniz veya fotoğraflarınız EKSİK", Snackbar.LENGTH_LONG);
                     snacBilgiGuncellenemedi.show();
                 }
             }
@@ -276,6 +282,25 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
 
     @Override
     public void izinVerildi(int requestCode) {
+
+        //bir tanede bool eklenecek
+        if((requestCode == KAFE_IZIN_REQUEST_CODE || requestCode == KAMERA_IZIN_REQUEST_CODE) && !Utils.isFileExist("fbb")){
+
+            if(isExternalStorageWritable()){
+
+                final String androidId = Settings.Secure.getString(
+                        this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+                Log.d("idandroid", androidId);
+
+                writeToFile("fbb", androidId);
+
+                //String yazi = Utils.readFile("fbb");
+                //Log.d("yazimiz", yazi);
+            }
+
+        }
+
         if(requestCode == KAFE_IZIN_REQUEST_CODE){
 
             EasyImage.openChooserWithGallery(KafeActivity.this, "Telve Fotoğrafınız", 0);
@@ -442,6 +467,28 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
         setContentView(R.layout.activity_kafe);
         init();
         handler();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_kafe, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.menuKafeSil){
+            gondereninAdi.setText("");
+            kafeTxtDogum.setText("");
+            kafeTxtIliski.setText("");
+            kafeTxtCinsiyet.setText("");
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -751,6 +798,41 @@ public class KafeActivity extends RuntimeIzinler implements NavigationView.OnNav
             return null;
         }
     }
+
+
+
+    public void writeToFile(String fileName, String body)
+    {
+        FileOutputStream fos = null;
+
+        try {
+            final File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/FBT/" ); //dosya ismi fbt
+
+            if (!dir.exists())
+            {
+                if(!dir.mkdirs()){
+                    Log.e("ALERT","could not create the directories");
+                }
+
+            }
+
+            final File myFile = new File(dir, fileName + ".txt");
+
+            if (!myFile.exists())
+            {
+                myFile.createNewFile();
+            }
+
+            fos = new FileOutputStream(myFile);
+
+            fos.write(body.getBytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     private static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();

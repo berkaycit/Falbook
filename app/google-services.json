@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "927116358916",
-    "firebase_url": "https://falbookv3.firebaseio.com",
-    "project_id": "falbookv3",
-    "storage_bucket": "falbookv3.appspot.com"
+    "project_number": "999823639017",
+    "firebase_url": "https://mprojectfb.firebaseio.com",
+    "project_id": "mprojectfb",
+    "storage_bucket": "mprojectfb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:927116358916:android:0b3dbe3cf3959b50",
+        "mobilesdk_app_id": "1:999823639017:android:0b3dbe3cf3959b50",
         "android_client_info": {
           "package_name": "com.falbookv4.helloteam.falbook"
         }
       },
       "oauth_client": [
         {
-          "client_id": "927116358916-41bio2rlm6g9llt2gf1k48374rd0dlc0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.falbookv4.helloteam.falbook",
-            "certificate_hash": "9cd9074060f9befa9ee40aeb2eef449b94a42d10"
-          }
-        },
-        {
-          "client_id": "927116358916-4ib8fmm0hhkrd7ilejoa1r65joern9su.apps.googleusercontent.com",
+          "client_id": "999823639017-22h2t2d8sb8oqg8o652gpjvqjfnhpvsj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBlncllMhzXiB2965FqRa6VxcjaRTfG_vw"
+          "current_key": "AIzaSyA4_mkesPigrAo454fM05bYRdfFBIcN-xw"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "927116358916-4ib8fmm0hhkrd7ilejoa1r65joern9su.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

@@ -11,6 +11,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -26,6 +28,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,12 +86,42 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
     private String strFalSayisi, strTelveSayisi;
     private ValueEventListener mListener;
     private Dialog kampanyaDialog;
+    private static Boolean kampanyaGoster = true;
+    private Button btnMagzayaGit;
+
 
     public void init() {
 
+        if(kampanyaGoster){
 
-        kampanyaDialog = new Dialog(this);
-        kampanyaDialog.setContentView(R.layout.kampanya_popup);
+            kampanyaDialog = new Dialog(this);
+            kampanyaDialog.setContentView(R.layout.kampanya_popup);
+
+            txtpopupKapat = (TextView) kampanyaDialog.findViewById(R.id.txtpopupKapat);
+            txtpopupEskiFiyat = (TextView) kampanyaDialog.findViewById(R.id.txtpopupEskiFiyat);
+
+
+            txtpopupEskiFiyat.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+
+            txtpopupKapat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    kampanyaDialog.dismiss();
+                }
+            });
+
+            btnMagzayaGit = (Button) kampanyaDialog.findViewById(R.id.btnMagzayaGit);
+
+            btnMagzayaGit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent anasayfaToMagza = new Intent(AnasayfaActivity.this, SatinalActivity.class);
+                    startActivity(anasayfaToMagza);
+                }
+            });
+
+        }
 
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.anaDrawerLayout);
@@ -113,8 +146,6 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         txtIletisim = (TextView) findViewById(R.id.iletisimText);
         txtKullanim = (TextView) findViewById(R.id.kullanimText);
         toolbarBaslik = (TextView) findViewById(R.id.anasayfa_toolbar_baslik);
-        txtpopupKapat = (TextView) kampanyaDialog.findViewById(R.id.txtpopupKapat);
-        txtpopupEskiFiyat = (TextView) kampanyaDialog.findViewById(R.id.txtpopupEskiFiyat);
 
 
         //->Firebase
@@ -148,8 +179,6 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         txtIletisim.setTypeface(typeFace);
         txtKullanim.setTypeface(typeFace);
         toolbarBaslik.setTypeface(typeFace);
-
-        txtpopupEskiFiyat.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
     public void handler() {
@@ -208,29 +237,6 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
         mNavigationView.setNavigationItemSelectedListener(this);
 
 
-
-        txtpopupKapat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                kampanyaDialog.dismiss();
-            }
-        });
-
-        if(kampanyaDialog!=null){
-
-            kampanyaDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-            int divierId = kampanyaDialog.getContext().getResources()
-                    .getIdentifier("android:id/titleDivider", null, null);
-            View divider = kampanyaDialog.findViewById(divierId);
-            if(divider != null){
-
-                divider.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            }
-
-            kampanyaDialog.show();
-        }
     }
 
     private void navBarDataYerlestir() {
@@ -477,6 +483,24 @@ public class AnasayfaActivity extends AppCompatActivity implements NavigationVie
                     }
 
                     telveSayisi = ((Long) dataSnapshot.child("telve").getValue()).intValue();
+
+                    if(kampanyaDialog!=null && kampanyaGoster && telveSayisi < 200){
+
+                        kampanyaGoster = false;
+
+                        kampanyaDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                        int divierId = kampanyaDialog.getContext().getResources()
+                                .getIdentifier("android:id/titleDivider", null, null);
+                        View divider = kampanyaDialog.findViewById(divierId);
+                        if(divider != null){
+
+                            divider.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        }
+
+                        kampanyaDialog.show();
+                    }
+
                     strFalSayisi = "" + telveSayisi + " TELVENİZ\nVAR" + "";
                     strTelveSayisi = "" + telveSayisi;
                     txtTelveSayisi.setText(strFalSayisi);

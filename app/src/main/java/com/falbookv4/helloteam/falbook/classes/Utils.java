@@ -5,7 +5,9 @@ import android.graphics.Typeface;
 import android.os.Environment;
 import android.util.Base64;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -80,6 +82,53 @@ public class Utils {
 
     public static String decrypt(String input) {
         return new String(Base64.decode(input, Base64.DEFAULT));
+    }
+
+    public static boolean isFileExist(String fileName){
+        try {
+            final File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/FBT/");
+
+            if(dir.exists()){
+                final File myFile = new File(dir, fileName + ".txt");
+
+                if(myFile.exists()){
+                    return true;
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static String readFile(String fileName){
+        final File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/FBT/" );
+
+        //File sdcard = Environment.getExternalStorageDirectory();
+
+        //text file ı al
+        File file = new File(dir, fileName + ".txt");
+
+        //text i oku
+        StringBuilder text = new StringBuilder();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return text.toString();
     }
 
 

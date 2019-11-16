@@ -449,7 +449,7 @@ public class ProfilActivity extends RuntimeIzinler implements com.wdullaer.mater
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
                     //firebase e yüklenen fotografin url sini almak için
-                    String kucukFotoDownloadUrl = task.getResult().getDownloadUrl().toString();
+                    String kucukFotoDownloadUrl = task.getResult().getStorage().getDownloadUrl().toString();
                     mDatabaseKullaniciIc.child("profilfoto").setValue(kucukFotoDownloadUrl);
 
                     if(task.isSuccessful()){

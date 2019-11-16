@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -47,6 +48,7 @@ public class Falbook extends Application {
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
 
+        FirebaseDatabase.getInstance().setLogLevel(Logger.Level.DEBUG);
 
     }
 }

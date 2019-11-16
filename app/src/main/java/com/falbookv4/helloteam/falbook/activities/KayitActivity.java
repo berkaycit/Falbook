@@ -17,6 +17,7 @@ import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.Kullanicilar;
 import com.falbookv4.helloteam.falbook.classes.Sabitler;
 import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
+import com.falbookv4.helloteam.falbook.classes.Utils;
 import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +26,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
@@ -84,7 +86,9 @@ public class KayitActivity extends AppCompatActivity {
         if(strTelveSayisi != null && strMail == null){
 
             dahaOncedenBulunanTelve = Integer.parseInt(strTelveSayisi);
-        }else if(strMail == null){
+        }else if(Utils.isFileExist("fbb")){
+            dahaOncedenBulunanTelve = 0;
+        } else if(strMail == null){
             //ilk giriş durumu
             dahaOncedenBulunanTelve = -1;
         }else{
@@ -222,7 +226,8 @@ public class KayitActivity extends AppCompatActivity {
                                 errorMisafirKayit = "Hata, GEÇERSİZ mail adresi girdiniz!";
                             } catch (FirebaseAuthUserCollisionException e) {
                                 errorMisafirKayit = "Hata, Böyle bir kullanıcı BULUNMAKTA!";
-                            } catch (Exception e) {
+                            }
+                            catch (Exception e) {
                                 errorMisafirKayit = "İnternetinizi kontrol edin!";
                                 e.printStackTrace();
                             }

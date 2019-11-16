@@ -24,6 +24,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
@@ -226,8 +227,8 @@ public class KayitgirisiActivity extends AppCompatActivity {
                         String errorMisafirKayit = "";
                         try {
                             throw task.getException();
-                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                            errorMisafirKayit = "Hata, GEÇERSİZ mail adresi girdiniz!";
+                        } catch (FirebaseAuthException e) {
+                            errorMisafirKayit = "Böyle bir kullanıcı bulunmamakta.";
                         } catch (Exception e) {
                             errorMisafirKayit = "İnternetinizi kontrol edin!";
                             e.printStackTrace();

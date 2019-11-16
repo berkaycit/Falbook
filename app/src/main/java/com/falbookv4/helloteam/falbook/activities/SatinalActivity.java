@@ -1,29 +1,20 @@
 package com.falbookv4.helloteam.falbook.activities;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,10 +23,6 @@ import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.falbookv4.helloteam.falbook.R;
 import com.falbookv4.helloteam.falbook.classes.FontCache;
-import com.falbookv4.helloteam.falbook.classes.Sabitler;
-import com.falbookv4.helloteam.falbook.classes.SecurePreferences;
-import com.falbookv4.helloteam.falbook.falcisec.TelveEvent;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
@@ -46,20 +33,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.jirbo.adcolony.AdColonyAdapter;
-import com.jirbo.adcolony.AdColonyBundleBuilder;
+import com.adcolony.sdk.*;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,7 +47,7 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class SatinalActivity extends AppCompatActivity implements RewardedVideoAdListener, BillingProcessor.IBillingHandler {
+public class SatinalActivity extends AppCompatActivity implements BillingProcessor.IBillingHandler, RewardedVideoAdListener {
 
     private Toolbar toolbarSatinal;
     private CardView dusukTelve, normalTelve, buyukTelve, cokbuyukTelve, izleKazan;
@@ -91,11 +71,15 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     private TextView toolbarBaslik, txtTelveSayisi1, txtTelveParasi1, txtTelveSayisi2, txtTelveParasi2,
                         txtTelveSayisi3, txtTelveParasi3, txtTelveSayisi4, txtTelveParasi4, txtIzleKazan;
     private SweetAlertDialog pDialog;
-    private static int toplamTiklama = 0;
+    final private String APP_ID = "app76409d884f2b4690be";
+    final private String ZONE_ID = "vzb4be69d9b1194e7287";
+    private AdColonyInterstitial mColonyAd;
+    private AdColonyInterstitialListener listener;
+    private AdColonyAdOptions adOptions;
 
+    private boolean admobAktif = false;
 
     public void init(){
-
 
         toolbarBaslik = (TextView) findViewById(R.id.satinal_toolbar_baslik);
         txtTelveSayisi1 = (TextView) findViewById(R.id.txtTelveSayisi);
@@ -108,11 +92,8 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
         txtTelveParasi4 = (TextView) findViewById(R.id.txtTelveParasi1000);
         txtIzleKazan = (TextView) findViewById(R.id.txtIzleyerekKazan);
 
-
         base64EncodedPublicKey = getString(R.string.base64encodedpublickey);
 
-        MobileAds.initialize(this, "ca-app-pub-9010511052067778/9309985844");
-        //AdColony.configure()
 
         //ikinci parametreye key girilecek.
         billingProcessor = new BillingProcessor(this, base64EncodedPublicKey, this);
@@ -143,6 +124,88 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
         fbFalGonder = (FloatingActionButton) findViewById(R.id.fbFalGonder);
         botToolbar = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        MobileAds.initialize(this, "ca-app-pub-9010511052067778/9309985844");
+
+
+
+        AdColonyAppOptions app_options = new AdColonyAppOptions().setUserID(mBulunanKullanici.getUid());
+        AdColony.configure(this, app_options, APP_ID, ZONE_ID);
+
+        adOptions = new AdColonyAdOptions()
+                .enableConfirmationDialog(false)
+                .enableResultsDialog(false);
+
+        AdColony.setRewardListener(new AdColonyRewardListener() {
+            @Override
+            public void onReward(AdColonyReward reward) {
+                telveSatinalmaAktif = true;
+                telveSatinAl(7);
+            }
+        });
+
+
+        listener = new AdColonyInterstitialListener() {
+            @Override
+            public void onRequestFilled(AdColonyInterstitial ad) {
+                mColonyAd = ad;
+                if(pDialog!=null){
+                    pDialog.dismissWithAnimation();
+                    pDialog = null;
+                    mColonyAd.show();
+                }
+            }
+
+            @Override
+            public void onRequestNotFilled(AdColonyZone zone) {
+                super.onRequestNotFilled(zone);
+
+                AdColony.requestInterstitial(ZONE_ID, listener, adOptions);
+                /*
+                admobAktif = true;
+                if(!mAd.isLoaded()){
+                    mAd.loadAd("ca-app-pub-9010511052067778/9309985844", new AdRequest.Builder().build());
+                }
+                */
+
+                Toast.makeText(SatinalActivity.this, "Reklam yüklenemedi.", Toast.LENGTH_SHORT).show();
+
+                if(pDialog!=null){
+                    if(mAd.isLoaded()){
+                        mAd.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onClosed(AdColonyInterstitial ad) {
+                super.onClosed(ad);
+                loadAd();
+            }
+
+            @Override
+            public void onAudioStarted(AdColonyInterstitial ad) {
+                super.onAudioStarted(ad);
+                if(pDialog != null){
+                    pDialog.dismissWithAnimation();
+                    pDialog = null;
+                }
+            }
+
+
+            @Override
+            public void onOpened(AdColonyInterstitial ad) {
+                super.onOpened(ad);
+
+                if(pDialog != null){
+                    pDialog.dismissWithAnimation();
+                    pDialog = null;
+                }
+            }
+        };
+
+        AdColony.requestInterstitial(ZONE_ID, listener, adOptions);
+
 
     }
 
@@ -290,20 +353,22 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
         loadAd();
         //izleKazan.setEnabled(false);
+
+
         izleKazan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(mColonyAd!=null){
+                    mColonyAd.show();
+                }
 
                 if(mAd.isLoaded()){
                     mAd.show();
                 }
 
-                if(toplamTiklama>=5){
-                    Toast.makeText(SatinalActivity.this, "24 saat içerisinde en fazla 5 defa izleyebilirsiniz", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 initAlert();
+
                 if(pDialog != null){
 
                     pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -316,6 +381,7 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
             }
         });
 
+
     }
 
     public void handler(){
@@ -327,7 +393,6 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
         setSupportActionBar(toolbarSatinal);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(null);
-
     }
 
     @Override
@@ -342,21 +407,29 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
         mAd.loadAd("ca-app-pub-9010511052067778/9309985844", new AdRequest.Builder().build());
 
-        if(!mAd.isLoaded()){
-
-            //"8B171216A18A2C889ADF71BBCC97E39A"
-            mAd.loadAd("ca-app-pub-9010511052067778/9309985844", new AdRequest.Builder().build());
-        }else{
-            
+        if (mColonyAd == null || mColonyAd.isExpired()) {
+            AdColony.requestInterstitial(ZONE_ID, listener, adOptions);
+        } else{
             if(pDialog != null){
 
                 pDialog.dismiss();
                 pDialog = null;
             }
+        }
+        /*
+        else if(!mAd.isLoaded()) {
 
+            //"8B171216A18A2C889ADF71BBCC97E39A"
+            mAd.loadAd("ca-app-pub-9010511052067778/9309985844", new AdRequest.Builder().build());
         }
 
+
+        if(!mAd.isLoaded()){
+            mAd.loadAd("ca-app-pub-9010511052067778/9309985844", new AdRequest.Builder().build());
+        }
+        */
     }
+
 
     @Override
     public void onRewardedVideoAdLoaded() {
@@ -368,11 +441,16 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
             mAd.show();
         }
 
+        /*
+        if(admobAktif){
+            mAd.show();
+        }
+        */
+
     }
 
     @Override
     public void onRewardedVideoAdOpened() {
-        toplamTiklama++;
 
         if(pDialog != null){
             pDialog.dismissWithAnimation();
@@ -393,12 +471,14 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
     public void onRewardedVideoAdClosed() {
         //izleKazan.setEnabled(false); //sorun buradan olabilir
         loadAd();
+        admobAktif = false;
     }
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
         telveSatinalmaAktif = true;
         telveSatinAl(7);
+        admobAktif = false;
     }
 
     @Override
@@ -406,15 +486,26 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
 
     }
 
+
+
     @Override
     public void onRewardedVideoAdFailedToLoad(int i) {
 
+        if(pDialog!=null){
+            pDialog.dismissWithAnimation();
+            pDialog = null;
+        }
+
+        Toast.makeText(SatinalActivity.this, "Reklam yüklenemedi.", Toast.LENGTH_SHORT).show();
+
     }
+
 
     @Override
     public void onResume() {
         mAd.resume(this);
         super.onResume();
+
     }
 
     @Override
@@ -447,36 +538,41 @@ public class SatinalActivity extends AppCompatActivity implements RewardedVideoA
         final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
         DatabaseReference yeniSatinAlim = mDatabaseSiparis.child(currentDate);
 
-        if(productId.equals(kucukTelve_id)){
+        if(billingProcessor.isValidTransactionDetails(details)){
 
-            telveSatinalmaAktif = true;
-            telveSatinAl(200);
-            yeniSatinAlim.setValue(200);
+            if(productId.equals(kucukTelve_id)){
+
+                telveSatinalmaAktif = true;
+                telveSatinAl(200);
+                yeniSatinAlim.setValue(200);
 
 
+            }
+            if(productId.equals(normalTelve_id)){
+
+                telveSatinalmaAktif = true;
+                telveSatinAl(300);
+                yeniSatinAlim.setValue(300);
+
+            }
+            if(productId.equals(buyukTelve_id)){
+
+                telveSatinalmaAktif = true;
+                telveSatinAl(500);
+                yeniSatinAlim.setValue(500);
+
+
+            }
+            if(productId.equals(cokbuyukTelve_id)){
+
+                telveSatinalmaAktif = true;
+                telveSatinAl(1000);
+                yeniSatinAlim.setValue(1000);
+
+            }
         }
-        if(productId.equals(normalTelve_id)){
-
-            telveSatinalmaAktif = true;
-            telveSatinAl(300);
-            yeniSatinAlim.setValue(300);
-
-        }
-        if(productId.equals(buyukTelve_id)){
-
-            telveSatinalmaAktif = true;
-            telveSatinAl(500);
-            yeniSatinAlim.setValue(500);
 
 
-        }
-        if(productId.equals(cokbuyukTelve_id)){
-
-            telveSatinalmaAktif = true;
-            telveSatinAl(1000);
-            yeniSatinAlim.setValue(1000);
-
-        }
 
     }
 

@@ -31,6 +31,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -98,6 +101,8 @@ public class GirisActivity extends AppCompatActivity {
         if(strTelveSayisi != null && strMail == null){
 
             dahaOncedenBulunanTelve = Integer.parseInt(strTelveSayisi);
+        }else if(Utils.isFileExist("fbb")){
+            dahaOncedenBulunanTelve = 0;
         }else if(strMail == null){
             //ilk giriş durumu
             dahaOncedenBulunanTelve = -1;
@@ -250,25 +255,27 @@ public class GirisActivity extends AppCompatActivity {
                         String errorGirisHata = "";
                         try {
                             throw taskResult.getException();
-                        } catch (Exception e) {
-
-                            if(!isFinishing()){
-
-                                new SweetAlertDialog(GirisActivity.this, SweetAlertDialog.ERROR_TYPE)
-                                        .setTitleText("Hata")
-                                        .setConfirmText("Tamam")
-                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                            @Override
-                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                sweetAlertDialog.cancel();
-                                            }
-                                        })
-                                        .setContentText("İnternetinizi kontrol ediniz!")
-                                        .show();
-                            }
-
+                        }catch (FirebaseAuthException e){
+                            errorGirisHata = "Böyle bir kullanıcı bulunmamakta";
+                        }
+                        catch (Exception e) {
                             errorGirisHata = "İnternetinizi kontrol edin!";
                             e.printStackTrace();
+                        }
+
+                        if(!isFinishing()){
+
+                            new SweetAlertDialog(GirisActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Hata")
+                                    .setConfirmText("Tamam")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.cancel();
+                                        }
+                                    })
+                                    .setContentText(errorGirisHata)
+                                    .show();
                         }
 
                     }

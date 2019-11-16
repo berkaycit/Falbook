@@ -299,7 +299,7 @@
             android:drawableRight="@android:drawable/arrow_down_float"
             android:onClick="expandableButton10"
             android:paddingRight="10dp"
-            android:text="İade ve iptal koşulları nelerdir?"
+            android:text="Bilgilerimi sürekli tekrardan girmeli miyim?"
             android:textColor="#fff" />
 
         <com.github.aakira.expandablelayout.ExpandableRelativeLayout

@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:paddingEnd="22dp"
+                android:paddingEnd="3dp"
                 android:paddingLeft="48dp"
                 android:paddingRight="22dp"
                 android:paddingStart="48dp"
@@ -115,6 +115,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/btnMagzayaGit"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
         android:background="@drawable/buttonstyle"

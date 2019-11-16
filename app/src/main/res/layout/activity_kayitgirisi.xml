@@ -77,7 +77,7 @@
             android:background="@android:color/transparent"
             android:ems="10"
             android:hint="Şifre"
-            android:inputType="textVisiblePassword"
+            android:inputType="textPassword"
             android:paddingLeft="24dp"
             android:textColor="#111"
             android:textColorHint="@color/colorTrash"
